@@ -1,14 +1,59 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid()) @db.VarChar(191)
+  email     String   @unique @db.VarChar(191)
+  name      String   @db.VarChar(191)
+  password  String   @db.VarChar(191)
+  rol       RolType  @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items     Items[]  @relation("ItemToUser")
+}
+
+enum RolType {
+  ADMIN
+  USER
+}
+
+model Items {
+  id          String     @id @default(cuid()) @db.VarChar(191)
+  name        String     @db.VarChar(191)
+  description String     @db.VarChar(191)
+  price       Float
+  type        ItemType
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  user        User       @relation("ItemToUser", fields: [userId], references: [id])
+  userId      String     @db.VarChar(191)
+  discount    Discount[] @relation("ItemToDiscount")
+}
+
+enum ItemType {
+  FOOD
+  DRINK
+  OTHER
+}
+
+model Discount {
+  id          String      @id @default(cuid()) @db.VarChar(191)
+  name        String      @db.VarChar(191)
+  description String      @db.VarChar(191)
+  type        DiscoutType
+  value       Float
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  items       Items[]     @relation("ItemToDiscount")
+}
+
+enum DiscoutType {
+  PERCENTAGE
+  AMOUNT
 }
