@@ -1,7 +1,7 @@
 import prisma from "@/lib/prismadb";
-import { NextResponse } from "next/server";
 import { hash, verify } from "argon2";
 import { sign } from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 const { JWT_REFRESH_SECRET, JWT_SECRET } = process.env;
 

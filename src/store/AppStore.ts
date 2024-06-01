@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { type StateStorage, createJSONStorage, persist } from "zustand/middleware";
 
-import { type UserSlice, createUserSlice } from "./app/UserSlice";
 import secureLocalStorage from "react-secure-storage";
+import { type UserSlice, createUserSlice } from "./app/UserSlice";
 
 // Custom storage object
 const storage: StateStorage = {

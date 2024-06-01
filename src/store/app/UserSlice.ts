@@ -1,8 +1,8 @@
 import { toast } from "@/components/ui/use-toast";
 import type { BackendTokens, UserAuthData, UserResponse } from "@/objects";
 
-import type { StateCreator } from "zustand";
 import type { User } from "@prisma/client";
+import type { StateCreator } from "zustand";
 
 export interface UserSlice {
 	backendTokens: BackendTokens | null;

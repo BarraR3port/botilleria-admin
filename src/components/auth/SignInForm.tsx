@@ -5,17 +5,17 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import type { UserAuthError } from "@/objects";
 import { SignInFormSchema, type SignInFromType } from "@/schemas/authSchema";
+import { useAppStore } from "@/store/AppStore";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Separator } from "../ui/separator";
-import axios from "axios";
-import Link from "next/link";
 import { toast } from "../ui/use-toast";
-import type { UserAuthError } from "@/objects";
-import { useAppStore } from "@/store/AppStore";
 
 export function SignInForm() {
 	const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-import { type InferType, object, string, date, array, boolean } from "yup";
+import { type InferType, array, boolean, date, object, string } from "yup";
 
 export const SignInFormSchema = object({
 	email: string().required("Email requerido").email("Email inválido").trim(),
