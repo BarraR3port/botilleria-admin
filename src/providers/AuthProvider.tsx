@@ -11,7 +11,6 @@ export type Props = {
 
 const AuthContext = createContext({});
 
-// This hook can be used to access the user info.
 export function useAuth() {
 	return useContext(AuthContext);
 }
@@ -27,10 +26,10 @@ export function AuthProvider(props: Props) {
 	}
 
 	useEffect(() => {
+		console.log(pathname);
 		if (!user) {
-			if (pathname === "/signIn") return;
+			if (pathname === "/signIn" || pathname === "/signUp") return;
 			redirectToSignIn();
-			return;
 		}
 	}, [user, pathname, backendTokens]);
 

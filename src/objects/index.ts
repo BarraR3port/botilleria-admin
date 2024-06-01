@@ -1,3 +1,5 @@
+import type { User } from "@prisma/client";
+
 export type BackendToken = {
 	token: string;
 	expireAt: number;
@@ -6,6 +8,11 @@ export type BackendToken = {
 export type BackendTokens = {
 	accessToken: BackendToken;
 	refreshToken: BackendToken;
+};
+
+export type UserAuthData = {
+	user: User;
+	backendTokens: BackendTokens;
 };
 
 type ErrorType = "email" | "password" | "token" | "unknown";
@@ -20,14 +27,4 @@ export type UserErrorResponse = {
 	errors: UserAuthError[];
 };
 
-type NestResponse = {
-	message: string[];
-	error: string;
-	data: string;
-	method: string;
-	params: any;
-	statusCode: number;
-	url: string;
-};
-
-export type UserResponse = UserErrorResponse | NestResponse | "" | undefined | true;
+export type UserResponse = UserErrorResponse | "" | undefined | true;

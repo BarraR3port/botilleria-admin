@@ -1,6 +1,5 @@
 "use client";
 import { SignInForm } from "@/components/auth/SignInForm";
-import Image from "next/image";
 
 export default function Index() {
 	return (

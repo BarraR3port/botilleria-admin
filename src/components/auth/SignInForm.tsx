@@ -15,9 +15,11 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "../ui/use-toast";
 import type { UserAuthError } from "@/objects";
+import { useAppStore } from "@/store/AppStore";
 
 export function SignInForm() {
 	const [loading, setLoading] = useState(false);
+	const { assignUserDetails } = useAppStore();
 
 	const signInForm = useForm<SignInFromType>({
 		resolver: yupResolver(SignInFormSchema),
@@ -35,9 +37,12 @@ export function SignInForm() {
 	const onSubmit: SubmitHandler<SignInFromType> = async data => {
 		setLoading(true);
 
-		const response = await axios.post("/api/auth/signIn", data).catch(error => {
-			return error.response.data;
-		});
+		const response = await axios
+			.post("/api/auth/signIn", data)
+			.catch(error => {
+				return error.response.data;
+			})
+			.then(response => response.data);
 
 		if (typeof response === "object" && "errors" in response) {
 			response.errors.forEach((error: UserAuthError) => {
@@ -49,6 +54,8 @@ export function SignInForm() {
 			setLoading(false);
 			return false;
 		}
+
+		assignUserDetails(response);
 
 		router.push("/");
 		setLoading(false);
@@ -121,6 +128,14 @@ export function SignInForm() {
 				<Link className="flex items-center justify-center w-full py-2 text-sm underline" href="/forgotPassword">
 					¿Se te olvidó tu contraseña?
 				</Link>
+				<div className="mt-4 text-sm text-center">
+					¿No tienes una cuenta?
+					<Link href={"/signUp"}>
+						<Button className="ml-2" disabled={loading}>
+							Registrarse
+						</Button>
+					</Link>
+				</div>
 			</>
 		</div>
 	);

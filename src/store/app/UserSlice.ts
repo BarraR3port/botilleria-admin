@@ -1,5 +1,5 @@
 import { toast } from "@/components/ui/use-toast";
-import type { BackendTokens, UserResponse } from "@/objects";
+import type { BackendTokens, UserAuthData, UserResponse } from "@/objects";
 
 import type { StateCreator } from "zustand";
 import type { User } from "@prisma/client";
@@ -11,6 +11,7 @@ export interface UserSlice {
 	loggingIn: boolean;
 	signingOut: boolean;
 	signOut: () => Promise<boolean>;
+	assignUserDetails: (user: UserAuthData) => void;
 }
 
 export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = set => ({
@@ -22,5 +23,8 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = set =
 	signOut: async () => {
 		set({ backendTokens: null, user: null, signedIn: false });
 		return true;
+	},
+	assignUserDetails: ({ user, backendTokens }) => {
+		set({ user, backendTokens, signedIn: true, loggingIn: false });
 	}
 });
