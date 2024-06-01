@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TailwindIndicator } from "@/components/ui/tailwindcss-indicator";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,7 @@ export default function RootLayout({
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
 					<TooltipProvider>
 						<Toaster />
-						{children}
+						<AuthProvider>{children}</AuthProvider>
 						<TailwindIndicator />
 					</TooltipProvider>
 				</ThemeProvider>
