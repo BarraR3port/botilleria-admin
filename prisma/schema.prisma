@@ -11,10 +11,12 @@ model User {
   id        String   @id @default(cuid()) @db.VarChar(191)
   email     String   @unique @db.VarChar(191)
   name      String   @db.VarChar(191)
+  lastName  String   @db.VarChar(191)
   password  String   @db.VarChar(191)
   rol       RolType  @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  lastLogin DateTime @default(now())
   items     Items[]  @relation("ItemToUser")
 }
 

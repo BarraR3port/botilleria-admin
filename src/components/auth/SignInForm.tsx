@@ -11,7 +11,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Separator } from "../ui/separator";
+import axios from "axios";
 import Link from "next/link";
+import { toast } from "../ui/use-toast";
+import type { UserAuthError } from "@/objects";
 
 export function SignInForm() {
 	const [loading, setLoading] = useState(false);
@@ -31,7 +34,23 @@ export function SignInForm() {
 
 	const onSubmit: SubmitHandler<SignInFromType> = async data => {
 		setLoading(true);
-		/* await signIn(data); */
+
+		const response = await axios.post("/api/auth/signIn", data).catch(error => {
+			return error.response.data;
+		});
+
+		if (typeof response === "object" && "errors" in response) {
+			response.errors.forEach((error: UserAuthError) => {
+				toast({
+					title: error.message,
+					variant: "destructive"
+				});
+			});
+			setLoading(false);
+			return false;
+		}
+
+		router.push("/");
 		setLoading(false);
 	};
 

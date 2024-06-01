@@ -1,5 +1,7 @@
 import prisma from "@/lib/prismadb";
 import { NextResponse } from "next/server";
+import { verify } from "argon2";
+import { sign } from "jsonwebtoken";
 
 const { JWT_REFRESH_SECRET, JWT_SECRET } = process.env;
 
@@ -20,72 +22,72 @@ export async function POST(req: Request) {
 
 		const { email, password } = body;
 
-		if (!email) return new NextResponse("Email requerido", { status: 400 });
-		if (!password) return new NextResponse("Password requerida", { status: 400 });
+		if (!email)
+			return NextResponse.json({ errors: [{ type: "mail", message: "Email requerido" }] }, { status: 400 });
+		if (!password)
+			return NextResponse.json(
+				{ errors: [{ type: "password", message: "Contraseña requerida" }] },
+				{ status: 400 }
+			);
 
-		const { email, password } = loginDto;
-		const user = await this.prisma.user.findFirst({
+		const tempUser = await prisma.user.findFirst({
 			where: {
 				email
 			},
 			select: {
 				password: true,
-				id: true,
-				assignedGoogleID: true
+				id: true
 			}
 		});
 
-		if (!user) {
-			return {
-				errors: [
-					{
-						type: "mail",
-						message: "Este email no está registrado"
-					}
-				]
-			};
+		if (!tempUser) {
+			return NextResponse.json(
+				{
+					errors: [
+						{
+							type: "mail",
+							message: "Este email no está registrado"
+						}
+					]
+				},
+				{ status: 400 }
+			);
 		}
 
-		if (user.password.length === 0 && user.assignedGoogleID.length > 0) {
-			return {
-				errors: [
-					{
-						type: "mail",
-						message: "Este email ya está registrado con Google."
-					}
-				]
-			};
-		}
-
-		const safePassword = await verify(user.password, password);
+		const safePassword = await verify(tempUser.password, password);
 
 		if (!safePassword) {
-			return {
-				errors: [
-					{
-						type: "password",
-						message: "Contraseña incorrecta"
-					}
-				]
-			};
+			return NextResponse.json(
+				{
+					errors: [
+						{
+							type: "password",
+							message: "Contraseña incorrecta"
+						}
+					]
+				},
+				{ status: 400 }
+			);
 		}
 
-		const accessToken = sign({ id: user.id }, JWT_SECRET, { expiresIn: "12h" });
-		const refreshToken = sign({ id: user.id }, JWT_REFRESH_SECRET, {
+		if (!JWT_SECRET || !JWT_REFRESH_SECRET) {
+			return new NextResponse("Error Interno", { status: 500 });
+		}
+
+		const accessToken = sign({ id: tempUser.id }, JWT_SECRET, { expiresIn: "12h" });
+		const refreshToken = sign({ id: tempUser.id }, JWT_REFRESH_SECRET, {
 			expiresIn: "1w"
 		});
 
-		const newUser = await this.prisma.user.update({
-			where: { id: user.id },
+		const user = await prisma.user.update({
+			where: { id: tempUser.id },
 			data: {
-				lastLogin: new Date(),
-				signedIn: true
-			},
-			select: this.utils.getSafePersonalUserFields()
+				lastLogin: new Date()
+			}
 		});
 
 		const userResponse = {
-			user: newUser,
+			user,
 			backendTokens: {
 				accessToken: {
 					token: accessToken,
@@ -99,7 +101,7 @@ export async function POST(req: Request) {
 		};
 		return NextResponse.json(userResponse);
 	} catch (error) {
-		console.log("[SIZES][POST]", error);
+		console.log("[AUTH][SIGN IN][POST]", error);
 		return new NextResponse("Error Interno", { status: 500 });
 	}
 }
