@@ -1,5 +1,4 @@
-import { toast } from "@/components/ui/use-toast";
-import type { BackendTokens, UserAuthData, UserResponse } from "@/objects";
+import type { BackendTokens, UserAuthData } from "@/objects";
 
 import type { User } from "@prisma/client";
 import type { StateCreator } from "zustand";
@@ -26,5 +25,6 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = set =
 	},
 	assignUserDetails: ({ user, backendTokens }) => {
 		set({ user, backendTokens, signedIn: true, loggingIn: false });
+		//add user session to cookies
 	}
 });

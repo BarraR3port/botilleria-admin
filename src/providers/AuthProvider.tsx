@@ -16,22 +16,28 @@ export function useAuth() {
 }
 
 export function AuthProvider(props: Props) {
+	const [mounted, setMounted] = useState(false);
 	const pathname = usePathname();
 	const router = useRouter();
 	const { user, signOut, backendTokens } = useAppStore();
 
 	async function redirectToSignIn() {
-		await signOut();
 		router.replace("/signIn");
 	}
 
 	useEffect(() => {
-		console.log(pathname);
+		if (mounted) return;
+		setMounted(true);
+	}, [mounted]);
+
+	useEffect(() => {
+		if (!mounted) return;
+		console.log(pathname, user);
+		if (pathname === "/signIn" || pathname === "/signUp") return;
 		if (!user) {
-			if (pathname === "/signIn" || pathname === "/signUp") return;
 			redirectToSignIn();
 		}
-	}, [user, pathname, backendTokens]);
+	}, [user, pathname, mounted]);
 
 	return <AuthContext.Provider value={{}}>{props.children}</AuthContext.Provider>;
 }
