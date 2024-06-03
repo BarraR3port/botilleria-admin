@@ -26,7 +26,7 @@ export default function Header() {
 					<NavigationMenu>
 						<NavigationMenuList>
 							<NavigationMenuItem>
-								<Link href="/panel/" className={navigationMenuTriggerStyle()}>
+								<Link href="/panel" className={navigationMenuTriggerStyle()}>
 									Panel
 								</Link>
 							</NavigationMenuItem>
