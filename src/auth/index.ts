@@ -1,6 +1,10 @@
 import axios from "axios";
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+
+class InvalidLoginError extends CredentialsSignin {
+	code = "Invalid identifier or password";
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [
@@ -21,19 +25,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 						email,
 						password
 					})
-					.catch(error => error.response);
+					.catch(error => {
+						console.log("|| Error", error.response.data.errors[0].message);
+						return error.response;
+					});
 
-				if (response.status === 401) {
+				if (response?.status === 401) {
 					return null;
 				}
 
-				if (response.status === 200 || response.status === 201) {
+				if (response?.status === 200 || response?.status === 201) {
 					if ("errors" in response.data) {
-						throw new Error(response.data.errors[0].message);
-					}
-					if (response.data?.user?.verifiedEmail === false) {
-						console.log("Email not verified");
-						response.status = 301;
+						console.log("|| Error", response.data.errors[0].message);
+						throw new InvalidLoginError(response.data.errors[0].message);
 					}
 					return response.data;
 				}

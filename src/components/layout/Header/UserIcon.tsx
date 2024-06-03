@@ -24,7 +24,6 @@ type UserIconProps = {
 
 export function UserIcon({ navBar }: UserIconProps) {
 	const { data } = useSession();
-	console.log("Session", data);
 	const router = useRouter();
 	const pathName = usePathname();
 
@@ -86,7 +85,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 					>
 						Panel
 						<DropdownMenuShortcut>
-							<History size={16} />
+							<Home size={16} />
 						</DropdownMenuShortcut>
 					</DropdownMenuItem>
 					<DropdownMenuItem
@@ -99,20 +98,10 @@ export function UserIcon({ navBar }: UserIconProps) {
 							<Settings size={16} />
 						</DropdownMenuShortcut>
 					</DropdownMenuItem>
-					<DropdownMenuItem
-						onClick={() => {
-							router.push("/panel");
-						}}
-					>
-						Panel
-						<DropdownMenuShortcut>
-							<Home size={16} />
-						</DropdownMenuShortcut>
-					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={() => signOutHandler()}>
-					Cerrar Sesión
+					Salir
 					<DropdownMenuShortcut>
 						<LogOut size={16} />
 					</DropdownMenuShortcut>

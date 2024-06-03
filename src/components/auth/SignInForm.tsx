@@ -34,14 +34,17 @@ export function SignInForm() {
 		setLoading(true);
 
 		const response = await signIn("credentials", {
+			redirect: false,
 			callbackUrl: "/panel",
 			...data
 		});
 
-		if (response)
+		if (response) {
+			console.log("RESPONSE", response);
 			if (response.ok) {
 				router.push("/panel");
 			}
+		}
 		setLoading(false);
 	};
 
