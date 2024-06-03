@@ -36,12 +36,22 @@ model Items {
   user        User       @relation("ItemToUser", fields: [userId], references: [id])
   userId      String     @db.VarChar(191)
   discount    Discount[] @relation("ItemToDiscount")
+  brandId     String     @db.VarChar(191)
+  brand       Brand      @relation(fields: [brandId], references: [id])
 }
 
 enum ItemType {
   FOOD
   DRINK
   OTHER
+}
+
+model Brand {
+  id        String   @id @default(cuid()) @db.VarChar(191)
+  name      String   @db.VarChar(191)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items     Items[]
 }
 
 model Discount {

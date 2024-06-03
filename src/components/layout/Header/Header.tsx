@@ -16,33 +16,21 @@ import { UserIcon } from "./UserIcon";
 
 export default function Header() {
 	const pathName = usePathname();
-	if (pathName.includes("dashboard")) {
+	if (pathName.includes("panel")) {
 		return null;
 	}
 	return (
 		<header className="container flex items-center justify-between px-4 h-14 ">
 			<div className="hidden space-x-2 md:flex">
+				<Link className="flex items-center space-x-2" href="/">
+					<span className={"font-bold text-lg tracking-wider hover:text-primary"}>Botillería La Tía</span>
+				</Link>
 				<nav className="hidden gap-4 md:flex lg:gap-6">
 					<NavigationMenu>
 						<NavigationMenuList>
 							<NavigationMenuItem>
 								<Link href="/panel" className={navigationMenuTriggerStyle()}>
 									Panel
-								</Link>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<Link href="/panel/products" className={navigationMenuTriggerStyle()}>
-									Productos
-								</Link>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<Link href="/panel/sales" className={navigationMenuTriggerStyle()}>
-									Ventas
-								</Link>
-							</NavigationMenuItem>
-							<NavigationMenuItem>
-								<Link href="/panel/settings" className={navigationMenuTriggerStyle()}>
-									Ajustes
 								</Link>
 							</NavigationMenuItem>
 						</NavigationMenuList>
@@ -61,28 +49,13 @@ export default function Header() {
 						<SheetPrimitive.Close asChild>
 							<Link className="flex items-center space-x-2" href="/">
 								<span className={"font-bold text-lg tracking-wider hover:text-primary"}>
-									Panel de Administración
+									Botillería La Tía
 								</span>
 							</Link>
 						</SheetPrimitive.Close>
 						<SheetPrimitive.Close asChild>
 							<Link href="/panel" className={navigationMenuTriggerStyle()}>
 								Panel
-							</Link>
-						</SheetPrimitive.Close>
-						<SheetPrimitive.Close asChild>
-							<Link href="/panel/products" className={navigationMenuTriggerStyle()}>
-								Productos
-							</Link>
-						</SheetPrimitive.Close>
-						<SheetPrimitive.Close asChild>
-							<Link href="/panel/sales" className={navigationMenuTriggerStyle()}>
-								Ventas
-							</Link>
-						</SheetPrimitive.Close>
-						<SheetPrimitive.Close asChild>
-							<Link href="/panel/settings" className={navigationMenuTriggerStyle()}>
-								Ajustes
 							</Link>
 						</SheetPrimitive.Close>
 					</nav>
