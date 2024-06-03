@@ -3,11 +3,11 @@
 import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback } from "react";
 import { buttonVariants } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 
 type NavLink = {
 	title: string;

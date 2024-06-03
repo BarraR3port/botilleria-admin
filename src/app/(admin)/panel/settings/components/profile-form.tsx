@@ -17,24 +17,24 @@ const profileFormSchema = z.object({
 	username: z
 		.string()
 		.min(2, {
-			message: "Username must be at least 2 characters.",
+			message: "Username must be at least 2 characters."
 		})
 		.max(30, {
-			message: "Username must not be longer than 30 characters.",
+			message: "Username must not be longer than 30 characters."
 		}),
 	email: z
 		.string({
-			required_error: "Please select an email to display.",
+			required_error: "Please select an email to display."
 		})
 		.email(),
 	bio: z.string().max(160).min(4),
 	urls: z
 		.array(
 			z.object({
-				value: z.string().url({ message: "Please enter a valid URL." }),
-			}),
+				value: z.string().url({ message: "Please enter a valid URL." })
+			})
 		)
-		.optional(),
+		.optional()
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -42,19 +42,19 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
 	bio: "I own a computer.",
-	urls: [{ value: "https://shadcn.com" }, { value: "http://twitter.com/shadcn" }],
+	urls: [{ value: "https://shadcn.com" }, { value: "http://twitter.com/shadcn" }]
 };
 
 export function ProfileForm() {
 	const form = useForm<ProfileFormValues>({
 		resolver: zodResolver(profileFormSchema),
 		defaultValues,
-		mode: "onChange",
+		mode: "onChange"
 	});
 
 	const { fields, append } = useFieldArray({
 		name: "urls",
-		control: form.control,
+		control: form.control
 	});
 
 	function onSubmit(data: ProfileFormValues) {
@@ -64,7 +64,7 @@ export function ProfileForm() {
 				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
 				</pre>
-			),
+			)
 		});
 	}
 

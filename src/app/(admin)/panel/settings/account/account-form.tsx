@@ -18,17 +18,17 @@ const accountFormSchema = z.object({
 	name: z
 		.string()
 		.min(2, {
-			message: "Name must be at least 2 characters.",
+			message: "Name must be at least 2 characters."
 		})
 		.max(30, {
-			message: "Name must not be longer than 30 characters.",
+			message: "Name must not be longer than 30 characters."
 		}),
 	dob: z.date({
-		required_error: "A date of birth is required.",
+		required_error: "A date of birth is required."
 	}),
 	language: z.string({
-		required_error: "Please select a language.",
-	}),
+		required_error: "Please select a language."
+	})
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
@@ -42,7 +42,7 @@ const defaultValues: Partial<AccountFormValues> = {
 export function AccountForm() {
 	const form = useForm<AccountFormValues>({
 		resolver: zodResolver(accountFormSchema),
-		defaultValues,
+		defaultValues
 	});
 
 	function onSubmit(data: AccountFormValues) {
@@ -52,7 +52,7 @@ export function AccountForm() {
 				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
 				</pre>
-			),
+			)
 		});
 	}
 
@@ -88,7 +88,7 @@ export function AccountForm() {
 											variant={"outline"}
 											className={cn(
 												"w-[240px] pl-3 text-left font-normal",
-												!field.value && "text-muted-foreground",
+												!field.value && "text-muted-foreground"
 											)}
 										>
 											{field.value ? format(field.value, "PPP") : <span>Pick a date</span>}

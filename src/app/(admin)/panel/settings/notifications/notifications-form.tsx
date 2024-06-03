@@ -14,13 +14,13 @@ import { toast } from "@/components/ui/use-toast";
 
 const notificationsFormSchema = z.object({
 	type: z.enum(["all", "mentions", "none"], {
-		required_error: "You need to select a notification type.",
+		required_error: "You need to select a notification type."
 	}),
 	mobile: z.boolean().default(false).optional(),
 	communication_emails: z.boolean().default(false).optional(),
 	social_emails: z.boolean().default(false).optional(),
 	marketing_emails: z.boolean().default(false).optional(),
-	security_emails: z.boolean(),
+	security_emails: z.boolean()
 });
 
 type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
@@ -30,13 +30,13 @@ const defaultValues: Partial<NotificationsFormValues> = {
 	communication_emails: false,
 	marketing_emails: false,
 	social_emails: true,
-	security_emails: true,
+	security_emails: true
 };
 
 export function NotificationsForm() {
 	const form = useForm<NotificationsFormValues>({
 		resolver: zodResolver(notificationsFormSchema),
-		defaultValues,
+		defaultValues
 	});
 
 	function onSubmit(data: NotificationsFormValues) {
@@ -46,7 +46,7 @@ export function NotificationsForm() {
 				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 					<code className="text-white">{JSON.stringify(data, null, 2)}</code>
 				</pre>
-			),
+			)
 		});
 	}
 
