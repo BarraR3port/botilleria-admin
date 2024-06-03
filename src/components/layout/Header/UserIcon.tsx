@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -12,8 +13,8 @@ import {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { useAppStore } from "@/store/AppStore";
 import { History, Home, LogOut, Settings } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -22,7 +23,8 @@ type UserIconProps = {
 };
 
 export function UserIcon({ navBar }: UserIconProps) {
-	const { signOut, user } = useAppStore();
+	const { data } = useSession();
+	console.log("Session", data);
 	const router = useRouter();
 	const pathName = usePathname();
 
@@ -30,7 +32,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 		signOut();
 	};
 
-	if (!user) {
+	if (!data?.user) {
 		return (
 			<div className="flex space-x-2 ">
 				{pathName !== "/signIn" && (
@@ -49,15 +51,15 @@ export function UserIcon({ navBar }: UserIconProps) {
 					<Button variant="ghost" className="relative rounded-full w-9 h-9">
 						<Avatar className="w-9 h-9">
 							<AvatarFallback>
-								{user.name?.[0]?.toUpperCase()}
-								{user.lastName?.[0]?.toUpperCase()}
+								{data?.user.name?.[0]?.toUpperCase()}
+								{data?.user.lastName?.[0]?.toUpperCase()}
 							</AvatarFallback>
 						</Avatar>
 					</Button>
 					{navBar && (
 						<div className="flex flex-col space-y-1">
 							<p className="flex text-sm font-medium leading-none">
-								{user?.name} {user?.lastName}
+								{data?.user?.name} {data?.user?.lastName}
 							</p>
 						</div>
 					)}
@@ -69,7 +71,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 						<DropdownMenuLabel className="font-normal ">
 							<div className="flex flex-col space-y-1">
 								<p className="text-sm font-medium leading-none xs:flex">
-									{user?.name} {user?.lastName}
+									{data?.user?.name} {data?.user?.lastName}
 								</p>
 							</div>
 						</DropdownMenuLabel>
@@ -79,7 +81,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {
-							router.push("/dashboard/package/");
+							router.push("/panel");
 						}}
 					>
 						Panel
@@ -89,7 +91,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => {
-							router.push("/dashboard/settings/");
+							router.push("/panel/settings");
 						}}
 					>
 						Ajustes
@@ -99,7 +101,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => {
-							router.push("/");
+							router.push("/panel");
 						}}
 					>
 						Panel

@@ -11,14 +11,13 @@ import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { UserAuthError } from "@/objects";
-import { useAppStore } from "@/store/AppStore";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 
 export function SignUpForm() {
-	const { assignUserDetails } = useAppStore();
 	const [passwordHidden, setPasswordHidden] = useState(false);
 	const [loading, setLoading] = useState(false);
 
@@ -63,8 +62,14 @@ export function SignUpForm() {
 			return false;
 		}
 
-		assignUserDetails(response);
-		router.push("/");
+		const signInResponse = await signIn("credentials", {
+			callbackUrl: "/panel",
+			...data
+		});
+		if (signInResponse)
+			if (signInResponse.ok) {
+				router.push("/panel");
+			}
 		setLoading(false);
 	};
 

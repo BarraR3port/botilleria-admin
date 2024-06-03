@@ -1,5 +1,3 @@
-import type { User } from "@prisma/client";
-
 export type BackendToken = {
 	token: string;
 	expireAt: number;
@@ -28,3 +26,14 @@ export type UserErrorResponse = {
 };
 
 export type UserResponse = UserErrorResponse | "" | undefined | true;
+
+export interface User {
+	id: string;
+	email: string;
+	name: string;
+	lastName: string;
+	createdAt: Date;
+	updatedAt: Date;
+	rol: "ADMIN" | "USER";
+	emailVerified: Date | null;
+}

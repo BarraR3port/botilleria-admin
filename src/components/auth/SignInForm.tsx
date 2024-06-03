@@ -2,24 +2,20 @@
 
 import { type SubmitHandler, useForm } from "react-hook-form";
 
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { UserAuthError } from "@/objects";
 import { SignInFormSchema, type SignInFromType } from "@/schemas/authSchema";
-import { useAppStore } from "@/store/AppStore";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Separator } from "../ui/separator";
-import { toast } from "../ui/use-toast";
 
 export function SignInForm() {
 	const [loading, setLoading] = useState(false);
-	const { assignUserDetails } = useAppStore();
 
 	const signInForm = useForm<SignInFromType>({
 		resolver: yupResolver(SignInFormSchema),
@@ -37,27 +33,15 @@ export function SignInForm() {
 	const onSubmit: SubmitHandler<SignInFromType> = async data => {
 		setLoading(true);
 
-		const response = await axios
-			.post("/api/auth/signIn", data)
-			.catch(error => {
-				return error.response.data;
-			})
-			.then(response => response.data);
+		const response = await signIn("credentials", {
+			callbackUrl: "/panel",
+			...data
+		});
 
-		if (typeof response === "object" && "errors" in response) {
-			response.errors.forEach((error: UserAuthError) => {
-				toast({
-					title: error.message,
-					variant: "destructive"
-				});
-			});
-			setLoading(false);
-			return false;
-		}
-
-		assignUserDetails(response);
-
-		router.push("/");
+		if (response)
+			if (response.ok) {
+				router.push("/panel");
+			}
 		setLoading(false);
 	};
 

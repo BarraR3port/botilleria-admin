@@ -1,21 +1,18 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-
 import { Button } from "@/components/ui/button";
-import * as SheetPrimitive from "@radix-ui/react-dialog";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuList,
 	navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
-import { MenuIcon } from "lucide-react";
-import Image from "next/image";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { UserIcon } from "./UserIcon";
+import * as SheetPrimitive from "@radix-ui/react-dialog";
+import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserIcon } from "./UserIcon";
 
 export default function Header() {
 	const pathName = usePathname();
@@ -29,22 +26,22 @@ export default function Header() {
 					<NavigationMenu>
 						<NavigationMenuList>
 							<NavigationMenuItem>
-								<Link href="/" className={navigationMenuTriggerStyle()}>
+								<Link href="/panel/" className={navigationMenuTriggerStyle()}>
 									Panel
 								</Link>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
-								<Link href="/products" className={navigationMenuTriggerStyle()}>
+								<Link href="/panel/products" className={navigationMenuTriggerStyle()}>
 									Productos
 								</Link>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
-								<Link href="/sales" className={navigationMenuTriggerStyle()}>
+								<Link href="/panel/sales" className={navigationMenuTriggerStyle()}>
 									Ventas
 								</Link>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
-								<Link href="/settings" className={navigationMenuTriggerStyle()}>
+								<Link href="/panel/settings" className={navigationMenuTriggerStyle()}>
 									Ajustes
 								</Link>
 							</NavigationMenuItem>
@@ -69,22 +66,22 @@ export default function Header() {
 							</Link>
 						</SheetPrimitive.Close>
 						<SheetPrimitive.Close asChild>
-							<Link href="/" className={navigationMenuTriggerStyle()}>
+							<Link href="/panel" className={navigationMenuTriggerStyle()}>
 								Panel
 							</Link>
 						</SheetPrimitive.Close>
 						<SheetPrimitive.Close asChild>
-							<Link href="/products" className={navigationMenuTriggerStyle()}>
+							<Link href="/panel/products" className={navigationMenuTriggerStyle()}>
 								Productos
 							</Link>
 						</SheetPrimitive.Close>
 						<SheetPrimitive.Close asChild>
-							<Link href="/sales" className={navigationMenuTriggerStyle()}>
+							<Link href="/panel/sales" className={navigationMenuTriggerStyle()}>
 								Ventas
 							</Link>
 						</SheetPrimitive.Close>
 						<SheetPrimitive.Close asChild>
-							<Link href="/settings" className={navigationMenuTriggerStyle()}>
+							<Link href="/panel/settings" className={navigationMenuTriggerStyle()}>
 								Ajustes
 							</Link>
 						</SheetPrimitive.Close>
