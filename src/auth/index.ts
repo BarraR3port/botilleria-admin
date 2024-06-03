@@ -1,6 +1,7 @@
 import axios from "axios";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { NextResponse } from "next/server";
 
 class InvalidLoginError extends CredentialsSignin {
 	code = "Invalid identifier or password";
@@ -66,5 +67,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			} as any;
 			return session;
 		}
-	}
+	},
+	trustHost: true
 });

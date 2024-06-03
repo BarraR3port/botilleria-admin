@@ -26,8 +26,6 @@ export function SignInForm() {
 		reValidateMode: "onChange"
 	});
 
-	const router = useRouter();
-
 	const [passwordHidden, setPasswordHidden] = useState(false);
 
 	const onSubmit: SubmitHandler<SignInFromType> = async data => {
@@ -40,9 +38,9 @@ export function SignInForm() {
 		});
 
 		if (response) {
-			console.log("RESPONSE", response);
-			if (response.ok) {
-				router.push("/panel");
+			console.log("RESPONSE", response, response.ok, response.url);
+			if (response.ok && response.url) {
+				window.location.href = response.url;
 			}
 		}
 		setLoading(false);

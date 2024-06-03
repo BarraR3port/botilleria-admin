@@ -29,6 +29,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 
 	const signOutHandler = () => {
 		signOut();
+		router.refresh();
 	};
 
 	if (!data?.user) {
