@@ -2,13 +2,13 @@
 
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SignInFormSchema, type SignInFromType } from "@/schemas/authSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
