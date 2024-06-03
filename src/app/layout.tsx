@@ -6,6 +6,8 @@ import { TailwindIndicator } from "@/components/ui/tailwindcss-indicator";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/providers/AuthProvider";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/Header/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +28,13 @@ export default function RootLayout({
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
 					<TooltipProvider>
 						<Toaster />
-						<AuthProvider>{children}</AuthProvider>
+						<div className="flex flex-col min-h-[100dvh]">
+							<Header />
+							<AuthProvider>
+								<div className="min-h-[calc(100dvh-6rem)]">{children}</div>
+							</AuthProvider>
+							<Footer />
+						</div>
 						<TailwindIndicator />
 					</TooltipProvider>
 				</ThemeProvider>
