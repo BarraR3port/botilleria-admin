@@ -60,7 +60,7 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 					brandId: "",
 					type: types[0].value as ProductType,
 					available: true,
-					barcode: "7804620835492"
+					barcode: "100000000000"
 				}
 	});
 
@@ -347,7 +347,13 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 									<FormItem>
 										<FormLabel>Código de Barras</FormLabel>
 										<div className="space-y-2">
-											<Barcode value={field.value} format="EAN13" width={2} />
+											<Barcode
+												value={field.value}
+												format="EAN13"
+												width={2}
+												height={50}
+												fontSize={15}
+											/>
 											<>
 												<FormControl>
 													<Input
