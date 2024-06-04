@@ -62,8 +62,8 @@ export default function CellAction({ product }: CellActionProps) {
 				<Button variant="ghost" onClick={edit}>
 					<Edit className="h-4 w-4 hover:cursor-pointer" />
 				</Button>
-				<Button variant="destructive" onClick={() => setOpen(true)}>
-					<Trash className="h-4 w-4 hover:cursor-pointer" />
+				<Button variant="ghost" onClick={() => setOpen(true)}>
+					<Trash className="h-4 w-4 hover:cursor-pointer text-red-500" />
 				</Button>
 			</div>
 		</>

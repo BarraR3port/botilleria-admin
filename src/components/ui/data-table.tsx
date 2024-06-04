@@ -7,22 +7,32 @@ import {
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
+	getSortedRowModel,
 	useReactTable
 } from "@tanstack/react-table";
 
 import { Button } from "@ui/button";
 import { Input } from "@ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/table";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./select";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem } from "./form";
+import { SelectGroup } from "@radix-ui/react-select";
+import { DataTablePagination } from "./data-table-pagination";
 
+type SearchKey = {
+	value: string;
+	label: string;
+};
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
-	searchKey: string;
+	searchKeys: SearchKey[];
 }
 
-export function DataTable<TData, TValue>({ columns, data, searchKey }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, searchKeys }: DataTableProps<TData, TValue>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const table = useReactTable({
 		data,
@@ -31,20 +41,64 @@ export function DataTable<TData, TValue>({ columns, data, searchKey }: DataTable
 		getPaginationRowModel: getPaginationRowModel(),
 		onColumnFiltersChange: setColumnFilters,
 		getFilteredRowModel: getFilteredRowModel(),
+		getSortedRowModel: getSortedRowModel(),
 		state: {
 			columnFilters
 		}
 	});
 
+	const form = useForm<{ searchKey: string }>({
+		defaultValues: {
+			searchKey: searchKeys[0].value
+		}
+	});
+
 	return (
 		<div>
-			<div className="flex items-center py-4">
+			<div className="flex items-center py-4 gap-2">
 				<Input
 					placeholder="Buscar"
-					value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-					onChange={event => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
+					value={(table.getColumn(form.getValues("searchKey"))?.getFilterValue() as string) ?? ""}
+					onChange={event => table.getColumn(form.getValues("searchKey"))?.setFilterValue(event.target.value)}
 					className="max-w-sm"
 				/>
+				<Form {...form}>
+					<FormField
+						control={form.control}
+						name="searchKey"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Select
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectGroup>
+													<SelectValue
+														defaultValue={field.value}
+														placeholder="Selecciona un tipo de producto"
+													/>
+												</SelectGroup>
+												<SelectContent>
+													{searchKeys.map(key => {
+														return (
+															<SelectItem key={key.value} value={key.value}>
+																{key.label}
+															</SelectItem>
+														);
+													})}
+												</SelectContent>
+											</SelectTrigger>
+										</FormControl>
+									</Select>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+				</Form>
 			</div>
 			<div className="rounded-md border">
 				<Table>
@@ -84,19 +138,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey }: DataTable
 					</TableBody>
 				</Table>
 			</div>
-			<div className="flex items-center justify-end space-x-2 py-4">
-				<Button
-					variant="outline"
-					size="sm"
-					onClick={() => table.previousPage()}
-					disabled={!table.getCanPreviousPage()}
-				>
-					<ChevronLeft className="w-4 h-4" />
-				</Button>
-				<Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-					<ChevronRight className="w-4 h-4" />
-				</Button>
-			</div>
+			<DataTablePagination table={table} />
 		</div>
 	);
 }

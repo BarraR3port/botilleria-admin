@@ -12,7 +12,7 @@ import { BrandFormSchema, type BrandFormType } from "@/schemas/BrandSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand } from "@prisma/client";
 import axios from "axios";
-import { Plus, Save, Trash } from "lucide-react";
+import { Plus, Save, Tag, Trash } from "lucide-react";
 import type { Session } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -115,17 +115,6 @@ export default function ProductForm({ brand, session }: BrandProps) {
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
 			<div className="flex items-center justify-between">
 				<Heading title={title} />
-				{brand && (
-					<Button
-						variant="destructive"
-						size={"sm"}
-						onClick={() => {
-							setOpen(true);
-						}}
-					>
-						<Trash className="h-4 w-4" />
-					</Button>
-				)}
 			</div>
 			<Separator />
 			<Form {...form}>

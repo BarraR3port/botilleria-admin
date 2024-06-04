@@ -22,10 +22,10 @@ export default async function Ventas() {
 
 	const formattedProducts: Column[] = products.map(product => {
 		return {
-			id: product.id,
+			id: product.id.toString(),
 			name: product.name,
 			price: priceFormatter.format(product.sellPrice),
-			available: product.available,
+			available: product.available ? "Si" : "No",
 			brandName: product.brand.name,
 			stock: product.stock,
 			weightOrVolume: product.weightOrVolume.toString(),
@@ -34,6 +34,7 @@ export default async function Ventas() {
 			})
 		};
 	});
+
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
