@@ -27,6 +27,7 @@ export default async function Ventas() {
 			price: priceFormatter.format(product.sellPrice),
 			available: product.available ? "Si" : "No",
 			brandName: product.brand.name,
+			barcode: product.barcode,
 			stock: product.stock,
 			weightOrVolume: product.weightOrVolume.toString(),
 			createdAt: format(product.createdAt, "dd MMMM yy HH:mm", {

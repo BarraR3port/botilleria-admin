@@ -4,12 +4,14 @@ import type { ColumnDef } from "@tanstack/react-table";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
 import { Checkbox } from "@/components/ui/checkbox";
+import Barcode from "react-barcode";
 
 export type Column = {
 	id: string;
 	name: string;
 	price: string;
 	stock: number;
+	barcode: string;
 	brandName: string;
 	weightOrVolume: string;
 	available: string;
@@ -70,6 +72,11 @@ export const columns: ColumnDef<Column>[] = [
 	{
 		accessorKey: "createdAt",
 		header: "Creado"
+	},
+	{
+		accessorKey: "barcode",
+		header: "Código de Barra",
+		cell: ({ row }) => <Barcode value={row.original.barcode} format="EAN13" width={2} height={50} fontSize={15} />
 	},
 	{
 		id: "actions",
