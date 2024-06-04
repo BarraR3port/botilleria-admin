@@ -1,7 +1,8 @@
 import axios from "axios";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
 
 class InvalidLoginError extends CredentialsSignin {
 	code = "Invalid identifier or password";
@@ -70,3 +71,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	},
 	trustHost: true
 });
+
+export function getAuth(req: Request): string {
+	console.log("|| req.headers", req.headers);
+	const authHeader = req.headers.get("Authorization");
+	const token = authHeader?.split(" ")[1];
+	if (!token) {
+		throw new Error("No está autorizado");
+	}
+
+	try {
+		const decoded: string | jwt.JwtPayload = jwt.verify(token, process.env.JWT_SECRET as string);
+		return (decoded as jwt.JwtPayload).id;
+	} catch (_error) {
+		throw new Error("Token inválido o expirado");
+	}
+}

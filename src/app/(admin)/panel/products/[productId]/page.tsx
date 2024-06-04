@@ -1,20 +1,23 @@
+import { auth } from "@/auth";
 import ProductForm from "@/forms/product/ProductForm";
 import prisma from "@/lib/prismadb";
-import { ProductType } from "@prisma/client";
 import React from "react";
 
-export default async function Page({
+export default async function Product({
 	params
 }: {
 	params: {
 		productId: number;
-		storeId: string;
 	};
 }) {
+	const session = await auth();
+
+	if (!session) return { redirect: { destination: "/signIn", permanent: false } };
+
 	const product = await prisma.product
 		.findUnique({
 			where: {
-				id: params.productId || undefined
+				id: Number(params.productId) || undefined
 			},
 			include: {
 				discounts: true,
@@ -32,7 +35,7 @@ export default async function Page({
 	return (
 		<div className="flex-col">
 			<div className="flex-1 space-y-4 p-5 pt-6">
-				<ProductForm product={product} brands={brands} types={PRODUCT_TYPES} />
+				<ProductForm product={product} brands={brands} types={PRODUCT_TYPES} session={session} />
 			</div>
 		</div>
 	);

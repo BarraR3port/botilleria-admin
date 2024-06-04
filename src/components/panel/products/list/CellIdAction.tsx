@@ -11,7 +11,7 @@ interface CellActionProps {
 
 export default function CellIdAction({ product }: CellActionProps) {
 	function onCopy() {
-		navigator.clipboard.writeText(product.id);
+		navigator.clipboard.writeText(`${product.id}`);
 	}
 
 	return (
@@ -19,7 +19,7 @@ export default function CellIdAction({ product }: CellActionProps) {
 			<DropdownMenuTrigger asChild>
 				<Button variant="ghost" className="p-0 m-0">
 					<span className="sr-only">Abrir menu</span>
-					{product.id.split("-")[0]}
+					{product.id}
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="min-w-4">

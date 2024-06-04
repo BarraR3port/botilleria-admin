@@ -9,26 +9,32 @@ import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Column } from "./Column";
+import type { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
 interface CellActionProps {
 	product: Column;
 }
 
 export default function CellAction({ product }: CellActionProps) {
+	const { data: session } = useSession();
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const router = useRouter();
-	const params = useParams();
 	const { toast } = useToast();
 
 	function edit() {
-		router.push(`/${params.storeId}/products/${product.id}`);
+		router.push(`/panel/products/${product.id}`);
 	}
 
 	async function onDelete() {
 		setLoading(true);
 		try {
-			const response = await axios.delete(`/api/${params.storeId}/products/${product.id}`);
+			const response = await axios.delete(`/api/products/${product.id}`, {
+				headers: {
+					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+				}
+			});
 			if (response?.data) {
 				toast({
 					title: "Producto eliminado correctamente",

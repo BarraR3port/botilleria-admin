@@ -36,4 +36,5 @@ export interface User {
 	updatedAt: Date;
 	rol: "ADMIN" | "USER";
 	emailVerified: Date | null;
+	backendTokens: BackendTokens;
 }

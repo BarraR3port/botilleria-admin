@@ -13,15 +13,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
+import type { Session } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface BrandProps {
 	brand: Brand | null;
+	session: Session;
 }
 
-export default function ProductForm({ brand }: BrandProps) {
+export default function ProductForm({ brand, session }: BrandProps) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { toast } = useToast();
@@ -50,15 +52,23 @@ export default function ProductForm({ brand }: BrandProps) {
 		setLoading(true);
 		try {
 			const response = brand
-				? await axios.patch(`/api/products/brands/${params.brandId}`, data)
-				: await axios.post("/api/products/brand", data);
+				? await axios.patch(`/api/products/brands/${params.brandId}`, data, {
+						headers: {
+							Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
+						}
+					})
+				: await axios.post("/api/products/brands", data, {
+						headers: {
+							Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
+						}
+					});
 
 			if (response?.data) {
 				toast({
 					title: toastDescription,
 					variant: "success"
 				});
-				router.replace("/products");
+				router.replace("/panel/products/brands");
 				router.refresh();
 			}
 		} catch (error) {
@@ -75,13 +85,17 @@ export default function ProductForm({ brand }: BrandProps) {
 	async function onDelete() {
 		setLoading(true);
 		try {
-			const response = await axios.delete(`/api/products/brands/${params.brandId}`);
+			const response = await axios.delete(`/api/products/brands/${params.brandId}`, {
+				headers: {
+					Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
+				}
+			});
 			if (response?.data) {
 				toast({
 					title: "Marca eliminada correctamente",
 					variant: "success"
 				});
-				router.replace("/products");
+				router.replace("/products/brands");
 			}
 		} catch (error) {
 			console.error(error);

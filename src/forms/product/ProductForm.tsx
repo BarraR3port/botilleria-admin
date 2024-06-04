@@ -15,6 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand, Product, ProductType } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
+import type { Session } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -26,9 +27,10 @@ interface FormProps {
 		value: string;
 		label: string;
 	}[];
+	session: Session;
 }
 
-export default function ProductForm({ product, brands, types }: FormProps) {
+export default function ProductForm({ product, brands, types, session }: FormProps) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { toast } = useToast();
@@ -65,15 +67,24 @@ export default function ProductForm({ product, brands, types }: FormProps) {
 		setLoading(true);
 		try {
 			const response = product
-				? await axios.patch(`/api/products/${params.productId}`, data)
-				: await axios.post("/api/products", data);
+				? await axios.patch(`/api/products/${params.productId}`, data, {
+						headers: {
+							Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+						}
+					})
+				: await axios.post("/api/products", data, {
+						headers: {
+							Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+						}
+					});
 
 			if (response?.data) {
 				toast({
 					title: toastDescription,
-					variant: "success"
+					variant: "success",
+					duration: 1500
 				});
-				router.replace("/products");
+				router.replace("/panel/products");
 				router.refresh();
 			}
 		} catch (error) {
@@ -192,7 +203,7 @@ export default function ProductForm({ product, brands, types }: FormProps) {
 								name="costPrice"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Precio de Venta</FormLabel>
+										<FormLabel>Precio de Coste</FormLabel>
 										<FormControl>
 											<Input
 												autoComplete="off"

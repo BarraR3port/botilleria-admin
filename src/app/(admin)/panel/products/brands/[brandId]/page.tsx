@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import BrandForm from "@/forms/product/brand/BrandForm";
 import prisma from "@/lib/prismadb";
 
@@ -8,6 +9,8 @@ export default async function Page({
 		brandId: string;
 	};
 }) {
+	const session = await auth();
+	if (!session) return { redirect: { destination: "/signIn", permanent: false } };
 	const brand = await prisma.brand
 		.findUnique({
 			where: {
@@ -19,7 +22,7 @@ export default async function Page({
 	return (
 		<div className="flex-col">
 			<div className="flex-1 space-y-4 p-5 pt-6">
-				<BrandForm brand={brand} />
+				<BrandForm brand={brand} session={session} />
 			</div>
 		</div>
 	);
