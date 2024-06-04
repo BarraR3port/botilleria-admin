@@ -55,7 +55,8 @@ export function SignUpForm() {
 			response.errors.forEach((error: UserAuthError) => {
 				toast({
 					title: error.message,
-					variant: "destructive"
+					variant: "destructive",
+					duration: 1500
 				});
 			});
 			setLoading(false);

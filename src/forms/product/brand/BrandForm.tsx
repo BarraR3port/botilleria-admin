@@ -66,7 +66,8 @@ export default function ProductForm({ brand, session }: BrandProps) {
 			if (response?.data) {
 				toast({
 					title: toastDescription,
-					variant: "success"
+					variant: "success",
+					duration: 1500
 				});
 				router.replace("/panel/products/brands");
 				router.refresh();
@@ -75,7 +76,8 @@ export default function ProductForm({ brand, session }: BrandProps) {
 			console.error(error);
 			toast({
 				title: "Ocurrió un error al guardar los ajustes",
-				variant: "error"
+				variant: "error",
+				duration: 1500
 			});
 		} finally {
 			setLoading(false);
@@ -93,7 +95,8 @@ export default function ProductForm({ brand, session }: BrandProps) {
 			if (response?.data) {
 				toast({
 					title: "Marca eliminada correctamente",
-					variant: "success"
+					variant: "success",
+					duration: 1500
 				});
 				router.replace("/products/brands");
 			}
@@ -101,7 +104,8 @@ export default function ProductForm({ brand, session }: BrandProps) {
 			console.error(error);
 			toast({
 				title: "Ocurrió un error al eliminar la producto de tu tienda",
-				variant: "error"
+				variant: "error",
+				duration: 1500
 			});
 		} finally {
 			setLoading(false);

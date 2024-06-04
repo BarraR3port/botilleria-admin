@@ -91,7 +91,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 			console.error(error);
 			toast({
 				title: "Ocurrió un error al guardar los ajustes",
-				variant: "error"
+				variant: "error",
+				duration: 1500
 			});
 		} finally {
 			setLoading(false);
@@ -105,7 +106,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 			if (response?.data) {
 				toast({
 					title: "Producto eliminada correctamente",
-					variant: "success"
+					variant: "success",
+					duration: 1500
 				});
 				router.replace("/products");
 			}
@@ -113,7 +115,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 			console.error(error);
 			toast({
 				title: "Ocurrió un error al eliminar la producto de tu tienda",
-				variant: "error"
+				variant: "error",
+				duration: 1500
 			});
 		} finally {
 			setLoading(false);

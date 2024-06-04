@@ -37,7 +37,8 @@ export default function CellAction({ brand }: CellActionProps) {
 			if (response?.data) {
 				toast({
 					title: "Producto eliminado correctamente",
-					variant: "success"
+					variant: "success",
+					duration: 1500
 				});
 				router.refresh();
 			}
@@ -45,7 +46,8 @@ export default function CellAction({ brand }: CellActionProps) {
 			console.error(error);
 			toast({
 				title: "Ocurrió un error al eliminar el producto de tu tienda",
-				variant: "error"
+				variant: "error",
+				duration: 1500
 			});
 		} finally {
 			setLoading(false);
