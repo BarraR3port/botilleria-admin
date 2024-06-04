@@ -1,5 +1,5 @@
 import type { BackendTokens } from "@/objects";
-import { jwtVerify, SignJWT } from "jose";
+import { SignJWT, jwtVerify } from "jose";
 
 export const jwtConfig = {
 	secret: new TextEncoder().encode(process.env.JWT_SECRET),

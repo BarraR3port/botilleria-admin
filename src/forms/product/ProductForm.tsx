@@ -18,8 +18,8 @@ import { Plus, Save, Trash } from "lucide-react";
 import type { Session } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import Barcode from "react-barcode";
+import { useForm } from "react-hook-form";
 
 interface FormProps {
 	product: Product | null;
