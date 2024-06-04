@@ -6,11 +6,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useToast } from "@ui/use-toast";
 import axios from "axios";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import type { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Column } from "./Column";
-import type { Session } from "next-auth";
-import { useSession } from "next-auth/react";
 
 interface CellActionProps {
 	product: Column;

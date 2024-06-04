@@ -1,8 +1,8 @@
 import axios from "axios";
+import jwt from "jsonwebtoken";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
 
 class InvalidLoginError extends CredentialsSignin {
 	code = "Invalid identifier or password";

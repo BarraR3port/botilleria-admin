@@ -2,8 +2,8 @@ import { Client } from "@/components/panel/products/list/Client";
 import type { Column } from "@/components/panel/products/list/Column";
 import prisma from "@/lib/prismadb";
 import { priceFormatter } from "@/lib/utils";
-import { es } from "date-fns/locale";
 import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export default async function Ventas() {
 	const products = await prisma.product.findMany({
