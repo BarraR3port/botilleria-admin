@@ -53,11 +53,12 @@ enum ProductType {
 }
 
 model Brand {
-  id        String    @id @default(cuid()) @db.VarChar(191)
-  name      String    @db.VarChar(191)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
+  id          String    @id @default(cuid()) @db.VarChar(191)
+  name        String    @db.VarChar(191)
+  description String?   @db.VarChar(256)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
 }
 
 model Discount {
