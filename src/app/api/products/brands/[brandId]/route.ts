@@ -45,7 +45,8 @@ export async function PATCH(
 			return new NextResponse("ID de la marca requerida", { status: 400 });
 		}
 
-		const userId = getAuth(req);
+		const userId = await getAuth(req);
+		console.log(userId);
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 
 		const body = await req.json();

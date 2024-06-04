@@ -14,7 +14,7 @@ export async function getAuth(req: Request): Promise<string> {
 	}
 	try {
 		const decoded = await jwtVerify(token, jwtConfig.secret);
-		return decoded.payload?._id as string;
+		return decoded.payload?.id as string;
 	} catch (_error) {
 		throw new Error("Token inválido o expirado");
 	}
@@ -23,7 +23,7 @@ export async function getAuth(req: Request): Promise<string> {
 export async function refreshSession(token: string): Promise<BackendTokens> {
 	try {
 		const decoded = await jwtVerify(token, jwtConfig.refreshSecret);
-		const userId = decoded.payload?._id;
+		const userId = decoded.payload?.id;
 
 		const accessToken = await new SignJWT({ id: userId })
 			.setProtectedHeader({ alg: "HS256" })
