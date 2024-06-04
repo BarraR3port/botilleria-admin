@@ -12,7 +12,7 @@ import { BrandFormSchema, type BrandFormType } from "@/schemas/BrandSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand } from "@prisma/client";
 import axios from "axios";
-import { Trash } from "lucide-react";
+import { Plus, Save, Trash } from "lucide-react";
 import type { Session } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -31,9 +31,7 @@ export default function ProductForm({ brand, session }: BrandProps) {
 	const router = useRouter();
 
 	const title = brand ? "Editar Marca" : "Crear Marca";
-	const description = brand ? "Edita la marca de tu tienda" : "Crea una marca para tu tienda";
 	const toastDescription = brand ? "Marca editada correctamente" : "Marca creada correctamente";
-	const actionMessage = brand ? "Guardar cambios" : "Crear";
 
 	const form = useForm<BrandFormType>({
 		resolver: yupResolver(BrandFormSchema),
@@ -51,6 +49,7 @@ export default function ProductForm({ brand, session }: BrandProps) {
 	const onSubmit = async (data: BrandFormType) => {
 		setLoading(true);
 		try {
+			console.log(session);
 			const response = brand
 				? await axios.patch(`/api/products/brands/${params.brandId}`, data, {
 						headers: {
@@ -116,7 +115,7 @@ export default function ProductForm({ brand, session }: BrandProps) {
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
 			<div className="flex items-center justify-between">
-				<Heading title={title} description={description} />
+				<Heading title={title} />
 				{brand && (
 					<Button
 						variant="destructive"
@@ -171,9 +170,25 @@ export default function ProductForm({ brand, session }: BrandProps) {
 							/>
 						</div>
 					</div>
-					<Button type="submit" variant="success" loading={loading} className="w-[200px]">
-						{actionMessage}
-					</Button>
+					<div className="flex gap-2 justify-end">
+						{brand && (
+							<Button
+								className="h-8 gap-1 "
+								variant="destructive"
+								onClick={() => {
+									setOpen(true);
+								}}
+							>
+								<Trash className="h-4 w-4" />
+								<span>Eliminar</span>
+							</Button>
+						)}
+
+						<Button className="h-8 gap-1" type="submit" variant="success" loading={loading}>
+							{brand ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+							{brand ? "Guardar" : "Crear"}
+						</Button>
+					</div>
 				</form>
 			</Form>
 		</>

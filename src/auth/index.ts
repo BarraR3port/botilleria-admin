@@ -1,8 +1,7 @@
 import axios from "axios";
-import jwt from "jsonwebtoken";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import type { NextRequest } from "next/server";
+import { refreshSession } from "./utils";
 
 class InvalidLoginError extends CredentialsSignin {
 	code = "Invalid identifier or password";
@@ -51,6 +50,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	pages: {
 		signIn: "/signIn"
 	},
+	session: {
+		strategy: "jwt"
+	},
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
@@ -58,10 +60,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				token.name = user.user.name;
 				token.lastName = user.user.lastName;
 				token.backendTokens = user.backendTokens;
+				console.log(
+					"|| Token",
+					token.backendTokens.accessToken.expireAt,
+					" Expired?: ",
+					Date.now() > token.backendTokens.accessToken.expireAt
+				);
 			}
 			return token;
 		},
 		async session({ session, token }) {
+			if (Date.now() > token.backendTokens.accessToken.expireAt) {
+				const newBackendTokens = await refreshSession(token.backendTokens.refreshToken.token);
+				token.backendTokens = newBackendTokens;
+				session.user.backendTokens = newBackendTokens;
+			}
 			session.user = {
 				...session.user,
 				...token
@@ -71,19 +84,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	},
 	trustHost: true
 });
-
-export function getAuth(req: Request): string {
-	console.log("|| req.headers", req.headers);
-	const authHeader = req.headers.get("Authorization");
-	const token = authHeader?.split(" ")[1];
-	if (!token) {
-		throw new Error("No está autorizado");
-	}
-
-	try {
-		const decoded: string | jwt.JwtPayload = jwt.verify(token, process.env.JWT_SECRET as string);
-		return (decoded as jwt.JwtPayload).id;
-	} catch (_error) {
-		throw new Error("Token inválido o expirado");
-	}
-}

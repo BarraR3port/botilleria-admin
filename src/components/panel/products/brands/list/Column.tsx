@@ -15,7 +15,7 @@ export const columns: ColumnDef<Column>[] = [
 	{
 		accessorKey: "id",
 		header: "Id",
-		cell: ({ row }) => <CellIdAction product={row.original} />
+		cell: ({ row }) => <CellIdAction value={row.original.id} />
 	},
 	{
 		accessorKey: "name",

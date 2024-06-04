@@ -63,6 +63,7 @@ export function SignInForm() {
 											id="email"
 											placeholder="email@ejemplo.com"
 											required
+											autoComplete="email"
 											type="email"
 											{...field}
 										/>

@@ -1,4 +1,4 @@
-import { getAuth } from "@/auth";
+import { getAuth } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -53,7 +53,6 @@ export async function PATCH(
 		const { name, description } = body;
 
 		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
-		if (!description) return new NextResponse("Descripción requerida", { status: 400 });
 
 		const brand = await prisma.brand.findFirst({
 			where: {
@@ -95,7 +94,7 @@ export async function DELETE(
 			return new NextResponse("ID de la marca requerida", { status: 400 });
 		}
 
-		const userId = getAuth(req);
+		const userId = await getAuth(req);
 
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 

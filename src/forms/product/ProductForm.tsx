@@ -14,11 +14,12 @@ import { ProductFormSchema, type ProductFormType } from "@/schemas/ProductSchema
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand, Product, ProductType } from "@prisma/client";
 import axios from "axios";
-import { Trash } from "lucide-react";
+import { Plus, Save, Trash } from "lucide-react";
 import type { Session } from "next-auth";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Barcode from "react-barcode";
 
 interface FormProps {
 	product: Product | null;
@@ -38,9 +39,7 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 	const router = useRouter();
 
 	const title = product ? "Editar Producto" : "Crear Producto";
-	const description = product ? "Edita la producto de tu tienda" : "Crea una producto para tu tienda";
 	const toastDescription = product ? "Producto editada correctamente" : "Producto creada correctamente";
-	const actionMessage = product ? "Guardar cambios" : "Crear";
 
 	const form = useForm<ProductFormType>({
 		resolver: yupResolver(ProductFormSchema),
@@ -48,7 +47,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 			? {
 					...product,
 					sellPrice: Number.parseFloat(String(product?.sellPrice)),
-					costPrice: Number.parseFloat(String(product?.costPrice))
+					costPrice: Number.parseFloat(String(product?.costPrice)),
+					description: product?.description || ""
 				}
 			: {
 					name: "",
@@ -59,7 +59,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 					weightOrVolume: 0,
 					brandId: "",
 					type: types[0].value as ProductType,
-					available: true
+					available: true,
+					barcode: "7804620835492"
 				}
 	});
 
@@ -126,19 +127,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 	return (
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
-			<div className="flex items-center justify-between">
-				<Heading title={title} description={description} />
-				{product && (
-					<Button
-						variant="destructive"
-						size={"sm"}
-						onClick={() => {
-							setOpen(true);
-						}}
-					>
-						<Trash className="h-4 w-4" />
-					</Button>
-				)}
+			<div className="sm:flex items-center justify-between space-y-4">
+				<Heading title={title} />
 			</div>
 			<Separator />
 			<Form {...form}>
@@ -332,27 +322,69 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 								)}
 							/>
 						</div>
-						<FormField
-							control={form.control}
-							name="description"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Descripción</FormLabel>
-									<FormControl>
-										<Textarea placeholder="Descripción del producto" {...field} />
-									</FormControl>
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+							<FormField
+								control={form.control}
+								name="description"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Descripción</FormLabel>
+										<FormControl>
+											<Textarea placeholder="Descripción del producto" {...field} />
+										</FormControl>
 
-									<FormDescription>
-										La descripción debe tener al menos 4 caracteres y no más de 1024 caracteres.
-									</FormDescription>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+										<FormDescription>
+											La descripción debe tener al menos 4 caracteres y no más de 1024 caracteres.
+										</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="barcode"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Código de Barras</FormLabel>
+										<div className="space-y-2">
+											<Barcode value={field.value} format="EAN13" width={2} />
+											<>
+												<FormControl>
+													<Input
+														className="w-[233.98px]"
+														autoComplete="off"
+														disabled={loading}
+														placeholder="00000000000000"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage />
+											</>
+										</div>
+									</FormItem>
+								)}
+							/>
+						</div>
 					</div>
-					<Button type="submit" variant="success" loading={loading} className="w-[200px]">
-						{actionMessage}
-					</Button>
+					<div className="flex gap-2 justify-end">
+						{product && (
+							<Button
+								className="h-8 gap-1 "
+								variant="destructive"
+								onClick={() => {
+									setOpen(true);
+								}}
+							>
+								<Trash className="h-4 w-4" />
+								<span>Eliminar</span>
+							</Button>
+						)}
+
+						<Button className="h-8 gap-1" type="submit" variant="success" loading={loading}>
+							{product ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+							{product ? "Guardar" : "Crear"}
+						</Button>
+					</div>
 				</form>
 			</Form>
 		</>

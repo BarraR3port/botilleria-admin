@@ -9,10 +9,11 @@ export async function POST(req: Request) {
 
 		const body = await req.json();
 
-		const { name, description, stock, sellPrice, costPrice, weightOrVolume, brandId, type, available } = body;
+		const { name, description, barcode, stock, sellPrice, costPrice, weightOrVolume, brandId, type, available } =
+			body;
 
 		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
-		if (!description) return new NextResponse("Descripción requerida", { status: 400 });
+		if (!barcode) return new NextResponse("Barcode requerido", { status: 400 });
 		if (!stock) return new NextResponse("Stock requerido", { status: 400 });
 		if (!sellPrice) return new NextResponse("Precio de venta requerido", { status: 400 });
 		if (!costPrice) return new NextResponse("Precio de costo requerido", { status: 400 });
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
 				weightOrVolume,
 				type,
 				available,
+				barcode,
 				brand: { connect: { id: brandId } },
 				user: {
 					connect: {

@@ -1,25 +1,25 @@
+"use client";
+
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@ui/button";
-import type { Column } from "./Column";
 
 interface CellActionProps {
-	product: Column;
+	value: any;
 }
 
-export default function CellIdAction({ product }: CellActionProps) {
+export default function CellIdAction({ value }: CellActionProps) {
 	function onCopy() {
-		navigator.clipboard.writeText(`${product.id}`);
+		navigator.clipboard.writeText(`${value}`);
 		toast({
-			title: "Id copiado al portapapeles",
+			title: "Copiado al portapapeles",
 			variant: "success",
 			duration: 1500
 		});
 	}
 
 	return (
-		<Button variant="ghost" className="m-x-1 m-0" onClick={onCopy}>
-			<span className="sr-only">Abrir menu</span>
-			{product.id}
+		<Button variant="ghost" className="m-0" onClick={onCopy}>
+			<span className="sr-only">Copiar al portapapeles</span>#{value}
 		</Button>
 	);
 }

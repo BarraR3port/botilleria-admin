@@ -18,7 +18,7 @@ export function Client({ brands }: ClientProps) {
 	return (
 		<>
 			<div className="flex items-center justify-between">
-				<Heading title={`Marcas (${brands.length})`} description="Marcas de la botillería" />
+				<Heading title={`Marcas (${brands.length})`} mainPath="/panel/products/brands" />
 				<Button
 					onClick={() => {
 						router.push("/panel/products/brands/new");

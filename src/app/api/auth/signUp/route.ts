@@ -1,9 +1,8 @@
+import { jwtConfig } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { hash, verify } from "argon2";
-import { sign } from "jsonwebtoken";
+import { SignJWT } from "jose";
 import { NextResponse } from "next/server";
-
-const { JWT_REFRESH_SECRET, JWT_SECRET } = process.env;
 
 export async function GET(_req: Request) {
 	try {
@@ -103,21 +102,23 @@ export async function POST(req: Request) {
 			}
 		});
 
-		if (!JWT_SECRET || !JWT_REFRESH_SECRET) {
-			return new NextResponse("Error Interno", { status: 500 });
-		}
-
-		const accessToken = sign({ id: user.id }, JWT_SECRET, { expiresIn: "12h" });
-		const refreshToken = sign({ id: user.id }, JWT_REFRESH_SECRET, {
-			expiresIn: "1w"
-		});
+		const accessToken = await new SignJWT({ id: user.id })
+			.setProtectedHeader({ alg: "HS256" })
+			.setIssuedAt()
+			.setExpirationTime("1d")
+			.sign(jwtConfig.secret);
+		const refreshToken = await new SignJWT({ id: user.id })
+			.setProtectedHeader({ alg: "HS256" })
+			.setIssuedAt()
+			.setExpirationTime("1w")
+			.sign(jwtConfig.refreshSecret);
 
 		const userResponse = {
 			user,
 			backendTokens: {
 				accessToken: {
 					token: accessToken,
-					expireAt: new Date(new Date().getTime() + 1000 * 60 * 60 * 12).getTime()
+					expireAt: new Date(new Date().getTime() + 1000 * 60 * 60 * 24).getTime()
 				},
 				refreshToken: {
 					token: refreshToken,
