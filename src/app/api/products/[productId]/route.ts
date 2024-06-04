@@ -137,7 +137,7 @@ export async function DELETE(
 
 		const oldProduct = await prisma.product.findFirst({
 			where: {
-				id: params.productId
+				id: Number(params.productId)
 			}
 		});
 
@@ -145,7 +145,7 @@ export async function DELETE(
 
 		const product = await prisma.product.delete({
 			where: {
-				id: params.productId
+				id: Number(params.productId)
 			}
 		});
 
