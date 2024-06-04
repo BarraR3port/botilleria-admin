@@ -29,7 +29,7 @@ export default async function Ventas() {
 			brandName: product.brand.name,
 			stock: product.stock,
 			weightOrVolume: product.weightOrVolume.toString(),
-			createdAt: format(product.createdAt, "dd-MMMM-yy HH:mm", {
+			createdAt: format(product.createdAt, "dd MMMM yy HH:mm", {
 				locale: es
 			})
 		};

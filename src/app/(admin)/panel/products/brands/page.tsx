@@ -16,7 +16,7 @@ export default async function Ventas() {
 			id: brand.id,
 			name: brand.name,
 			description: brand.description,
-			createdAt: format(brand.createdAt, "dd-MMMM-yy HH:mm", {
+			createdAt: format(brand.createdAt, "dd MMMM yy HH:mm", {
 				locale: es
 			})
 		};
