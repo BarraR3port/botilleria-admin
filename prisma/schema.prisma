@@ -27,7 +27,7 @@ enum RolType {
 }
 
 model Product {
-  id             String      @id @default(cuid()) @db.VarChar(191)
+  id             Int         @id @default(autoincrement())
   name           String      @db.VarChar(191)
   description    String      @db.VarChar(191)
   sellPrice      Float
@@ -35,11 +35,12 @@ model Product {
   stock          Int
   weightOrVolume Float
   type           ProductType
+  available      Boolean
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   user           User        @relation("ProductToUser", fields: [userId], references: [id])
   userId         String      @db.VarChar(191)
-  discount       Discount[]  @relation("ProductToDiscount")
+  discounts      Discount[]  @relation("ProductToDiscount")
   brandId        String      @db.VarChar(191)
   brand          Brand       @relation(fields: [brandId], references: [id])
   order          Order[]     @relation("ProductToOrder")
@@ -60,7 +61,7 @@ model Brand {
 }
 
 model Discount {
-  id          String      @id @default(cuid()) @db.VarChar(191)
+  id          Int         @id @default(autoincrement())
   name        String      @db.VarChar(191)
   description String      @db.VarChar(191)
   type        DiscoutType
@@ -76,7 +77,7 @@ enum DiscoutType {
 }
 
 model Order {
-  id         String    @id @default(cuid()) @db.VarChar(191)
+  id         Int       @id @default(autoincrement())
   total      Float
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -84,11 +85,11 @@ model Order {
   user       User      @relation(fields: [userId], references: [id])
   userId     String    @db.VarChar(191)
   provider   Provider  @relation(fields: [providerId], references: [id])
-  providerId String    @db.VarChar(191)
+  providerId Int
 }
 
 model Provider {
-  id        String   @id @default(cuid()) @db.VarChar(191)
+  id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(191)
   address   String   @db.VarChar(191)
   phone     String   @db.VarChar(191)
