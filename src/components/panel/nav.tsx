@@ -55,10 +55,10 @@ export function Nav({ links, isCollapsed, bottom }: NavProps) {
 										}),
 										"w-9 h-9",
 										linkVariant === "default" &&
-											"dark:bg-background-container-secondary dark:text-muted-foreground dark:hover:bg-background-container-secondary dark:hover:text-white"
+											"dark:bg-background-container-secondary  dark:hover:bg-background-container-secondary dark:hover:bg-background-container-secondary"
 									)}
 								>
-									<link.icon className="w-4 h-4" />
+									<link.icon className="w-4 h-4 " />
 									<span className="sr-only">{link.title}</span>
 								</Link>
 							</TooltipTrigger>
@@ -77,7 +77,7 @@ export function Nav({ links, isCollapsed, bottom }: NavProps) {
 									size: "sm"
 								}),
 								linkVariant === "default" &&
-									"dark:bg-background-container-secondary dark:text-white dark:hover:bg-background-container-secondary dark:hover:text-white",
+									"dark:bg-background-container-secondary  dark:hover:bg-background-container-secondary dark:hover:bg-background-container-secondary",
 								"justify-start"
 							)}
 						>

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Beer, DollarSign, History, Settings, Users } from "lucide-react";
+import { Beer, Box, DollarSign, History, Settings, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -88,6 +88,17 @@ export default function Panel({
 								label: "",
 								icon: DollarSign,
 								href: "/panel/sales"
+							}
+						]}
+					/>
+					<Nav
+						isCollapsed={isCollapsed}
+						links={[
+							{
+								title: "Productos",
+								label: "",
+								icon: Box,
+								href: "/panel/products"
 							}
 						]}
 					/>
