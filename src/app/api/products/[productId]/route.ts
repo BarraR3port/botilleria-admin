@@ -1,4 +1,4 @@
-import { getAuth } from "@/auth";
+import { getAuth } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
@@ -53,7 +53,7 @@ export async function PATCH(
 			return new NextResponse("ID del producto requerido", { status: 400 });
 		}
 
-		const userId = getAuth(req);
+		const userId = await getAuth(req);
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 
 		const body = await req.json();
@@ -126,7 +126,7 @@ export async function DELETE(
 			return new NextResponse("ID del producto requerido", { status: 400 });
 		}
 
-		const userId = getAuth(req);
+		const userId = await getAuth(req);
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 
 		const isUserAdmin = await prisma.user.findFirst({

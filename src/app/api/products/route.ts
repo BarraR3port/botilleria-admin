@@ -1,10 +1,10 @@
-import { auth, getAuth } from "@/auth";
+import { getAuth } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
 	try {
-		const userId = getAuth(req);
+		const userId = await getAuth(req);
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 
 		const body = await req.json();
