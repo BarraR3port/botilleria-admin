@@ -9,7 +9,7 @@
 		"lint": "biome check .",
 		"lint:fix": "biome check --apply-unsafe .",
 		"format": "biome format --write .",
-		"postinstall": "prisma generate && node -e \"if(process.platform !== 'win32') { require('child_process').execSync('npm rebuild argon2 --build-from-source', { stdio: 'inherit' }) }\""
+		"postinstall": "prisma generate && npm rebuild argon2 --build-from-source"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.4.2",
@@ -64,5 +64,7 @@
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5"
 	},
-	"trustedDependencies": ["@biomejs/biome"]
+	"trustedDependencies": [
+		"@biomejs/biome"
+	]
 }

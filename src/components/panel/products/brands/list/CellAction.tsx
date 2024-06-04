@@ -57,22 +57,14 @@ export default function CellAction({ brand }: CellActionProps) {
 	return (
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<Button variant="ghost">
-						<span className="sr-only">Abrir menu</span>
-						<MoreHorizontal className="h-4 w-4" />
-					</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent className="min-w-4">
-					<DropdownMenuItem onClick={edit}>
-						<Edit className="h-4 w-4 hover:cursor-pointer" />
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => setOpen(true)}>
-						<Trash className="h-4 w-4 hover:cursor-pointer" />
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+			<div className=" ">
+				<Button variant="ghost" onClick={edit}>
+					<Edit className="h-4 w-4 hover:cursor-pointer" />
+				</Button>
+				<Button variant="destructive" onClick={() => setOpen(true)}>
+					<Trash className="h-4 w-4 hover:cursor-pointer" />
+				</Button>
+			</div>
 		</>
 	);
 }

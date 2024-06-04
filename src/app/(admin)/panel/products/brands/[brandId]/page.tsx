@@ -20,7 +20,7 @@ export default async function Page({
 		.catch(() => null);
 
 	return (
-		<div className="flex-col">
+		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-5 pt-6">
 				<BrandForm brand={brand} session={session} />
 			</div>
