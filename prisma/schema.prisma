@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid()) @db.VarChar(191)
-  email     String   @unique @db.VarChar(191)
-  name      String   @db.VarChar(191)
-  lastName  String   @db.VarChar(191)
-  password  String   @db.VarChar(191)
-  rol       RolType  @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  lastLogin DateTime @default(now())
-  items     Items[]  @relation("ItemToUser")
+  id        String    @id @default(cuid()) @db.VarChar(191)
+  email     String    @unique @db.VarChar(191)
+  name      String    @db.VarChar(191)
+  lastName  String    @db.VarChar(191)
+  password  String    @db.VarChar(191)
+  rol       RolType   @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  lastLogin DateTime  @default(now())
+  products  Product[] @relation("ProductToUser")
+  Order     Order[]
 }
 
 enum RolType {
@@ -25,33 +26,37 @@ enum RolType {
   USER
 }
 
-model Items {
-  id          String     @id @default(cuid()) @db.VarChar(191)
-  name        String     @db.VarChar(191)
-  description String     @db.VarChar(191)
-  price       Float
-  type        ItemType
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  user        User       @relation("ItemToUser", fields: [userId], references: [id])
-  userId      String     @db.VarChar(191)
-  discount    Discount[] @relation("ItemToDiscount")
-  brandId     String     @db.VarChar(191)
-  brand       Brand      @relation(fields: [brandId], references: [id])
+model Product {
+  id             String      @id @default(cuid()) @db.VarChar(191)
+  name           String      @db.VarChar(191)
+  description    String      @db.VarChar(191)
+  sellPrice      Float
+  costPrice      Float
+  stock          Int
+  weightOrVolume Float
+  type           ProductType
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  user           User        @relation("ProductToUser", fields: [userId], references: [id])
+  userId         String      @db.VarChar(191)
+  discount       Discount[]  @relation("ProductToDiscount")
+  brandId        String      @db.VarChar(191)
+  brand          Brand       @relation(fields: [brandId], references: [id])
+  order          Order[]     @relation("ProductToOrder")
 }
 
-enum ItemType {
+enum ProductType {
   FOOD
   DRINK
   OTHER
 }
 
 model Brand {
-  id        String   @id @default(cuid()) @db.VarChar(191)
-  name      String   @db.VarChar(191)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  items     Items[]
+  id        String    @id @default(cuid()) @db.VarChar(191)
+  name      String    @db.VarChar(191)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 }
 
 model Discount {
@@ -62,10 +67,33 @@ model Discount {
   value       Float
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  items       Items[]     @relation("ItemToDiscount")
+  products    Product[]   @relation("ProductToDiscount")
 }
 
 enum DiscoutType {
   PERCENTAGE
   AMOUNT
+}
+
+model Order {
+  id         String    @id @default(cuid()) @db.VarChar(191)
+  total      Float
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  products   Product[] @relation("ProductToOrder")
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @db.VarChar(191)
+  provider   Provider  @relation(fields: [providerId], references: [id])
+  providerId String    @db.VarChar(191)
+}
+
+model Provider {
+  id        String   @id @default(cuid()) @db.VarChar(191)
+  name      String   @db.VarChar(191)
+  address   String   @db.VarChar(191)
+  phone     String   @db.VarChar(191)
+  email     String   @db.VarChar(191)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order[]
 }
