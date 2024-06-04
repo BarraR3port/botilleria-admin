@@ -49,7 +49,6 @@ export default function ProductForm({ brand, session }: BrandProps) {
 	const onSubmit = async (data: BrandFormType) => {
 		setLoading(true);
 		try {
-			console.log(session);
 			const response = brand
 				? await axios.patch(`/api/products/brands/${params.brandId}`, data, {
 						headers: {

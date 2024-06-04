@@ -46,7 +46,6 @@ export async function PATCH(
 		}
 
 		const userId = await getAuth(req);
-		console.log(userId);
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 
 		const body = await req.json();

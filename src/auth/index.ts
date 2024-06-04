@@ -60,12 +60,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				token.name = user.user.name;
 				token.lastName = user.user.lastName;
 				token.backendTokens = user.backendTokens;
-				console.log(
-					"|| Token",
-					token.backendTokens.accessToken.expireAt,
-					" Expired?: ",
-					Date.now() > token.backendTokens.accessToken.expireAt
-				);
 			}
 			return token;
 		},
