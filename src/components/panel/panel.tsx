@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Beer, Box, ChevronRightIcon, DollarSign, History, Settings, Tag, Users } from "lucide-react";
+import { Beer, Box, ChevronRightIcon, DollarSign, History, List, Plus, Settings, Tag, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -99,7 +99,7 @@ export default function Panel({
 									{
 										title: "Productos",
 										label: "",
-										icon: Box,
+										icon: List,
 										href: "/panel/products",
 										hasPrevious: true
 									},
@@ -108,6 +108,29 @@ export default function Panel({
 										label: "",
 										icon: Tag,
 										href: "/panel/products/brands",
+										hasPrevious: true,
+										subLinks: [
+											{
+												title: "Marcas",
+												label: "",
+												icon: List,
+												href: "/panel/products/brands",
+												hasPrevious: true
+											},
+											{
+												title: "Crear Marca",
+												label: "",
+												icon: Plus,
+												href: "/panel/products/brands/new",
+												hasPrevious: true
+											}
+										]
+									},
+									{
+										title: "Crear Producto",
+										label: "",
+										icon: Plus,
+										href: "/panel/products/new",
 										hasPrevious: true
 									}
 								]
@@ -116,7 +139,23 @@ export default function Panel({
 								title: "Usuarios",
 								label: "",
 								icon: Users,
-								href: "/panel/users"
+								href: "/panel/users",
+								subLinks: [
+									{
+										title: "Usuarios",
+										label: "",
+										icon: List,
+										href: "/panel/users",
+										hasPrevious: true
+									},
+									{
+										title: "Crear Usuario",
+										label: "",
+										icon: Plus,
+										href: "/panel/users/new",
+										hasPrevious: true
+									}
+								]
 							},
 							{
 								title: "Settings",

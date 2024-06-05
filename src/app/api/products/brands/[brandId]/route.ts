@@ -25,7 +25,7 @@ export async function GET(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log("[PRODUCT][BRANDS][ID][GET]", error);
+		console.log("[PRODUCTS][BRANDS][ID][GET]", error);
 		return new NextResponse("Error Interno", { status: 500 });
 	}
 }
@@ -74,7 +74,7 @@ export async function PATCH(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log("[PRODUCT][BRANDS][ID][PATCH]", error);
+		console.log("[PRODUCTS][BRANDS][ID][PATCH]", error);
 		return new NextResponse("Error Interno", { status: 500 });
 	}
 }
@@ -123,7 +123,7 @@ export async function DELETE(
 
 		return NextResponse.json(brand);
 	} catch (error) {
-		console.log("[PRODUCT][BRANDS][ID][DELETE]", error);
+		console.log("[PRODUCTS][BRANDS][ID][DELETE]", error);
 		return new NextResponse("Error Interno", { status: 500 });
 	}
 }

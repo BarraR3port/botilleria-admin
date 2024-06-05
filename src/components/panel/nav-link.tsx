@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { ChevronRightIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { buttonVariants } from "../ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import type { NavLink as NavLinkType } from "./nav";

@@ -96,7 +96,7 @@ export default function ProductForm({ brand, session }: BrandProps) {
 					variant: "success",
 					duration: 1500
 				});
-				router.replace("/products/brands");
+				router.replace("/panel/products/brands");
 			}
 		} catch (error) {
 			console.error(error);

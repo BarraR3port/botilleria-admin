@@ -4,7 +4,7 @@ import { Button } from "@ui/button";
 import { DataTable } from "@ui/data-table";
 import Heading from "@ui/heading";
 import { Separator } from "@ui/separator";
-import { Package, Plus, Users } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type Column, columns } from "./Column";
 
@@ -29,7 +29,7 @@ export function Client({ users }: ClientProps) {
 					variant="outline"
 				>
 					<Plus className="mr-2 w-4 h-4" />
-					Crear Producto
+					Crear Usuario
 				</Button>
 			</div>
 			<Separator />

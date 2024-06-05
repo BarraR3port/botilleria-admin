@@ -106,11 +106,11 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 			const response = await axios.delete(`/api/products/${params.productId}`);
 			if (response?.data) {
 				toast({
-					title: "Producto eliminada correctamente",
+					title: "Producto eliminado correctamente",
 					variant: "success",
 					duration: 1500
 				});
-				router.replace("/products");
+				router.replace("/panel/products");
 			}
 		} catch (error) {
 			console.error(error);
