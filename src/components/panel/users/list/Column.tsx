@@ -47,6 +47,10 @@ export const columns: ColumnDef<Column>[] = [
 		header: "Nombre"
 	},
 	{
+		accessorKey: "email",
+		header: "Email"
+	},
+	{
 		accessorKey: "rut",
 		header: "Rut",
 		cell: ({ row }) => <CellIdAction value={row.original.rut} />

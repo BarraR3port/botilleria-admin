@@ -8,6 +8,7 @@ export default async function UsersPage() {
 	const users = await prisma.user.findMany({
 		select: {
 			id: true,
+			email: true,
 			name: true,
 			lastName: true,
 			rut: true,
@@ -22,6 +23,7 @@ export default async function UsersPage() {
 	const formattedUsers: Column[] = users.map(user => {
 		return {
 			id: user.id.toString(),
+			email: user.email,
 			name: `${user.name} ${user.lastName}`,
 			rut: user.rut,
 			rol: user.rol,
