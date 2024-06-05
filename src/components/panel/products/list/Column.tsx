@@ -1,10 +1,10 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
+import Barcode from "react-barcode";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
-import { Checkbox } from "@/components/ui/checkbox";
-import Barcode from "react-barcode";
 
 export type Column = {
 	id: string;

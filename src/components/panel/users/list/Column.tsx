@@ -1,11 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { RolType } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
-import { Checkbox } from "@/components/ui/checkbox";
-import type { RolType } from "@prisma/client";
-import { Button } from "@/components/ui/button";
 
 export type Column = {
 	id: string;
