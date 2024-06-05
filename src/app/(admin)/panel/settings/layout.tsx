@@ -30,7 +30,7 @@ export default function SettingsLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<PanelHeader title={<h1 className="text-2xl font-bold">Ajustes</h1>}>
+		<PanelHeader>
 			<div className="flex flex-col space-y-8 overflow-hidden lg:flex-row lg:space-x-12 lg:space-y-0">
 				<aside className="sticky px-4 overflow-x-auto overflow-y-clip xl:px-0">
 					<SidebarNav items={sidebarNavItems} />

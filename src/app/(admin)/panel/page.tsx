@@ -6,7 +6,7 @@ import { MinusIcon, PlusIcon, SearchIcon } from "lucide-react";
 
 export default function Component() {
 	return (
-		<PanelHeader title={<h1 className="text-2xl font-bold">Panel de Administración</h1>}>
+		<PanelHeader>
 			<main className="flex-1 bg-gray-100 dark:bg-gray-950 p-6">
 				<div className="grid grid-cols-3 gap-6">
 					<div className="col-span-2 rounded-lg bg-white p-6 shadow dark:bg-gray-900">
