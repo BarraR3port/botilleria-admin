@@ -3,8 +3,12 @@ import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { refreshSession } from "./utils";
 
-class InvalidLoginError extends CredentialsSignin {
-	code = "Invalid identifier or password";
+export class CustomAuthError extends CredentialsSignin {
+	code = "custom";
+	constructor(message?: any, errorOptions?: any) {
+		super(message, errorOptions);
+		this.message = message;
+	}
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -31,19 +35,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 						return error.response;
 					});
 
-				if (response?.status === 401) {
-					return null;
+				if (response?.status === 400) {
+					throw new CustomAuthError(response.data.errors[0].message, response.data.errors[0].type);
 				}
 
 				if (response?.status === 200 || response?.status === 201) {
 					if ("errors" in response.data) {
-						console.log("|| Error", response.data.errors[0].message);
-						throw new InvalidLoginError(response.data.errors[0].message);
+						throw new CustomAuthError(response.data.errors[0].message, response.data.errors[0].type);
 					}
 					return response.data;
 				}
-
-				return null;
 			}
 		})
 	],

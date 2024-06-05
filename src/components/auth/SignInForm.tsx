@@ -35,6 +35,9 @@ export function SignInForm() {
 			redirect: false,
 			callbackUrl: "/panel",
 			...data
+		}).catch(error => {
+			console.log("|| Error", error);
+			return error;
 		});
 
 		if (response) {
@@ -48,81 +51,79 @@ export function SignInForm() {
 
 	return (
 		<div>
-			<>
-				<Form {...signInForm}>
-					<form onSubmit={signInForm.handleSubmit(onSubmit)} className="space-y-4">
-						<FormField
-							control={signInForm.control}
-							name="email"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Email</FormLabel>
-									<FormControl>
+			<Form {...signInForm}>
+				<form onSubmit={signInForm.handleSubmit(onSubmit)} className="space-y-4">
+					<FormField
+						control={signInForm.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<FormControl>
+									<Input
+										disabled={loading}
+										id="email"
+										placeholder="email@ejemplo.com"
+										required
+										autoComplete="email"
+										type="email"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={signInForm.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Contraseña</FormLabel>
+								<FormControl>
+									<div className="relative">
 										<Input
 											disabled={loading}
-											id="email"
-											placeholder="email@ejemplo.com"
 											required
-											autoComplete="email"
-											type="email"
+											type={passwordHidden ? "text" : "password"}
 											{...field}
 										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={signInForm.control}
-							name="password"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Contraseña</FormLabel>
-									<FormControl>
-										<div className="relative">
-											<Input
-												disabled={loading}
-												required
-												type={passwordHidden ? "text" : "password"}
-												{...field}
+										{passwordHidden ? (
+											<EyeOff
+												onClick={() => setPasswordHidden(!passwordHidden)}
+												size={18}
+												className="absolute transform -translate-y-1/2 right-3 top-1/2"
 											/>
-											{passwordHidden ? (
-												<EyeOff
-													onClick={() => setPasswordHidden(!passwordHidden)}
-													size={18}
-													className="absolute transform -translate-y-1/2 right-3 top-1/2"
-												/>
-											) : (
-												<Eye
-													onClick={() => setPasswordHidden(!passwordHidden)}
-													size={18}
-													className="absolute transform -translate-y-1/2 right-3 top-1/2"
-												/>
-											)}
-										</div>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<Button className="w-full" type="submit" loading={loading}>
-							Ingresar
-						</Button>
-					</form>
-				</Form>
-				<Separator className="my-8">o</Separator>
-				<Link className="flex items-center justify-center w-full py-2 text-sm underline" href="/forgotPassword">
-					¿Se te olvidó tu contraseña?
+										) : (
+											<Eye
+												onClick={() => setPasswordHidden(!passwordHidden)}
+												size={18}
+												className="absolute transform -translate-y-1/2 right-3 top-1/2"
+											/>
+										)}
+									</div>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<Button className="w-full" type="submit" loading={loading}>
+						Ingresar
+					</Button>
+				</form>
+			</Form>
+			<Separator className="my-8">o</Separator>
+			<Link className="flex items-center justify-center w-full py-2 text-sm underline" href="/forgotPassword">
+				¿Se te olvidó tu contraseña?
+			</Link>
+			<div className="mt-4 text-sm text-center">
+				¿No tienes una cuenta?
+				<Link href={"/signUp"}>
+					<Button className="ml-2" disabled={loading}>
+						Registrarse
+					</Button>
 				</Link>
-				<div className="mt-4 text-sm text-center">
-					¿No tienes una cuenta?
-					<Link href={"/signUp"}>
-						<Button className="ml-2" disabled={loading}>
-							Registrarse
-						</Button>
-					</Link>
-				</div>
-			</>
+			</div>
 		</div>
 	);
 }
