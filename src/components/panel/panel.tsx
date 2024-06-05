@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Beer, Box, DollarSign, History, Settings, Users } from "lucide-react";
+import { Beer, Box, ChevronRightIcon, DollarSign, History, Settings, Tag, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -10,6 +10,7 @@ import { buttonVariants } from "../ui/button";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../ui/resizable";
 import { Separator } from "../ui/separator";
 import { Nav } from "./nav";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 
 export default function Panel({
 	defaultCollapsed,
@@ -88,34 +89,35 @@ export default function Panel({
 								label: "",
 								icon: DollarSign,
 								href: "/panel/sales"
-							}
-						]}
-					/>
-					<Nav
-						isCollapsed={isCollapsed}
-						links={[
+							},
 							{
 								title: "Productos",
 								label: "",
 								icon: Box,
-								href: "/panel/products"
-							}
-						]}
-					/>
-					<Nav
-						isCollapsed={isCollapsed}
-						links={[
+								href: "/panel/products",
+								subLinks: [
+									{
+										title: "Productos",
+										label: "",
+										icon: Box,
+										href: "/panel/products",
+										hasPrevious: true
+									},
+									{
+										title: "Marcas",
+										label: "",
+										icon: Tag,
+										href: "/panel/products/brands",
+										hasPrevious: true
+									}
+								]
+							},
 							{
 								title: "Usuarios",
 								label: "",
 								icon: Users,
 								href: "/panel/users"
-							}
-						]}
-					/>
-					<Nav
-						isCollapsed={isCollapsed}
-						links={[
+							},
 							{
 								title: "Settings",
 								label: "",

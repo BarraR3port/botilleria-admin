@@ -5,5 +5,5 @@ export default function SettingsLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	return <PanelHeader title={<h1 className="text-2xl font-bold">Usuarios</h1>}>{children}</PanelHeader>;
+	return <PanelHeader>{children}</PanelHeader>;
 }

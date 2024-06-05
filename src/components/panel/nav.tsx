@@ -1,6 +1,6 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
+import { Box, ChevronRightIcon, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -8,12 +8,15 @@ import { usePathname } from "next/navigation";
 import { useCallback } from "react";
 import { buttonVariants } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import NavLinkComp from "./nav-link";
 
-type NavLink = {
+export type NavLink = {
 	title: string;
 	label?: string;
 	icon: LucideIcon;
 	href: string;
+	subLinks?: NavLink[];
+	hasPrevious?: boolean;
 };
 
 interface NavProps {
@@ -27,7 +30,7 @@ export function Nav({ links, isCollapsed, bottom }: NavProps) {
 
 	const variant = useCallback(
 		(link: NavLink) => {
-			return pathName.includes(link.href) ? "default" : "ghost";
+			return pathName === link.href && link?.subLinks === undefined ? "default" : "ghost";
 		},
 		[isCollapsed, links, pathName]
 	);
@@ -68,32 +71,7 @@ export function Nav({ links, isCollapsed, bottom }: NavProps) {
 							</TooltipContent>
 						</Tooltip>
 					) : (
-						<Link
-							key={index}
-							href={link.href}
-							className={cn(
-								buttonVariants({
-									variant: linkVariant,
-									size: "sm"
-								}),
-								linkVariant === "default" &&
-									"dark:bg-background-container-secondary  dark:hover:bg-background-container-secondary dark:hover:bg-background-container-secondary",
-								"justify-start"
-							)}
-						>
-							<link.icon className="w-4 h-4 mr-2" />
-							{link.title}
-							{link.label && (
-								<span
-									className={cn(
-										"ml-auto",
-										linkVariant === "default" && "text-background dark:text-white"
-									)}
-								>
-									{link.label}
-								</span>
-							)}
-						</Link>
+						<NavLinkComp key={index} link={link} />
 					);
 				})}
 			</nav>

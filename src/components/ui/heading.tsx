@@ -15,6 +15,7 @@ export default function Heading({ title, mainPath }: HeadingProps) {
 	const pathName = usePathname();
 
 	const showBackButton = useMemo(() => pathName !== mainPath, [pathName]);
+
 	return (
 		<div className="space-y-1">
 			<div className="flex gap-2 items-center">
