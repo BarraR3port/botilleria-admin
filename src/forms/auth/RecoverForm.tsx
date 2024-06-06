@@ -12,7 +12,7 @@ import { RecoverFormSchema, type RecoverFromType } from "@/schemas/authSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useState } from "react";
-import { toast } from "../ui/use-toast";
+import { toast } from "../../components/ui/use-toast";
 
 export function RecoverForm() {
 	const [loading, setLoading] = useState(false);

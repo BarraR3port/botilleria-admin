@@ -1,4 +1,4 @@
-import { RecoverForm } from "@/components/auth/RecoverForm";
+import { RecoverForm } from "@/forms/auth/RecoverForm";
 
 export default function Recover() {
 	return (

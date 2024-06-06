@@ -15,8 +15,8 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Separator } from "../ui/separator";
-import { toast } from "../ui/use-toast";
+import { Separator } from "../../components/ui/separator";
+import { toast } from "../../components/ui/use-toast";
 
 export function SignInForm() {
 	const [loading, setLoading] = useState(false);

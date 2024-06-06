@@ -1,5 +1,6 @@
 "use client";
 
+import { handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
@@ -8,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import AlertModal from "@/modals/alert-modal";
+import type { AuthResponse } from "@/objects";
 import {
 	UpdateBasicUserFormSchema,
 	type UpdateBasicUserFormType,
@@ -59,13 +61,32 @@ export default function UserForm({ user, roles, session }: FormProps) {
 	const onSubmitBasic = async (data: UpdateBasicUserFormType) => {
 		setLoadingBasic(true);
 		try {
-			const response = await axios.patch(`/api/users/${params.userId}`, data, {
-				headers: {
-					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-				}
-			});
+			const response = await axios
+				.patch(`/api/users/${params.userId}`, data, {
+					headers: {
+						Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+					}
+				})
+				.catch((error: AuthResponse) => {
+					if (!error) return null;
 
-			if (response?.data) {
+					if (typeof error === "object" && "response" in error && "data" in error.response) {
+						if ("errors" in error.response.data) {
+							error.response.data.errors.forEach(errorMessage => {
+								basicForm.setError(errorMessage.type as any, { message: errorMessage.message });
+								toast({
+									title: errorMessage.message,
+									variant: "destructive",
+									duration: 1500
+								});
+							});
+						}
+						return null;
+					}
+				})
+				.then(handleAxiosResponse);
+
+			if (response) {
 				toast({
 					title: "Usuario editado correctamente",
 					variant: "success",
@@ -89,13 +110,39 @@ export default function UserForm({ user, roles, session }: FormProps) {
 	const onSubmitCritic = async (data: UpdateCriticUserFormType) => {
 		setLoadingCritic(true);
 		try {
-			const response = await axios.patch(`/api/users/${params.userId}?type=password`, data, {
-				headers: {
-					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-				}
-			});
+			const response = await axios
+				.patch(
+					`/api/users/${params.userId}`,
+					{
+						...data,
+						type: "password"
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+						}
+					}
+				)
+				.catch((error: AuthResponse) => {
+					if (!error) return null;
 
-			if (response?.data) {
+					if (typeof error === "object" && "response" in error && "data" in error.response) {
+						if ("errors" in error.response.data) {
+							error.response.data.errors.forEach(errorMessage => {
+								criticForm.setError(errorMessage.type as any, { message: errorMessage.message });
+								toast({
+									title: errorMessage.message,
+									variant: "destructive",
+									duration: 1500
+								});
+							});
+						}
+						return null;
+					}
+				})
+				.then(handleAxiosResponse);
+
+			if (response) {
 				toast({
 					title: "Contraseña actualizada correctamente",
 					variant: "success",

@@ -1,5 +1,5 @@
 import { jwtConfig } from "@/auth/utils";
-import { ResetForm } from "@/components/auth/ResetForm";
+import { ResetForm } from "@/forms/auth/ResetForm";
 import prisma from "@/lib/prismadb";
 import { jwtVerify } from "jose";
 import { RedirectType, redirect } from "next/navigation";

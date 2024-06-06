@@ -14,7 +14,7 @@ import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { toast } from "../ui/use-toast";
+import { toast } from "../../components/ui/use-toast";
 
 interface ResetFormProps {
 	email: string;

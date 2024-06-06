@@ -47,7 +47,6 @@ export async function PATCH(
 	}: {
 		params: {
 			userId: string;
-			type: string;
 		};
 	}
 ) {
@@ -60,6 +59,7 @@ export async function PATCH(
 		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
 
 		const body = await req.json();
+		const { type } = body;
 
 		const user = await prisma.user.findUnique({
 			where: {
@@ -76,10 +76,26 @@ export async function PATCH(
 			return new NextResponse("Sin autorización", { status: 401 });
 		}
 
-		if (params?.type === "password") {
-			const { password } = body;
+		if (type === "password") {
+			const { password, confirmPassword } = body;
 
-			if (!password) return new NextResponse("Contraseña requerida", { status: 400 });
+			if (!password)
+				return NextResponse.json(
+					{ errors: [{ type: "password", message: "Contraseña requerida" }] },
+					{ status: 400 }
+				);
+
+			if (!confirmPassword)
+				return NextResponse.json(
+					{ errors: [{ type: "confirmPassword", message: "Confirmar contraseña requerida" }] },
+					{ status: 400 }
+				);
+
+			if (password !== confirmPassword)
+				return NextResponse.json(
+					{ errors: [{ type: "confirmPassword", message: "Las contraseñas no coinciden" }] },
+					{ status: 400 }
+				);
 
 			const safePassword = await hash(password);
 
