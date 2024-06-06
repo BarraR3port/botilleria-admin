@@ -15,13 +15,12 @@ export async function POST(req: Request) {
 		if (!email)
 			return NextResponse.json({ errors: [{ type: "email", message: "Email requerido" }] }, { status: 400 });
 
-		const user = await prisma.user.findFirst({
+		const user = await prisma.user.findUnique({
 			where: {
 				email
 			},
 			select: {
-				id: true,
-				emailRecoveries: true
+				id: true
 			}
 		});
 
@@ -38,26 +37,34 @@ export async function POST(req: Request) {
 				{ status: 400 }
 			);
 		}
-		const recovery = user.emailRecoveries.filter(email => email.status === "WAITING");
 
-		if (recovery.length > 0) {
-			const lastRecovery = recovery[user.emailRecoveries.length - 1];
-			if (lastRecovery) {
-				const now = new Date();
-				const diff = now.getTime() - lastRecovery.createdAt.getTime();
-				if (diff < 1000 * 60 * 5) {
-					return NextResponse.json(
-						{
-							errors: [
-								{
-									type: "email",
-									message: "Ya se ha enviado un correo de recuperación, espera unos minutos"
-								}
-							]
-						},
-						{ status: 400 }
-					);
-				}
+		const recovery = await prisma.recovery.findFirst({
+			where: {
+				user: {
+					email
+				},
+				status: "WAITING"
+			},
+			orderBy: {
+				createdAt: "desc"
+			}
+		});
+
+		if (recovery) {
+			const now = new Date();
+			const diff = now.getTime() - recovery.createdAt.getTime();
+			if (diff < 1000 * 60 * 5) {
+				return NextResponse.json(
+					{
+						errors: [
+							{
+								type: "email",
+								message: "Ya se ha enviado un correo de recuperación, espera unos minutos"
+							}
+						]
+					},
+					{ status: 400 }
+				);
 			}
 		}
 
