@@ -42,20 +42,22 @@ export async function POST(req: Request) {
 
 		if (recovery.length > 0) {
 			const lastRecovery = recovery[user.emailRecoveries.length - 1];
-			const now = new Date();
-			const diff = now.getTime() - lastRecovery.createdAt.getTime();
-			if (diff < 1000 * 60 * 5) {
-				return NextResponse.json(
-					{
-						errors: [
-							{
-								type: "email",
-								message: "Ya se ha enviado un correo de recuperación, espera unos minutos"
-							}
-						]
-					},
-					{ status: 400 }
-				);
+			if (lastRecovery) {
+				const now = new Date();
+				const diff = now.getTime() - lastRecovery.createdAt.getTime();
+				if (diff < 1000 * 60 * 5) {
+					return NextResponse.json(
+						{
+							errors: [
+								{
+									type: "email",
+									message: "Ya se ha enviado un correo de recuperación, espera unos minutos"
+								}
+							]
+						},
+						{ status: 400 }
+					);
+				}
 			}
 		}
 
