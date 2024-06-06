@@ -80,7 +80,6 @@ export function ResetForm({ email, recovery }: ResetFormProps) {
 			if (signInResponse) {
 				if (signInResponse.ok && signInResponse.url) {
 					window.location.href = signInResponse.url;
-					router.push(signInResponse.url);
 				}
 			}
 		}
