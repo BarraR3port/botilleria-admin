@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import type { RolType } from "@prisma/client";
-import { redirect, RedirectType } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 interface RouteProtectorProps {
 	children: React.ReactNode;
 	rol?: RolType;

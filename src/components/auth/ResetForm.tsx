@@ -6,17 +6,15 @@ import { handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import BasicModal from "@/modals/basic-modal";
 import type { ApiResponse } from "@/objects";
 import { ResetFormSchema, type ResetFromType } from "@/schemas/authSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Recovery } from "@prisma/client";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 interface ResetFormProps {
 	email: string;
@@ -26,7 +24,6 @@ interface ResetFormProps {
 export function ResetForm({ email, recovery }: ResetFormProps) {
 	const [loading, setLoading] = useState(false);
 	const [passwordHidden, setPasswordHidden] = useState(false);
-	const router = useRouter();
 
 	const form = useForm<ResetFromType>({
 		resolver: yupResolver(ResetFormSchema),

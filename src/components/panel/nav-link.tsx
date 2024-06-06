@@ -6,8 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { buttonVariants } from "../ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
-import type { NavLinkType } from "./nav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import type { NavLinkType } from "./nav";
 
 interface NavLinkProps {
 	link: NavLinkType;

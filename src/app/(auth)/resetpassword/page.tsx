@@ -2,7 +2,7 @@ import { jwtConfig } from "@/auth/utils";
 import { ResetForm } from "@/components/auth/ResetForm";
 import prisma from "@/lib/prismadb";
 import { jwtVerify } from "jose";
-import { redirect, RedirectType } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 
 export default async function ResetPassword({
 	searchParams

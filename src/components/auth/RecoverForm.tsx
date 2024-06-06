@@ -2,17 +2,17 @@
 
 import { type SubmitHandler, useForm } from "react-hook-form";
 
+import { handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import BasicModal from "@/modals/basic-modal";
+import type { ApiResponse, UserAuthError } from "@/objects";
 import { RecoverFormSchema, type RecoverFromType } from "@/schemas/authSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useState } from "react";
-import type { ApiResponse, UserAuthError } from "@/objects";
 import { toast } from "../ui/use-toast";
-import { handleAxiosResponse } from "@/api/utils";
 
 export function RecoverForm() {
 	const [loading, setLoading] = useState(false);

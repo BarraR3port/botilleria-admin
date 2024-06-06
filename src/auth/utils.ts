@@ -1,7 +1,7 @@
-import prisma from "@/lib/prismadb";
-import type { BackendTokens } from "@/objects";
 // biome-ignore lint/style/useNodejsImportProtocol: <explanation>
 import { randomFillSync } from "crypto";
+import prisma from "@/lib/prismadb";
+import type { BackendTokens } from "@/objects";
 import { SignJWT, jwtVerify } from "jose";
 
 export const jwtConfig = {
