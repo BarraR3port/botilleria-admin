@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import type { RolType } from "@prisma/client";
+import { redirect, RedirectType } from "next/navigation";
 interface RouteProtectorProps {
 	children: React.ReactNode;
 	rol?: RolType;
@@ -8,11 +9,13 @@ interface RouteProtectorProps {
 export default async function RouteProtector({ children, rol }: RouteProtectorProps) {
 	const session = await auth();
 	if (!session) {
-		return null;
+		redirect("/signIn", RedirectType.replace);
 	}
 
 	if (rol && session.user.rol !== rol) {
-		return null;
+		if (!session) {
+			redirect("/signIn", RedirectType.replace);
+		}
 	}
 	return <>{children}</>;
 }

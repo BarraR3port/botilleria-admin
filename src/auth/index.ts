@@ -1,7 +1,7 @@
-import axios from "axios";
+import { jwtVerify } from "jose";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { refreshSession } from "./utils";
+import { authorizeUser, jwtConfig, refreshSession } from "./utils";
 
 export class CustomAuthError extends CredentialsSignin {
 	code = "custom";
@@ -15,35 +15,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [
 		Credentials({
 			credentials: {
-				email: {},
-				password: {}
+				userId: {},
+				token: {}
 			},
 			authorize: async credentials => {
-				if (!credentials?.email || !credentials?.password) {
-					return null;
+				const { userId, token } = credentials;
+
+				if (typeof userId !== "string" || typeof token !== "string") {
+					throw new CustomAuthError("Credenciales inválidas");
 				}
 
-				const { email, password } = credentials;
-
-				const response = await axios
-					.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signIn`, {
-						email,
-						password
-					})
-					.catch(error => {
-						console.log("|| Error", error.response.data.errors[0].message);
-						return error.response;
-					});
-
-				if (response?.status === 400) {
-					throw new CustomAuthError(response.data.errors[0].message, response.data.errors[0].type);
-				}
-
-				if (response?.status === 200 || response?.status === 201) {
-					if ("errors" in response.data) {
-						throw new CustomAuthError(response.data.errors[0].message, response.data.errors[0].type);
+				try {
+					const decoded = await jwtVerify(token, jwtConfig.secret);
+					if (decoded.payload?.id) {
+						return (await authorizeUser(decoded.payload.id as string)) as any;
 					}
-					return response.data;
+					throw new CustomAuthError("Token inválido");
+				} catch (_error) {
+					throw new CustomAuthError("Token inválido o expirado");
 				}
 			}
 		})

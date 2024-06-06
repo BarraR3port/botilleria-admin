@@ -13,11 +13,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Separator } from "../ui/separator";
+import axios from "axios";
+import type { ApiResponse, AuthResponse } from "@/objects";
+import { handleAxiosResponse } from "@/api/utils";
+import { toast } from "../ui/use-toast";
 
 export function SignInForm() {
 	const [loading, setLoading] = useState(false);
 
-	const signInForm = useForm<SignInFromType>({
+	const form = useForm<SignInFromType>({
 		resolver: yupResolver(SignInFormSchema),
 		defaultValues: {
 			email: "",
@@ -31,30 +35,56 @@ export function SignInForm() {
 	const onSubmit: SubmitHandler<SignInFromType> = async data => {
 		setLoading(true);
 
-		const response = await signIn("credentials", {
-			redirect: false,
-			callbackUrl: "/panel",
-			...data
-		}).catch(error => {
-			console.log("|| Error", error);
-			return error;
-		});
+		const response: AuthResponse = await axios
+			.post("/api/auth/signIn", {
+				...data
+			})
+			.catch((error: AuthResponse) => {
+				if (!error) return null;
 
-		if (response) {
-			console.log("RESPONSE", response, response.ok, response.url);
-			if (response.ok && response.url) {
-				window.location.href = response.url;
+				if (typeof error === "object" && "response" in error && "data" in error.response) {
+					if ("errors" in error.response.data) {
+						error.response.data.errors.forEach(errorMessage => {
+							form.setError(errorMessage.type as any, { message: errorMessage.message });
+							toast({
+								title: errorMessage.message,
+								variant: "destructive",
+								duration: 1500
+							});
+						});
+					}
+					return null;
+				}
+			})
+			.then(handleAxiosResponse);
+
+		if (typeof response === "object" && "user" in response) {
+			const signInResponse = await signIn("credentials", {
+				redirect: false,
+				callbackUrl: "/panel",
+				userId: response.user.id,
+				token: response.backendTokens.accessToken.token
+			}).catch(error => {
+				console.log("|| Error", error);
+				return error;
+			});
+
+			if (signInResponse) {
+				if (signInResponse.ok && signInResponse.url) {
+					window.location.href = signInResponse.url;
+				}
 			}
 		}
+
 		setLoading(false);
 	};
 
 	return (
 		<div>
-			<Form {...signInForm}>
-				<form onSubmit={signInForm.handleSubmit(onSubmit)} className="space-y-4">
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<FormField
-						control={signInForm.control}
+						control={form.control}
 						name="email"
 						render={({ field }) => (
 							<FormItem>
@@ -75,7 +105,7 @@ export function SignInForm() {
 						)}
 					/>
 					<FormField
-						control={signInForm.control}
+						control={form.control}
 						name="password"
 						render={({ field }) => (
 							<FormItem>
@@ -113,17 +143,9 @@ export function SignInForm() {
 				</form>
 			</Form>
 			<Separator className="my-8">o</Separator>
-			<Link className="flex items-center justify-center w-full py-2 text-sm underline" href="/forgotPassword">
+			<Link className="flex items-center justify-center w-full py-2 text-sm underline" href="/recover">
 				¿Se te olvidó tu contraseña?
 			</Link>
-			<div className="mt-4 text-sm text-center">
-				¿No tienes una cuenta?
-				<Link href={"/signUp"}>
-					<Button className="ml-2" disabled={loading}>
-						Registrarse
-					</Button>
-				</Link>
-			</div>
 		</div>
 	);
 }

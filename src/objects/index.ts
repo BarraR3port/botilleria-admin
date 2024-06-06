@@ -25,7 +25,16 @@ export type UserErrorResponse = {
 	errors: UserAuthError[];
 };
 
-export type UserResponse = UserErrorResponse | "" | undefined | true;
+export type NextErrorResponse = {
+	response: {
+		status: number;
+		data: UserErrorResponse;
+	};
+};
+
+export type ApiResponse = NextErrorResponse | "" | undefined | true;
+
+export type AuthResponse = UserAuthData | ApiResponse;
 
 export interface User {
 	id: string;

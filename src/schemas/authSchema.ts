@@ -11,34 +11,14 @@ export const SignInFormSchema = object({
 
 export type SignInFromType = InferType<typeof SignInFormSchema>;
 
-export const UpdateBasicUserInfoFormSchema = object({
-	name: string()
-		.required("auth.errors.firstName.required")
-		.min(2, "auth.errors.firstName.minLength")
-		.max(50, "auth.errors.firstName.maxLength")
-		.trim(),
-	lastName: string()
-		.optional()
-		.min(2, "auth.errors.lastName.minLength")
-		.max(50, "auth.errors.lastName.maxLength")
-		.trim(),
-	birthDate: string().optional().nullable().trim(),
-	gender: string().optional().nullable().trim(),
-	phoneNumber: string().optional().nullable().trim(),
-	description: string().optional().nullable().trim(),
-	socialMedia: object({
-		instagram: string().optional().nullable().trim()
-	}).nonNullable()
+export const RecoverFormSchema = object({
+	email: string().required("Email requerido").email("Email inválido").trim()
 });
 
-export type UpdateBasicUserInfoFormType = InferType<typeof UpdateBasicUserInfoFormSchema>;
+export type RecoverFromType = InferType<typeof RecoverFormSchema>;
 
-export const UpdateCriticalUserInfoFormSchema = object({
-	company: string()
-		.optional()
-		.min(2, "auth.errors.company.minLength")
-		.max(50, "auth.errors.company.maxLength")
-		.trim(),
+export const ResetFormSchema = object({
+	email: string().required("Email requerido").email("Email inválido").trim(),
 	password: string()
 		.required("Contraseña requerida")
 		.min(6, "La contraseña tiene que tener al menos 6 caracteres")
@@ -51,4 +31,14 @@ export const UpdateCriticalUserInfoFormSchema = object({
 		.trim()
 });
 
-export type UpdateCriticalUserInfoFormType = InferType<typeof UpdateCriticalUserInfoFormSchema>;
+export type ResetFromType = InferType<typeof ResetFormSchema>;
+
+export const EmailOtpSchema = object({
+	token: string()
+		.required("El código de verificación es requerido")
+		.min(1, "El código de verificación debe tener 6 caracteres")
+		.max(6, "El código de verificación debe tener 6 caracteres")
+		.trim()
+});
+
+export type EmailOtpType = InferType<typeof EmailOtpSchema>;

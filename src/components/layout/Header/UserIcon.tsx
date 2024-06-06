@@ -61,6 +61,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 							<p className="flex text-sm font-medium leading-none">
 								{data?.user?.name} {data?.user?.lastName}
 							</p>
+							<p className="text-xs leading-none text-muted-foreground md:flex">{data?.user?.email}</p>
 						</div>
 					)}
 				</div>
@@ -72,6 +73,9 @@ export function UserIcon({ navBar }: UserIconProps) {
 							<div className="flex flex-col space-y-1">
 								<p className="text-sm font-medium leading-none xs:flex">
 									{data?.user?.name} {data?.user?.lastName}
+								</p>
+								<p className="text-xs leading-none text-muted-foreground md:flex">
+									{data?.user?.email}
 								</p>
 							</div>
 						</DropdownMenuLabel>

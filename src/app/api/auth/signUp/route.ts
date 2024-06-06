@@ -1,4 +1,4 @@
-import { jwtConfig } from "@/auth/utils";
+import { authorizeUser, jwtConfig } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { hash, verify } from "argon2";
 import { SignJWT } from "jose";
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 		const { email, password, firstName, lastName } = body;
 
 		if (!email) {
-			return NextResponse.json({ errors: [{ type: "mail", message: "Email requerido" }] }, { status: 400 });
+			return NextResponse.json({ errors: [{ type: "email", message: "Email requerido" }] }, { status: 400 });
 		}
 
 		if (!password) {
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
 				{
 					errors: [
 						{
-							type: "mail",
+							type: "email",
 							message: "Este email ya está registrado"
 						}
 					]
@@ -102,30 +102,8 @@ export async function POST(req: Request) {
 			}
 		});
 
-		const accessToken = await new SignJWT({ id: user.id })
-			.setProtectedHeader({ alg: "HS256" })
-			.setIssuedAt()
-			.setExpirationTime("1d")
-			.sign(jwtConfig.secret);
-		const refreshToken = await new SignJWT({ id: user.id })
-			.setProtectedHeader({ alg: "HS256" })
-			.setIssuedAt()
-			.setExpirationTime("1w")
-			.sign(jwtConfig.refreshSecret);
+		const userResponse = authorizeUser(user.id);
 
-		const userResponse = {
-			user,
-			backendTokens: {
-				accessToken: {
-					token: accessToken,
-					expireAt: new Date(new Date().getTime() + 1000 * 60 * 60 * 24).getTime()
-				},
-				refreshToken: {
-					token: refreshToken,
-					expireAt: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7).getTime()
-				}
-			}
-		};
 		return NextResponse.json(userResponse);
 	} catch (error) {
 		console.log("[AUTH][SIGN UP][POST]", error);

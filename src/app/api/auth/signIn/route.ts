@@ -1,7 +1,6 @@
-import { jwtConfig } from "@/auth/utils";
+import { authorizeUser, jwtConfig } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { verify } from "argon2";
-import { SignJWT } from "jose";
 import { NextResponse } from "next/server";
 
 export async function GET(_req: Request) {
@@ -32,7 +31,7 @@ export async function POST(req: Request) {
 		const { email, password } = body;
 
 		if (!email)
-			return NextResponse.json({ errors: [{ type: "mail", message: "Email requerido" }] }, { status: 400 });
+			return NextResponse.json({ errors: [{ type: "email", message: "Email requerido" }] }, { status: 400 });
 		if (!password)
 			return NextResponse.json(
 				{ errors: [{ type: "password", message: "Contraseña requerida" }] },
@@ -54,7 +53,7 @@ export async function POST(req: Request) {
 				{
 					errors: [
 						{
-							type: "mail",
+							type: "email",
 							message: "Este email no está registrado"
 						}
 					]
@@ -79,46 +78,8 @@ export async function POST(req: Request) {
 			);
 		}
 
-		const accessToken = await new SignJWT({ id: tempUser.id })
-			.setProtectedHeader({ alg: "HS256" })
-			.setIssuedAt()
-			.setExpirationTime("1d")
-			.sign(jwtConfig.secret);
-		const refreshToken = await new SignJWT({ id: tempUser.id })
-			.setProtectedHeader({ alg: "HS256" })
-			.setIssuedAt()
-			.setExpirationTime("1w")
-			.sign(jwtConfig.refreshSecret);
+		const userResponse = await authorizeUser(tempUser.id);
 
-		const user = await prisma.user.update({
-			where: { id: tempUser.id },
-			data: {
-				lastLogin: new Date()
-			},
-			select: {
-				id: true,
-				email: true,
-				name: true,
-				lastName: true,
-				rol: true,
-				createdAt: true,
-				updatedAt: true
-			}
-		});
-
-		const userResponse = {
-			user,
-			backendTokens: {
-				accessToken: {
-					token: accessToken,
-					expireAt: new Date(new Date().getTime() + 1000 * 60 * 60 * 24).getTime()
-				},
-				refreshToken: {
-					token: refreshToken,
-					expireAt: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7).getTime()
-				}
-			}
-		};
 		return NextResponse.json(userResponse);
 	} catch (error) {
 		console.log("[AUTH][SIGN IN][POST]", error);

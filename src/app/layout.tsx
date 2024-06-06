@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header/Header";
-import Footer from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TailwindIndicator } from "@/components/ui/tailwindcss-indicator";
 import { Toaster } from "@/components/ui/toaster";
@@ -28,12 +26,8 @@ export default function RootLayout({
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
 					<TooltipProvider>
 						<Toaster />
-						<div className="flex flex-col min-h-[100dvh]">
-							<SessionProvider>
-								<Header />
-								<div className="min-h-[calc(100dvh-6rem)]">{children}</div>
-								<Footer />
-							</SessionProvider>
+						<div className="flex flex-col h-[100dvh]">
+							<SessionProvider>{children}</SessionProvider>
 						</div>
 						<TailwindIndicator />
 					</TooltipProvider>
