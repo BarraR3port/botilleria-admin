@@ -7,13 +7,12 @@ import { useMemo } from "react";
 import { buttonVariants } from "../ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import type { NavLinkType } from "./nav";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface NavLinkProps {
 	link: NavLinkType;
 }
 
-export default function NavLink({ link }: NavLinkProps) {
+export default function NavLinkExpanded({ link }: NavLinkProps) {
 	const router = useRouter();
 	const pathName = usePathname();
 
@@ -43,26 +42,24 @@ export default function NavLink({ link }: NavLinkProps) {
 					"justify-between w-full [&[data-state=open]>svg]:rotate-90"
 				)}
 				onClick={() => {
-					router.push(link.href);
+					if (!link?.subLinks) router.push(link.href);
 				}}
 			>
-				<Tooltip delayDuration={0}>
-					<TooltipTrigger asChild>
-						<div>
-							<link.icon className="w-4 h-4 " />
-							<span className="sr-only">{link.title}</span>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent side="right" className="flex items-center gap-4">
-						{link.title}
-						{link.label && <span className="ml-auto text-muted-foreground">{link.label}</span>}
-					</TooltipContent>
-				</Tooltip>
+				<div className="flex">
+					<link.icon className="w-4 h-4 mr-2" />
+					{link.title}
+					{link.label && (
+						<span className={cn("ml-auto", variant === "default" && "text-background dark:text-white")}>
+							{link.label}
+						</span>
+					)}
+				</div>
+				{link.subLinks && <ChevronRightIcon className="h-5 w-5 transition-transform" />}
 			</CollapsibleTrigger>
 			{link.subLinks && (
-				<CollapsibleContent className=" my-2 space-y-1">
+				<CollapsibleContent className="px-4 my-2 space-y-1">
 					{link.subLinks?.map((subLink, index) => (
-						<NavLink key={index} link={subLink} />
+						<NavLinkExpanded key={index} link={subLink} />
 					))}
 				</CollapsibleContent>
 			)}
