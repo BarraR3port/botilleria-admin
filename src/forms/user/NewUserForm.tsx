@@ -1,5 +1,6 @@
 "use client";
 
+import { handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
+import type { AuthResponse } from "@/objects";
 import { CreateUserFormSchema, type CreateUserFormType } from "@/schemas/UserSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -46,13 +48,32 @@ export default function NewUserForm({ roles, session }: FormProps) {
 	const onSubmit = async (data: CreateUserFormType) => {
 		setLoading(true);
 		try {
-			const response = await axios.post("/api/users", data, {
-				headers: {
-					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-				}
-			});
+			const response = await axios
+				.post("/api/users", data, {
+					headers: {
+						Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+					}
+				})
+				.catch((error: AuthResponse) => {
+					if (!error) return null;
 
-			if (response?.data) {
+					if (typeof error === "object" && "response" in error && "data" in error.response) {
+						if ("errors" in error.response.data) {
+							error.response.data.errors.forEach(errorMessage => {
+								form.setError(errorMessage.type as any, { message: errorMessage.message });
+								toast({
+									title: errorMessage.message,
+									variant: "destructive",
+									duration: 1500
+								});
+							});
+						}
+						return null;
+					}
+				})
+				.then(handleAxiosResponse);
+
+			if (response) {
 				toast({
 					title: "Usuario creado correctamente",
 					variant: "success",
@@ -64,7 +85,7 @@ export default function NewUserForm({ roles, session }: FormProps) {
 		} catch (error) {
 			console.error(error);
 			toast({
-				title: "Ocurrió un error al guardar los ajustes",
+				title: "Ocurrió un error interno, por favor contactar soporte",
 				variant: "error",
 				duration: 1500
 			});

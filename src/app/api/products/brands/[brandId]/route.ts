@@ -14,7 +14,10 @@ export async function GET(
 ) {
 	try {
 		if (!params.brandId) {
-			return new NextResponse("ID de la marca requerida", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "brandId", message: "ID de la marca requerida" }],
+				status: 400
+			});
 		}
 
 		const product = await prisma.brand.findFirst({
@@ -26,7 +29,10 @@ export async function GET(
 		return NextResponse.json(product);
 	} catch (error) {
 		console.log("[PRODUCTS][BRANDS][ID][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -42,17 +48,24 @@ export async function PATCH(
 ) {
 	try {
 		if (!params.brandId) {
-			return new NextResponse("ID de la marca requerida", { status: 400 });
+			return NextResponse.json(
+				{ errors: [{ type: "brandId", message: "ID de la marca requerida" }] },
+				{ status: 400 }
+			);
 		}
 
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json(
+				{ errors: [{ type: "unauthorized", message: "Sin autorización" }] },
+				{ status: 401 }
+			);
 
 		const body = await req.json();
 
 		const { name, description } = body;
 
-		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
+		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
 
 		const brand = await prisma.brand.findFirst({
 			where: {
@@ -60,7 +73,8 @@ export async function PATCH(
 			}
 		});
 
-		if (!brand) return new NextResponse("No se encontró la marca", { status: 404 });
+		if (!brand)
+			return NextResponse.json({ errors: [{ type: "brand", message: "Marca no encontrada" }], status: 404 });
 
 		const product = await prisma.brand.update({
 			where: {
@@ -75,7 +89,10 @@ export async function PATCH(
 		return NextResponse.json(product);
 	} catch (error) {
 		console.log("[PRODUCTS][BRANDS][ID][PATCH]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -91,12 +108,19 @@ export async function DELETE(
 ) {
 	try {
 		if (!params.brandId) {
-			return new NextResponse("ID de la marca requerida", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "brandId", message: "ID de la marca requerida" }],
+				status: 400
+			});
 		}
 
 		const userId = await getAuth(req);
 
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json(
+				{ errors: [{ type: "unauthorized", message: "Sin autorización" }] },
+				{ status: 401 }
+			);
 
 		const isUserAdmin = await prisma.user.findFirst({
 			where: {
@@ -105,7 +129,11 @@ export async function DELETE(
 			}
 		});
 
-		if (!isUserAdmin) return new NextResponse("Sin autorización", { status: 401 });
+		if (!isUserAdmin)
+			return NextResponse.json(
+				{ errors: [{ type: "unauthorized", message: "Sin autorización" }] },
+				{ status: 401 }
+			);
 
 		const oldBrand = await prisma.brand.findFirst({
 			where: {
@@ -113,7 +141,8 @@ export async function DELETE(
 			}
 		});
 
-		if (!oldBrand) return new NextResponse("No se encontró la marca", { status: 404 });
+		if (!oldBrand)
+			return NextResponse.json({ errors: [{ type: "brand", message: "Marca no encontrada" }], status: 404 });
 
 		const brand = await prisma.brand.delete({
 			where: {
@@ -124,6 +153,9 @@ export async function DELETE(
 		return NextResponse.json(brand);
 	} catch (error) {
 		console.log("[PRODUCTS][BRANDS][ID][DELETE]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

@@ -16,7 +16,10 @@ export async function GET(
 ) {
 	try {
 		if (!params.userId) {
-			return new NextResponse("ID del usuario requerido", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "userId", message: "ID del usuario requerido" }],
+				status: 400
+			});
 		}
 
 		const user = await prisma.user.findFirst({
@@ -36,7 +39,10 @@ export async function GET(
 		return NextResponse.json(user);
 	} catch (error) {
 		console.log("[USERS][ID][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -52,11 +58,18 @@ export async function PATCH(
 ) {
 	try {
 		if (!params.userId) {
-			return new NextResponse("ID del usuario requerido", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "userId", message: "ID del usuario requerido" }],
+				status: 400
+			});
 		}
 
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json(
+				{ errors: [{ type: "unauthorized", message: "Sin autorización" }] },
+				{ status: 401 }
+			);
 
 		const body = await req.json();
 		const { type } = body;
@@ -70,10 +83,14 @@ export async function PATCH(
 			}
 		});
 
-		if (!user) return new NextResponse("Usuario no encontrado", { status: 404 });
+		if (!user)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		if (user.rol !== "ADMIN") {
-			return new NextResponse("Sin autorización", { status: 401 });
+			return NextResponse.json(
+				{ errors: [{ type: "unauthorized", message: "Sin autorización" }] },
+				{ status: 401 }
+			);
 		}
 
 		if (type === "password") {
@@ -122,11 +139,17 @@ export async function PATCH(
 
 		const { email, lastName, name, rut, rol } = body;
 
-		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
-		if (!lastName) return new NextResponse("Apellido requerido", { status: 400 });
-		if (!email) return new NextResponse("Email requerido", { status: 400 });
-		if (!rut) return new NextResponse("Rut requerido", { status: 400 });
-		if (!rol) return new NextResponse("Rol requerido", { status: 400 });
+		if (!name)
+			return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }] }, { status: 400 });
+		if (!lastName)
+			return NextResponse.json(
+				{ errors: [{ type: "lastName", message: "Apellido requerido" }] },
+				{ status: 400 }
+			);
+		if (!email)
+			return NextResponse.json({ errors: [{ type: "email", message: "Email requerido" }] }, { status: 400 });
+		if (!rut) return NextResponse.json({ errors: [{ type: "rut", message: "Rut requerido" }] }, { status: 400 });
+		if (!rol) return NextResponse.json({ errors: [{ type: "rol", message: "Rol requerido" }] }, { status: 400 });
 
 		const newUser = await prisma.user.update({
 			where: {
@@ -144,7 +167,10 @@ export async function PATCH(
 		return NextResponse.json(newUser);
 	} catch (error) {
 		console.log("[USERS][ID][PATCH]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -160,11 +186,15 @@ export async function DELETE(
 ) {
 	try {
 		if (!params.productId) {
-			return new NextResponse("ID del producto requerido", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "ID del producto requerido" }],
+				status: 400
+			});
 		}
 
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json({ errors: [{ type: "auth", message: "Sin autorización" }] }, { status: 401 });
 
 		const isUserAdmin = await prisma.user.findFirst({
 			where: {
@@ -172,7 +202,8 @@ export async function DELETE(
 			}
 		});
 
-		if (!isUserAdmin) return new NextResponse("Sin autorización", { status: 401 });
+		if (!isUserAdmin)
+			return NextResponse.json({ errors: [{ type: "auth", message: "Sin autorización" }] }, { status: 401 });
 
 		const oldProduct = await prisma.product.findFirst({
 			where: {
@@ -180,7 +211,11 @@ export async function DELETE(
 			}
 		});
 
-		if (!oldProduct) return new NextResponse("No se encontró el producto", { status: 404 });
+		if (!oldProduct)
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "Producto no encontrado" }],
+				status: 404
+			});
 
 		const product = await prisma.product.delete({
 			where: {
@@ -191,6 +226,9 @@ export async function DELETE(
 		return NextResponse.json(product);
 	} catch (error) {
 		console.log("[USERS][ID]][DELETE]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

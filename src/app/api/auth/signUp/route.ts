@@ -21,7 +21,10 @@ export async function GET(_req: Request) {
 		return NextResponse.json(sizes);
 	} catch (error) {
 		console.log("[SIZES][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -107,6 +110,9 @@ export async function POST(req: Request) {
 		return NextResponse.json(userResponse);
 	} catch (error) {
 		console.log("[AUTH][SIGN UP][POST]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

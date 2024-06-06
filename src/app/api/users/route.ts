@@ -20,14 +20,18 @@ export async function GET(_req: Request) {
 		return NextResponse.json(sizes);
 	} catch (error) {
 		console.log("[USERS][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
 export async function POST(req: Request) {
 	try {
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		const body = await req.json();
 
@@ -40,20 +44,23 @@ export async function POST(req: Request) {
 			}
 		});
 
-		if (!user) return new NextResponse("Usuario no encontrado", { status: 404 });
+		if (!user)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		if (user.rol !== "ADMIN") {
-			return new NextResponse("Sin autorización", { status: 401 });
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 		}
 
 		const { email, lastName, name, rut, rol, password } = body;
 
-		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
-		if (!lastName) return new NextResponse("Apellido requerido", { status: 400 });
-		if (!email) return new NextResponse("Email requerido", { status: 400 });
-		if (!rut) return new NextResponse("Rut requerido", { status: 400 });
-		if (!rol) return new NextResponse("Rol requerido", { status: 400 });
-		if (!password) return new NextResponse("Contraseña requerida", { status: 400 });
+		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
+		if (!lastName)
+			return NextResponse.json({ errors: [{ type: "lastName", message: "Apellido requerido" }], status: 400 });
+		if (!email) return NextResponse.json({ errors: [{ type: "email", message: "Email requerido" }], status: 400 });
+		if (!rut) return NextResponse.json({ errors: [{ type: "rut", message: "Rut requerido" }], status: 400 });
+		if (!rol) return NextResponse.json({ errors: [{ type: "rol", message: "Rol requerido" }], status: 400 });
+		if (!password)
+			return NextResponse.json({ errors: [{ type: "password", message: "Contraseña requerida" }], status: 400 });
 
 		const safePassword = await hash(password);
 
@@ -71,6 +78,9 @@ export async function POST(req: Request) {
 		return NextResponse.json(newUser);
 	} catch (error) {
 		console.log("[USERS][POST]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

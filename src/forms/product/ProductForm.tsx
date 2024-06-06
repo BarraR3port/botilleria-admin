@@ -1,5 +1,6 @@
 "use client";
 
+import { handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -10,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import AlertModal from "@/modals/alert-modal";
+import type { AuthResponse } from "@/objects";
 import { ProductFormSchema, type ProductFormType } from "@/schemas/ProductSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand, Product, ProductType } from "@prisma/client";
@@ -68,18 +70,56 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 		setLoading(true);
 		try {
 			const response = product
-				? await axios.patch(`/api/products/${params.productId}`, data, {
-						headers: {
-							Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-						}
-					})
-				: await axios.post("/api/products", data, {
-						headers: {
-							Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-						}
-					});
+				? await axios
+						.patch(`/api/products/${params.productId}`, data, {
+							headers: {
+								Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+							}
+						})
+						.catch((error: AuthResponse) => {
+							if (!error) return null;
 
-			if (response?.data) {
+							if (typeof error === "object" && "response" in error && "data" in error.response) {
+								if ("errors" in error.response.data) {
+									error.response.data.errors.forEach(errorMessage => {
+										form.setError(errorMessage.type as any, { message: errorMessage.message });
+										toast({
+											title: errorMessage.message,
+											variant: "destructive",
+											duration: 1500
+										});
+									});
+								}
+								return null;
+							}
+						})
+						.then(handleAxiosResponse)
+				: await axios
+						.post("/api/products", data, {
+							headers: {
+								Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+							}
+						})
+						.catch((error: AuthResponse) => {
+							if (!error) return null;
+
+							if (typeof error === "object" && "response" in error && "data" in error.response) {
+								if ("errors" in error.response.data) {
+									error.response.data.errors.forEach(errorMessage => {
+										form.setError(errorMessage.type as any, { message: errorMessage.message });
+										toast({
+											title: errorMessage.message,
+											variant: "destructive",
+											duration: 1500
+										});
+									});
+								}
+								return null;
+							}
+						})
+						.then(handleAxiosResponse);
+
+			if (response) {
 				toast({
 					title: toastDescription,
 					variant: "success",

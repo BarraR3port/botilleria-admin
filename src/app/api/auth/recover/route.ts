@@ -99,7 +99,10 @@ export async function POST(req: Request) {
 
 		if (error) {
 			console.log("[AUTH][RECOVER][POST]", error);
-			return new NextResponse("Error al intentar enviar el correo electrónico", { status: 500 });
+			return NextResponse.json({
+				errors: [{ type: "internal", message: "Error al intentar enviar el correo electrónico" }],
+				status: 500
+			});
 		}
 
 		let ipAddress = req.headers.get("x-real-ip");
@@ -124,6 +127,9 @@ export async function POST(req: Request) {
 		return new NextResponse("Correo de recuperación enviado", { status: 200 });
 	} catch (error) {
 		console.log("[AUTH][SIGN IN][POST]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

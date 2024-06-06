@@ -5,13 +5,14 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
 	try {
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		const body = await req.json();
 
 		const { name, description } = body;
 
-		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
+		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
 
 		const brand = await prisma.brand.create({
 			data: {
@@ -23,7 +24,10 @@ export async function POST(req: Request) {
 		return NextResponse.json(brand);
 	} catch (error) {
 		console.log("[PRODUCTS][BRANDS][POST]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -44,6 +48,9 @@ export async function GET(req: Request) {
 		return NextResponse.json(products);
 	} catch (error) {
 		console.log("[PRODUCTS][BRANDS][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

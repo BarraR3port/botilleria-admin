@@ -122,6 +122,9 @@ export async function POST(req: Request) {
 		return new NextResponse("Correo de recuperación enviado", { status: 200 });
 	} catch (error) {
 		console.log("[AUTH][SIGN IN][POST]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

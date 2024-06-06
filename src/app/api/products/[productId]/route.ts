@@ -14,7 +14,10 @@ export async function GET(
 ) {
 	try {
 		if (!params.productId) {
-			return new NextResponse("ID del producto requerido", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "ID del producto requerido" }],
+				status: 400
+			});
 		}
 
 		const product = await prisma.product.findFirst({
@@ -34,7 +37,10 @@ export async function GET(
 		return NextResponse.json(product);
 	} catch (error) {
 		console.log("[PRODUCTS][ID][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -50,33 +56,62 @@ export async function PATCH(
 ) {
 	try {
 		if (!params.productId) {
-			return new NextResponse("ID del producto requerido", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "ID del producto requerido" }],
+				status: 400
+			});
 		}
 
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		const body = await req.json();
 
 		const { name, description, barcode, stock, sellPrice, costPrice, weightOrVolume, brandId, type, available } =
 			body;
 
-		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
-		if (!barcode) return new NextResponse("Barcode requerido", { status: 400 });
-		if (!stock) return new NextResponse("Stock requerido", { status: 400 });
-		if (!sellPrice) return new NextResponse("Precio de venta requerido", { status: 400 });
-		if (!costPrice) return new NextResponse("Precio de costo requerido", { status: 400 });
-		if (!weightOrVolume) return new NextResponse("Peso o Volumen requerido", { status: 400 });
-		if (!brandId) return new NextResponse("Id de la Marca requerido", { status: 400 });
-		if (!type) return new NextResponse("Tipo de producto requerido", { status: 400 });
-		if (available === undefined) return new NextResponse("Disponibilidad requerido", { status: 400 });
+		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
+		if (!barcode)
+			return NextResponse.json({
+				errors: [{ type: "barcode", message: "Código de barras requerido" }],
+				status: 400
+			});
+		if (!stock) return NextResponse.json({ errors: [{ type: "stock", message: "Stock requerido" }], status: 400 });
+		if (!sellPrice)
+			return NextResponse.json({
+				errors: [{ type: "sellPrice", message: "Precio de venta requerido" }],
+				status: 400
+			});
+		if (!costPrice)
+			return NextResponse.json({
+				errors: [{ type: "costPrice", message: "Precio de costo requerido" }],
+				status: 400
+			});
+		if (!weightOrVolume)
+			return NextResponse.json({
+				errors: [{ type: "weightOrVolume", message: "Peso o volumen requerido" }],
+				status: 400
+			});
+		if (!brandId)
+			return NextResponse.json({ errors: [{ type: "brandId", message: "Marca requerida" }], status: 400 });
+		if (!type) return NextResponse.json({ errors: [{ type: "type", message: "Tipo requerido" }], status: 400 });
+		if (available === undefined)
+			return NextResponse.json({
+				errors: [{ type: "available", message: "Disponibilidad requerida" }],
+				status: 400
+			});
 
 		const oldProduct = await prisma.product.findFirst({
 			where: {
 				id: Number(params.productId)
 			}
 		});
-		if (!oldProduct) return new NextResponse("No se encontró el producto", { status: 404 });
+		if (!oldProduct)
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "Producto no encontrado" }],
+				status: 404
+			});
 
 		const brand = await prisma.brand.findFirst({
 			where: {
@@ -84,7 +119,8 @@ export async function PATCH(
 			}
 		});
 
-		if (!brand) return new NextResponse("No se encontró la marca", { status: 404 });
+		if (!brand)
+			return NextResponse.json({ errors: [{ type: "brandId", message: "Marca no encontrada" }], status: 404 });
 
 		const product = await prisma.product.update({
 			where: {
@@ -107,7 +143,10 @@ export async function PATCH(
 		return NextResponse.json(product);
 	} catch (error) {
 		console.log("[PRODUCTS][ID][PATCH]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -123,11 +162,15 @@ export async function DELETE(
 ) {
 	try {
 		if (!params.productId) {
-			return new NextResponse("ID del producto requerido", { status: 400 });
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "ID del producto requerido" }],
+				status: 400
+			});
 		}
 
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		const isUserAdmin = await prisma.user.findFirst({
 			where: {
@@ -135,7 +178,8 @@ export async function DELETE(
 			}
 		});
 
-		if (!isUserAdmin) return new NextResponse("Sin autorización", { status: 401 });
+		if (!isUserAdmin)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		const oldProduct = await prisma.product.findFirst({
 			where: {
@@ -143,7 +187,11 @@ export async function DELETE(
 			}
 		});
 
-		if (!oldProduct) return new NextResponse("No se encontró el producto", { status: 404 });
+		if (!oldProduct)
+			return NextResponse.json({
+				errors: [{ type: "productId", message: "Producto no encontrado" }],
+				status: 404
+			});
 
 		const product = await prisma.product.delete({
 			where: {
@@ -154,6 +202,9 @@ export async function DELETE(
 		return NextResponse.json(product);
 	} catch (error) {
 		console.log("[PRODUCTS][ID][DELETE]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }

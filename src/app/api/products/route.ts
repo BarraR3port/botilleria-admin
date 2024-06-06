@@ -5,22 +5,46 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
 	try {
 		const userId = await getAuth(req);
-		if (!userId) return new NextResponse("Sin autorización", { status: 401 });
+		if (!userId)
+			return NextResponse.json({ errors: [{ type: "unauthorized", message: "Sin autorización" }], status: 401 });
 
 		const body = await req.json();
 
 		const { name, description, barcode, stock, sellPrice, costPrice, weightOrVolume, brandId, type, available } =
 			body;
 
-		if (!name) return new NextResponse("Nombre requerido", { status: 400 });
-		if (!barcode) return new NextResponse("Barcode requerido", { status: 400 });
-		if (!stock) return new NextResponse("Stock requerido", { status: 400 });
-		if (!sellPrice) return new NextResponse("Precio de venta requerido", { status: 400 });
-		if (!costPrice) return new NextResponse("Precio de costo requerido", { status: 400 });
-		if (!weightOrVolume) return new NextResponse("Peso o Volumen requerido", { status: 400 });
-		if (!brandId) return new NextResponse("Id de la Marca requerido", { status: 400 });
-		if (!type) return new NextResponse("Tipo de producto requerido", { status: 400 });
-		if (available === undefined) return new NextResponse("Disponibilidad requerido", { status: 400 });
+		if (!name)
+			return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }] }, { status: 400 });
+		if (!barcode)
+			return NextResponse.json(
+				{ errors: [{ type: "barcode", message: "Código de barras requerido" }] },
+				{ status: 400 }
+			);
+		if (!stock)
+			return NextResponse.json({ errors: [{ type: "stock", message: "Stock requerido" }] }, { status: 400 });
+		if (!sellPrice)
+			return NextResponse.json(
+				{ errors: [{ type: "sellPrice", message: "Precio de venta requerido" }] },
+				{ status: 400 }
+			);
+		if (!costPrice)
+			return NextResponse.json(
+				{ errors: [{ type: "costPrice", message: "Precio de costo requerido" }] },
+				{ status: 400 }
+			);
+		if (!weightOrVolume)
+			return NextResponse.json(
+				{ errors: [{ type: "weightOrVolume", message: "Peso o volumen requerido" }] },
+				{ status: 400 }
+			);
+		if (!brandId)
+			return NextResponse.json({ errors: [{ type: "brandId", message: "Marca requerida" }] }, { status: 400 });
+		if (!type) return NextResponse.json({ errors: [{ type: "type", message: "Tipo requerido" }] }, { status: 400 });
+		if (available === undefined)
+			return NextResponse.json(
+				{ errors: [{ type: "available", message: "Disponibilidad requerida" }] },
+				{ status: 400 }
+			);
 
 		const store = await prisma.product.create({
 			data: {
@@ -45,7 +69,10 @@ export async function POST(req: Request) {
 		return NextResponse.json(store);
 	} catch (error) {
 		console.log("[PRODUCTS][POST]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
 
@@ -70,6 +97,9 @@ export async function GET(req: Request) {
 		return NextResponse.json(products);
 	} catch (error) {
 		console.log("[PRODUCTS][GET]", error);
-		return new NextResponse("Error Interno", { status: 500 });
+		return NextResponse.json({
+			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
+			status: 500
+		});
 	}
 }
