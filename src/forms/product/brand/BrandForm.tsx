@@ -1,6 +1,6 @@
 "use client";
 
-import { handleAxiosResponse } from "@/api/utils";
+import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
@@ -58,14 +58,16 @@ export default function ProductForm({ brand, session }: BrandProps) {
 								Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
 							}
 						})
-						.then(response => handleAxiosResponse(response, form))
+						.catch(res => catchAxiosResponse(res, form))
+						.then(res => handleAxiosResponse(res, form))
 				: await axios
 						.post("/api/products/brands", data, {
 							headers: {
 								Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
 							}
 						})
-						.then(response => handleAxiosResponse(response, form));
+						.catch(res => catchAxiosResponse(res, form))
+						.then(res => handleAxiosResponse(res, form));
 
 			if (response) {
 				toast({

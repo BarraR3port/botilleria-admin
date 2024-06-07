@@ -2,7 +2,7 @@
 
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { handleAxiosResponse } from "@/api/utils";
+import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -30,8 +30,8 @@ export function RecoverForm() {
 		setLoading(true);
 		const response = await axios
 			.post("/api/auth/recover", data)
-
-			.then(response => handleAxiosResponse(response, form));
+			.catch(res => catchAxiosResponse(res, form))
+			.then(res => handleAxiosResponse(res, form));
 
 		if (response) setOpen(true);
 

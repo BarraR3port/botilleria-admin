@@ -1,6 +1,6 @@
 "use client";
 
-import { handleAxiosResponse } from "@/api/utils";
+import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
@@ -67,7 +67,8 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 					}
 				})
-				.then(response => handleAxiosResponse(response, basicForm));
+				.catch(res => catchAxiosResponse(res, basicForm))
+				.then(res => handleAxiosResponse(res, basicForm));
 
 			if (response) {
 				toast({
@@ -106,7 +107,8 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						}
 					}
 				)
-				.then(response => handleAxiosResponse(response, criticForm));
+				.catch(res => catchAxiosResponse(res, criticForm))
+				.then(res => handleAxiosResponse(res, criticForm));
 
 			if (response) {
 				toast({

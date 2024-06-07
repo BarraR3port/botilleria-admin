@@ -2,7 +2,7 @@
 
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { handleAxiosResponse } from "@/api/utils";
+import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { triggerFireworks } from "@/components/magicui/confetti";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -45,7 +45,8 @@ export function ResetForm({ email, recovery }: ResetFormProps) {
 				email,
 				token: recovery.token
 			})
-			.then(response => handleAxiosResponse(response, form));
+			.catch(res => catchAxiosResponse(res, form))
+			.then(res => handleAxiosResponse(res, form));
 
 		if (response) {
 			triggerFireworks();
@@ -63,6 +64,7 @@ export function ResetForm({ email, recovery }: ResetFormProps) {
 				if (signInResponse.ok && signInResponse.url) {
 					window.location.href = signInResponse.url;
 				}
+				window.location.reload();
 			}
 		}
 

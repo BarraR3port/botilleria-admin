@@ -1,6 +1,6 @@
 "use client";
 
-import { handleAxiosResponse } from "@/api/utils";
+import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { triggerFireworks } from "@/components/magicui/confetti";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -55,7 +55,8 @@ export default function NewUserForm({ roles, session }: FormProps) {
 						Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 					}
 				})
-				.then(response => handleAxiosResponse(response, form));
+				.catch(res => catchAxiosResponse(res, form))
+				.then(res => handleAxiosResponse(res, form));
 
 			if (response) {
 				toast({
