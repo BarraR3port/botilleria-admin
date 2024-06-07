@@ -14,10 +14,12 @@ export async function GET(
 ) {
 	try {
 		if (!params.productId) {
-			return NextResponse.json({
-				errors: [{ type: "productId", message: "ID del producto requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "productId", message: "ID del producto requerido" }]
+				},
+				{ status: 400 }
+			);
 		}
 
 		const product = await prisma.product.findFirst({
@@ -56,10 +58,12 @@ export async function PATCH(
 ) {
 	try {
 		if (!params.productId) {
-			return NextResponse.json({
-				errors: [{ type: "productId", message: "ID del producto requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "productId", message: "ID del producto requerido" }]
+				},
+				{ status: 400 }
+			);
 		}
 
 		const userId = await getAuth(req);
@@ -73,34 +77,51 @@ export async function PATCH(
 
 		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
 		if (!barcode)
-			return NextResponse.json({
-				errors: [{ type: "barcode", message: "Código de barras requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "barcode", message: "Código de barras requerido" }]
+				},
+				{ status: 400 }
+			);
 		if (!stock) return NextResponse.json({ errors: [{ type: "stock", message: "Stock requerido" }], status: 400 });
 		if (!sellPrice)
-			return NextResponse.json({
-				errors: [{ type: "sellPrice", message: "Precio de venta requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "sellPrice", message: "Precio de venta requerido" }]
+				},
+				{ status: 400 }
+			);
 		if (!costPrice)
-			return NextResponse.json({
-				errors: [{ type: "costPrice", message: "Precio de costo requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "costPrice", message: "Precio de costo requerido" }]
+				},
+				{ status: 400 }
+			);
 		if (!weightOrVolume)
-			return NextResponse.json({
-				errors: [{ type: "weightOrVolume", message: "Peso o volumen requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "weightOrVolume", message: "Peso o volumen requerido" }]
+				},
+				{ status: 400 }
+			);
 		if (!brandId)
-			return NextResponse.json({ errors: [{ type: "brandId", message: "Marca requerida" }], status: 400 });
-		if (!type) return NextResponse.json({ errors: [{ type: "type", message: "Tipo requerido" }], status: 400 });
+			return NextResponse.json(
+				{ errors: [{ type: "brandId", message: "Marca requerida" }], status: 400 },
+				{ status: 400 }
+			);
+		if (!type)
+			return NextResponse.json(
+				{ errors: [{ type: "type", message: "Tipo requerido" }], status: 400 },
+				{ status: 400 }
+			);
 		if (available === undefined)
-			return NextResponse.json({
-				errors: [{ type: "available", message: "Disponibilidad requerida" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "available", message: "Disponibilidad requerida" }]
+				},
+				{ status: 400 }
+			);
 
 		const oldProduct = await prisma.product.findFirst({
 			where: {
@@ -108,10 +129,13 @@ export async function PATCH(
 			}
 		});
 		if (!oldProduct)
-			return NextResponse.json({
-				errors: [{ type: "productId", message: "Producto no encontrado" }],
-				status: 404
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "productId", message: "Producto no encontrado" }],
+					status: 404
+				},
+				{ status: 400 }
+			);
 
 		const brand = await prisma.brand.findFirst({
 			where: {
@@ -162,10 +186,12 @@ export async function DELETE(
 ) {
 	try {
 		if (!params.productId) {
-			return NextResponse.json({
-				errors: [{ type: "productId", message: "ID del producto requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "productId", message: "ID del producto requerido" }]
+				},
+				{ status: 400 }
+			);
 		}
 
 		const userId = await getAuth(req);

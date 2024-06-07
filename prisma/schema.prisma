@@ -72,6 +72,7 @@ model Discount {
   description String       @db.VarChar(1024)
   type        DiscountType
   value       Float
+  active      Boolean      @default(true)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   products    Product[]    @relation("ProductToDiscount")

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import BrandForm from "@/forms/product/brand/BrandForm";
 import prisma from "@/lib/prismadb";
-import { notFound } from "next/navigation";
+import { notFound, redirect, RedirectType } from "next/navigation";
 
 export default async function Page({
 	params
@@ -11,7 +11,7 @@ export default async function Page({
 	};
 }) {
 	const session = await auth();
-	if (!session) return { redirect: { destination: "/signIn", permanent: false } };
+	if (!session) redirect("/signIn", RedirectType.replace);
 	const brand = await prisma.brand
 		.findUnique({
 			where: {

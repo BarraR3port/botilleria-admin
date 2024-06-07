@@ -30,24 +30,8 @@ export function RecoverForm() {
 		setLoading(true);
 		const response = await axios
 			.post("/api/auth/recover", data)
-			.catch((error: ApiResponse) => {
-				if (!error) return null;
 
-				if (typeof error === "object" && "response" in error && "data" in error.response) {
-					if ("errors" in error.response.data) {
-						error.response.data.errors.forEach(errorMessage => {
-							form.setError(errorMessage.type as any, { message: errorMessage.message });
-							toast({
-								title: errorMessage.message,
-								variant: "destructive",
-								duration: 1500
-							});
-						});
-					}
-					return null;
-				}
-			})
-			.then(handleAxiosResponse);
+			.then(response => handleAxiosResponse(response, form));
 
 		if (response) setOpen(true);
 
@@ -61,7 +45,6 @@ export function RecoverForm() {
 				description="Se ha enviado un correo de recuperación, revisa tu bandeja de entrada y spam para recuperar tu cuenta."
 				open={open}
 				onConfirm={() => {
-					console.log("close");
 					setOpen(false);
 				}}
 				loading={loading}

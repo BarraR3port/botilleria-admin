@@ -8,29 +8,29 @@ export async function GET(
 		params
 	}: {
 		params: {
-			brandId: string;
+			discountId: number;
 		};
 	}
 ) {
 	try {
-		if (!params.brandId) {
+		if (!params.discountId) {
 			return NextResponse.json(
 				{
-					errors: [{ type: "brandId", message: "ID de la marca requerida" }]
+					errors: [{ type: "discountId", message: "ID del descuento requerido" }]
 				},
 				{ status: 400 }
 			);
 		}
 
-		const product = await prisma.brand.findFirst({
+		const discount = await prisma.discount.findFirst({
 			where: {
-				id: params.brandId
+				id: Number(params.discountId)
 			}
 		});
 
-		return NextResponse.json(product);
+		return NextResponse.json(discount);
 	} catch (error) {
-		console.log("[PRODUCTS][BRANDS][ID][GET]", error);
+		console.log("[SALES][DISCOUNT][ID][GET]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500
@@ -44,14 +44,14 @@ export async function PATCH(
 		params
 	}: {
 		params: {
-			brandId: string;
+			discountId: number;
 		};
 	}
 ) {
 	try {
-		if (!params.brandId) {
+		if (!params.discountId) {
 			return NextResponse.json(
-				{ errors: [{ type: "brandId", message: "ID de la marca requerida" }] },
+				{ errors: [{ type: "discountId", message: "ID del descuento requerido" }] },
 				{ status: 400 }
 			);
 		}
@@ -65,32 +65,45 @@ export async function PATCH(
 
 		const body = await req.json();
 
-		const { name, description } = body;
+		const { name, description, type, active, value } = body;
 
 		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
 
-		const brand = await prisma.brand.findFirst({
+		if (!type) return NextResponse.json({ errors: [{ type: "type", message: "Tipo requerido" }], status: 400 });
+
+		if (active === undefined)
+			return NextResponse.json({ errors: [{ type: "active", message: "Activo requerido" }], status: 400 });
+
+		if (!value) return NextResponse.json({ errors: [{ type: "value", message: "Valor requerido" }], status: 400 });
+
+		const discount = await prisma.discount.findFirst({
 			where: {
-				id: params.brandId
+				id: Number(params.discountId)
 			}
 		});
 
-		if (!brand)
-			return NextResponse.json({ errors: [{ type: "brand", message: "Marca no encontrada" }], status: 404 });
+		if (!discount)
+			return NextResponse.json({
+				errors: [{ type: "discount", message: "Descuento no encontrado" }],
+				status: 404
+			});
 
-		const product = await prisma.brand.update({
+		const newDiscount = await prisma.discount.update({
 			where: {
-				id: params.brandId
+				id: Number(params.discountId)
 			},
 			data: {
 				name,
-				description
+				description,
+				type,
+				active,
+				value
 			}
 		});
 
-		return NextResponse.json(product);
+		return NextResponse.json(newDiscount);
 	} catch (error) {
-		console.log("[PRODUCTS][BRANDS][ID][PATCH]", error);
+		console.log("[SALES][DISCOUNT][ID][PATCH]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500
@@ -104,15 +117,15 @@ export async function DELETE(
 		params
 	}: {
 		params: {
-			brandId: string;
+			discountId: string;
 		};
 	}
 ) {
 	try {
-		if (!params.brandId) {
+		if (!params.discountId) {
 			return NextResponse.json(
 				{
-					errors: [{ type: "brandId", message: "ID de la marca requerida" }]
+					errors: [{ type: "discountId", message: "ID del descuento requerido" }]
 				},
 				{ status: 400 }
 			);
@@ -139,24 +152,27 @@ export async function DELETE(
 				{ status: 401 }
 			);
 
-		const oldBrand = await prisma.brand.findFirst({
+		const oldDiscount = await prisma.discount.findFirst({
 			where: {
-				id: params.brandId
+				id: Number(params.discountId)
 			}
 		});
 
-		if (!oldBrand)
-			return NextResponse.json({ errors: [{ type: "brand", message: "Marca no encontrada" }], status: 404 });
+		if (!oldDiscount)
+			return NextResponse.json({
+				errors: [{ type: "discount", message: "Descuento no encontrado" }],
+				status: 404
+			});
 
-		const brand = await prisma.brand.delete({
+		const discount = await prisma.discount.delete({
 			where: {
-				id: params.brandId
+				id: Number(params.discountId)
 			}
 		});
 
-		return NextResponse.json(brand);
+		return NextResponse.json(discount);
 	} catch (error) {
-		console.log("[PRODUCTS][BRANDS][ID][DELETE]", error);
+		console.log("[SALES][DISCOUNT][ID][DELETE]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500

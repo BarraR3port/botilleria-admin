@@ -76,48 +76,14 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 								Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 							}
 						})
-						.catch((error: AuthResponse) => {
-							if (!error) return null;
-
-							if (typeof error === "object" && "response" in error && "data" in error.response) {
-								if ("errors" in error.response.data) {
-									error.response.data.errors.forEach(errorMessage => {
-										form.setError(errorMessage.type as any, { message: errorMessage.message });
-										toast({
-											title: errorMessage.message,
-											variant: "destructive",
-											duration: 1500
-										});
-									});
-								}
-								return null;
-							}
-						})
-						.then(handleAxiosResponse)
+						.then(response => handleAxiosResponse(response, form))
 				: await axios
 						.post("/api/products", data, {
 							headers: {
 								Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 							}
 						})
-						.catch((error: AuthResponse) => {
-							if (!error) return null;
-
-							if (typeof error === "object" && "response" in error && "data" in error.response) {
-								if ("errors" in error.response.data) {
-									error.response.data.errors.forEach(errorMessage => {
-										form.setError(errorMessage.type as any, { message: errorMessage.message });
-										toast({
-											title: errorMessage.message,
-											variant: "destructive",
-											duration: 1500
-										});
-									});
-								}
-								return null;
-							}
-						})
-						.then(handleAxiosResponse);
+						.then(response => handleAxiosResponse(response, form));
 
 			if (response) {
 				toast({

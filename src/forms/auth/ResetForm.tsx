@@ -45,24 +45,7 @@ export function ResetForm({ email, recovery }: ResetFormProps) {
 				email,
 				token: recovery.token
 			})
-			.catch((error: ApiResponse) => {
-				if (!error) return null;
-
-				if (typeof error === "object" && "response" in error && "data" in error.response) {
-					if ("errors" in error.response.data) {
-						error.response.data.errors.forEach(errorMessage => {
-							form.setError(errorMessage.type as any, { message: errorMessage.message });
-							toast({
-								title: errorMessage.message,
-								variant: "destructive",
-								duration: 1500
-							});
-						});
-					}
-					return null;
-				}
-			})
-			.then(handleAxiosResponse);
+			.then(response => handleAxiosResponse(response, form));
 
 		if (response) {
 			triggerFireworks();

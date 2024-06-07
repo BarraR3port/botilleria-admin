@@ -67,24 +67,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 					}
 				})
-				.catch((error: AuthResponse) => {
-					if (!error) return null;
-
-					if (typeof error === "object" && "response" in error && "data" in error.response) {
-						if ("errors" in error.response.data) {
-							error.response.data.errors.forEach(errorMessage => {
-								basicForm.setError(errorMessage.type as any, { message: errorMessage.message });
-								toast({
-									title: errorMessage.message,
-									variant: "destructive",
-									duration: 1500
-								});
-							});
-						}
-						return null;
-					}
-				})
-				.then(handleAxiosResponse);
+				.then(response => handleAxiosResponse(response, basicForm));
 
 			if (response) {
 				toast({
@@ -123,24 +106,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						}
 					}
 				)
-				.catch((error: AuthResponse) => {
-					if (!error) return null;
-
-					if (typeof error === "object" && "response" in error && "data" in error.response) {
-						if ("errors" in error.response.data) {
-							error.response.data.errors.forEach(errorMessage => {
-								criticForm.setError(errorMessage.type as any, { message: errorMessage.message });
-								toast({
-									title: errorMessage.message,
-									variant: "destructive",
-									duration: 1500
-								});
-							});
-						}
-						return null;
-					}
-				})
-				.then(handleAxiosResponse);
+				.then(response => handleAxiosResponse(response, criticForm));
 
 			if (response) {
 				toast({

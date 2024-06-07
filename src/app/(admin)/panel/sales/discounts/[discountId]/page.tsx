@@ -1,34 +1,46 @@
 import { auth } from "@/auth";
 import BrandForm from "@/forms/product/brand/BrandForm";
+import DiscountForm from "@/forms/sale/discount/DiscountForm";
 import prisma from "@/lib/prismadb";
-import { notFound } from "next/navigation";
+import { notFound, redirect, RedirectType } from "next/navigation";
 
 export default async function Page({
 	params
 }: {
 	params: {
-		brandId: string;
+		discountId: number | "new";
 	};
 }) {
 	const session = await auth();
-	if (!session) return { redirect: { destination: "/signIn", permanent: false } };
-	const brand = await prisma.brand
+	if (!session) return redirect("/signIn", RedirectType.replace);
+	const discount = await prisma.discount
 		.findUnique({
 			where: {
-				id: params.brandId || undefined
+				id: Number(params.discountId) || undefined
 			}
 		})
 		.catch(() => null);
 
-	if (!brand && params.brandId !== "new") {
+	if (!discount && params.discountId !== "new") {
 		notFound();
 	}
 
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
-				<BrandForm brand={brand} session={session} />
+				<DiscountForm discount={discount} session={session} types={DISCOUNT_TYPES} />
 			</div>
 		</div>
 	);
 }
+
+const DISCOUNT_TYPES = [
+	{
+		value: "PERCENTAGE",
+		label: "Porcentaje"
+	},
+	{
+		value: "AMOUNT",
+		label: "Monto"
+	}
+];

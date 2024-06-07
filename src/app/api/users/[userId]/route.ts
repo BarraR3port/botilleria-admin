@@ -16,10 +16,12 @@ export async function GET(
 ) {
 	try {
 		if (!params.userId) {
-			return NextResponse.json({
-				errors: [{ type: "userId", message: "ID del usuario requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "userId", message: "ID del usuario requerido" }]
+				},
+				{ status: 400 }
+			);
 		}
 
 		const user = await prisma.user.findFirst({
@@ -58,10 +60,12 @@ export async function PATCH(
 ) {
 	try {
 		if (!params.userId) {
-			return NextResponse.json({
-				errors: [{ type: "userId", message: "ID del usuario requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "userId", message: "ID del usuario requerido" }]
+				},
+				{ status: 400 }
+			);
 		}
 
 		const userId = await getAuth(req);
@@ -186,10 +190,12 @@ export async function DELETE(
 ) {
 	try {
 		if (!params.productId) {
-			return NextResponse.json({
-				errors: [{ type: "productId", message: "ID del producto requerido" }],
-				status: 400
-			});
+			return NextResponse.json(
+				{
+					errors: [{ type: "productId", message: "ID del producto requerido" }]
+				},
+				{ status: 400 }
+			);
 		}
 
 		const userId = await getAuth(req);

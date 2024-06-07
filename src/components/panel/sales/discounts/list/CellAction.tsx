@@ -23,20 +23,20 @@ export default function CellAction({ brand }: CellActionProps) {
 	const { toast } = useToast();
 
 	function edit() {
-		router.push(`/panel/products/brands/${brand.id}`);
+		router.push(`/panel/sales/discounts/${brand.id}`);
 	}
 
 	async function onDelete() {
 		setLoading(true);
 		try {
-			const response = await axios.delete(`/api/products/brands/${brand.id}`, {
+			const response = await axios.delete(`/api/sales/discounts/${brand.id}`, {
 				headers: {
 					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 				}
 			});
 			if (response?.data) {
 				toast({
-					title: "Producto eliminado correctamente",
+					title: "Descuento eliminado correctamente",
 					variant: "success",
 					duration: 1500
 				});
@@ -45,7 +45,7 @@ export default function CellAction({ brand }: CellActionProps) {
 		} catch (error) {
 			console.error(error);
 			toast({
-				title: "Ocurrió un error al eliminar el producto de tu tienda",
+				title: "Ocurrió un error al eliminar el descuento de tu tienda",
 				variant: "error",
 				duration: 1500
 			});

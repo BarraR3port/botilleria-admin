@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import ProductForm from "@/forms/product/ProductForm";
 import prisma from "@/lib/prismadb";
-import { notFound } from "next/navigation";
+import { notFound, redirect, RedirectType } from "next/navigation";
 import React from "react";
 
 export default async function Product({
@@ -13,7 +13,7 @@ export default async function Product({
 }) {
 	const session = await auth();
 
-	if (!session) return { redirect: { destination: "/signIn", permanent: false } };
+	if (!session) redirect("/signIn", RedirectType.replace);
 
 	const product = await prisma.product
 		.findUnique({

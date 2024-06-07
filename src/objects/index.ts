@@ -32,7 +32,7 @@ export type NextErrorResponse = {
 	};
 };
 
-export type ApiResponse = NextErrorResponse | "" | undefined | true;
+export type ApiResponse = UserErrorResponse | "" | undefined | true;
 
 export type AuthResponse = UserAuthData | ApiResponse;
 

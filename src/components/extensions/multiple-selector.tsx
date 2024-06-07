@@ -399,7 +399,6 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 									data-disabled={disabled || undefined}
 									onClick={() => {
 										if (redirectTo) {
-											console.log("redirectTo: ", redirectTo + option.value);
 											router.push(redirectTo + option.value);
 										}
 									}}
