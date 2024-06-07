@@ -128,3 +128,60 @@ export async function POST(req: Request) {
 		});
 	}
 }
+
+export async function GET(req: Request) {
+	const body = await req.json();
+
+	const { recoveryId, token } = body;
+
+	if (!recoveryId || !token) {
+		return NextResponse.json(
+			{
+				errors: [
+					{
+						type: "token",
+						message: "Token inválido"
+					}
+				]
+			},
+			{ status: 400 }
+		);
+	}
+
+	const recovery = await prisma.recovery.findUnique({
+		where: {
+			id: recoveryId,
+			token
+		}
+	});
+
+	if (!recovery) {
+		return NextResponse.json(
+			{
+				errors: [
+					{
+						type: "token",
+						message: "Token inválido"
+					}
+				]
+			},
+			{ status: 400 }
+		);
+	}
+
+	if (recovery.status !== "WAITING") {
+		return NextResponse.json(
+			{
+				errors: [
+					{
+						type: "token",
+						message: "Token inválido"
+					}
+				]
+			},
+			{ status: 400 }
+		);
+	}
+
+	return new NextResponse(null, { status: 200 });
+}
