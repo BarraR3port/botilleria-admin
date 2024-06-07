@@ -12,27 +12,37 @@ import {
 } from "@tanstack/react-table";
 
 import { SelectGroup } from "@radix-ui/react-select";
-import { Button } from "@ui/button";
 import { Input } from "@ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/table";
-import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { DataTablePagination } from "./data-table-pagination";
 import { Form, FormControl, FormField, FormItem } from "./form";
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./select";
+import Heading from "./heading";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
+import { Separator } from "./separator";
 
 type SearchKey = {
 	value: string;
 	label: string;
 };
 interface DataTableProps<TData, TValue> {
+	title: string;
+	mainPath: string;
+	icon: ReactNode;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	searchKeys: SearchKey[];
 }
 
-export function DataTable<TData, TValue>({ columns, data, searchKeys }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+	columns,
+	data,
+	searchKeys,
+	title,
+	mainPath,
+	icon
+}: DataTableProps<TData, TValue>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const table = useReactTable({
 		data,
@@ -55,60 +65,70 @@ export function DataTable<TData, TValue>({ columns, data, searchKeys }: DataTabl
 
 	return (
 		<div>
-			<div className="justify-between grid gap-x-2 lg:grid-flow-col grid-cols-2">
-				<div className="flex py-4 gap-x-2 col-span-1">
-					<Input
-						placeholder="Buscar"
-						value={(table.getColumn(form.getValues("searchKey"))?.getFilterValue() as string) ?? ""}
-						onChange={event =>
-							table.getColumn(form.getValues("searchKey"))?.setFilterValue(event.target.value)
-						}
-						className="max-w-sm"
-					/>
-					<Form {...form}>
-						<FormField
-							control={form.control}
-							name="searchKey"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Select
-											onValueChange={field.onChange}
-											value={field.value}
-											defaultValue={field.value}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectGroup>
-														<SelectValue
-															defaultValue={field.value}
-															placeholder="Selecciona un tipo de producto"
-														/>
-													</SelectGroup>
-													<SelectContent>
-														{searchKeys.map(key => {
-															return (
-																<SelectItem key={key.value} value={key.value}>
-																	{key.label}
-																</SelectItem>
-															);
-														})}
-													</SelectContent>
-												</SelectTrigger>
-											</FormControl>
-										</Select>
-									</FormControl>
-								</FormItem>
-							)}
+			<div className="sticky top-0 bg-background z-10 space-y-2">
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-2">
+						{icon}
+						<Heading title={title} mainPath={mainPath} />
+					</div>
+				</div>
+				<Separator className="pt-2" />
+				<div className="justify-between grid gap-x-2 lg:grid-flow-col grid-cols-2 ">
+					<div className="flex py-4 gap-x-2 col-span-1">
+						<Input
+							placeholder="Buscar"
+							value={(table.getColumn(form.getValues("searchKey"))?.getFilterValue() as string) ?? ""}
+							onChange={event =>
+								table.getColumn(form.getValues("searchKey"))?.setFilterValue(event.target.value)
+							}
+							className="max-w-sm"
 						/>
-					</Form>
+						<Form {...form}>
+							<FormField
+								control={form.control}
+								name="searchKey"
+								render={({ field }) => (
+									<FormItem>
+										<FormControl>
+											<Select
+												onValueChange={field.onChange}
+												value={field.value}
+												defaultValue={field.value}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectGroup>
+															<SelectValue
+																defaultValue={field.value}
+																placeholder="Selecciona un tipo de producto"
+															/>
+														</SelectGroup>
+														<SelectContent>
+															{searchKeys.map(key => {
+																return (
+																	<SelectItem key={key.value} value={key.value}>
+																		{key.label}
+																	</SelectItem>
+																);
+															})}
+														</SelectContent>
+													</SelectTrigger>
+												</FormControl>
+											</Select>
+										</FormControl>
+									</FormItem>
+								)}
+							/>
+						</Form>
+					</div>
+					<div className=" text-sm text-muted-foreground items-center flex col-span-1">
+						{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
+						productos seleccionados
+					</div>
+					<DataTablePagination table={table} />
 				</div>
-				<div className=" text-sm text-muted-foreground items-center flex col-span-1">
-					{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
-					productos seleccionados
-				</div>
-				<DataTablePagination table={table} />
 			</div>
+
 			<div className="rounded-md border ">
 				<Table>
 					<TableHeader>

@@ -1,5 +1,5 @@
-import { Client } from "@/components/panel/products/brands/list/Client";
-import type { Column } from "@/components/panel/products/brands/list/Column";
+import { Client } from "@/components/panel/sales/discounts/list/Client";
+import type { Column } from "@/components/panel/sales/discounts/list/Column";
 import prisma from "@/lib/prismadb";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";

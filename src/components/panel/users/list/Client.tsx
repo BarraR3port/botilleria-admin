@@ -1,11 +1,5 @@
-"use client";
-
-import { Button } from "@ui/button";
 import { DataTable } from "@ui/data-table";
-import Heading from "@ui/heading";
-import { Separator } from "@ui/separator";
-import { Plus, Users } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Users } from "lucide-react";
 import { type Column, columns } from "./Column";
 
 interface ClientProps {
@@ -13,28 +7,15 @@ interface ClientProps {
 }
 
 export function Client({ users }: ClientProps) {
-	const router = useRouter();
-
 	return (
-		<>
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<Users className="h-6 w-6" />
-					<Heading title={"Usuarios"} mainPath="/panel/users" />
-				</div>
-				<Button
-					onClick={() => {
-						router.push("/panel/users/new");
-					}}
-					variant="outline"
-				>
-					<Plus className="mr-2 w-4 h-4" />
-					Crear Usuario
-				</Button>
-			</div>
-			<Separator />
-			<DataTable columns={columns} data={users} searchKeys={SEARCH_KEYS} />
-		</>
+		<DataTable
+			columns={columns}
+			data={users}
+			searchKeys={SEARCH_KEYS}
+			title="Usuarios"
+			mainPath="/panel/users"
+			icon={<Users className="h-6 w-6" />}
+		/>
 	);
 }
 
