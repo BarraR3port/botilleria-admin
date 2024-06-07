@@ -1,13 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Beer, Box, ChevronRightIcon, DollarSign, History, List, Plus, Settings, Tag, Users } from "lucide-react";
-import Image from "next/image";
+import { Beer, Box, DollarSign, List, Plus, Settings, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { UserIcon } from "../layout/Header/UserIcon";
 import { buttonVariants } from "../ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../ui/resizable";
 import { Separator } from "../ui/separator";
 import { Nav } from "./nav";

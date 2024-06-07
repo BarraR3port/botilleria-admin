@@ -15,6 +15,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "../../components/ui/use-toast";
+import { triggerFireworks } from "@/components/magicui/confetti";
 
 interface ResetFormProps {
 	email: string;
@@ -64,6 +65,7 @@ export function ResetForm({ email, recovery }: ResetFormProps) {
 			.then(handleAxiosResponse);
 
 		if (response) {
+			triggerFireworks();
 			const signInResponse = await signIn("credentials", {
 				redirect: false,
 				callbackUrl: "/panel",

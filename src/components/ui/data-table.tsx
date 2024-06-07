@@ -55,52 +55,61 @@ export function DataTable<TData, TValue>({ columns, data, searchKeys }: DataTabl
 
 	return (
 		<div>
-			<div className="flex items-center py-4 gap-2">
-				<Input
-					placeholder="Buscar"
-					value={(table.getColumn(form.getValues("searchKey"))?.getFilterValue() as string) ?? ""}
-					onChange={event => table.getColumn(form.getValues("searchKey"))?.setFilterValue(event.target.value)}
-					className="max-w-sm"
-				/>
-				<Form {...form}>
-					<FormField
-						control={form.control}
-						name="searchKey"
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<Select
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectGroup>
-													<SelectValue
-														defaultValue={field.value}
-														placeholder="Selecciona un tipo de producto"
-													/>
-												</SelectGroup>
-												<SelectContent>
-													{searchKeys.map(key => {
-														return (
-															<SelectItem key={key.value} value={key.value}>
-																{key.label}
-															</SelectItem>
-														);
-													})}
-												</SelectContent>
-											</SelectTrigger>
-										</FormControl>
-									</Select>
-								</FormControl>
-							</FormItem>
-						)}
+			<div className="justify-between grid gap-x-2 lg:grid-flow-col grid-cols-2">
+				<div className="flex py-4 gap-x-2 col-span-1">
+					<Input
+						placeholder="Buscar"
+						value={(table.getColumn(form.getValues("searchKey"))?.getFilterValue() as string) ?? ""}
+						onChange={event =>
+							table.getColumn(form.getValues("searchKey"))?.setFilterValue(event.target.value)
+						}
+						className="max-w-sm"
 					/>
-				</Form>
+					<Form {...form}>
+						<FormField
+							control={form.control}
+							name="searchKey"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Select
+											onValueChange={field.onChange}
+											value={field.value}
+											defaultValue={field.value}
+										>
+											<FormControl>
+												<SelectTrigger>
+													<SelectGroup>
+														<SelectValue
+															defaultValue={field.value}
+															placeholder="Selecciona un tipo de producto"
+														/>
+													</SelectGroup>
+													<SelectContent>
+														{searchKeys.map(key => {
+															return (
+																<SelectItem key={key.value} value={key.value}>
+																	{key.label}
+																</SelectItem>
+															);
+														})}
+													</SelectContent>
+												</SelectTrigger>
+											</FormControl>
+										</Select>
+									</FormControl>
+								</FormItem>
+							)}
+						/>
+					</Form>
+				</div>
+				<div className=" text-sm text-muted-foreground items-center flex col-span-1">
+					{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
+					productos seleccionados
+				</div>
+				<DataTablePagination table={table} />
 			</div>
-			<div className="rounded-md border">
+			<div className="rounded-md border ">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map(headerGroup => (
@@ -138,7 +147,6 @@ export function DataTable<TData, TValue>({ columns, data, searchKeys }: DataTabl
 					</TableBody>
 				</Table>
 			</div>
-			<DataTablePagination table={table} />
 		</div>
 	);
 }
