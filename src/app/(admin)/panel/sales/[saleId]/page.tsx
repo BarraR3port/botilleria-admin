@@ -1,62 +1,74 @@
 import { auth } from "@/auth";
 import ProductForm from "@/forms/product/ProductForm";
+import SaleForm from "@/forms/sale/SaleForm";
 import prisma from "@/lib/prismadb";
 import { notFound, redirect, RedirectType } from "next/navigation";
-import React from "react";
+import sales from "../sales_data3.json";
+import type { Column, ColumnRef } from "@/components/panel/sales/list/Column";
+import { priceFormatter } from "@/lib/utils";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export default async function Product({
 	params
 }: {
 	params: {
-		productId: number | "new";
+		saleId: number | "new";
 	};
 }) {
 	const session = await auth();
 
 	if (!session) redirect("/signIn", RedirectType.replace);
+	const newSales: ColumnRef[] = JSON.parse(JSON.stringify(sales));
 
-	const product = await prisma.product
+	/* const sale = await prisma.sale
 		.findUnique({
 			where: {
-				id: Number(params.productId) || undefined
+				id: Number(params.saleId) || undefined
 			},
 			include: {
-				discounts: true,
-				brand: {
-					select: {
-						name: true
+				products: {
+					include: {
+						product: true
 					}
 				}
 			}
 		})
-		.catch(() => null);
+		.catch(() => null); */
 
-	if (!product && params.productId !== "new") {
+	const sale = newSales[Number(params.saleId)];
+
+	if (!sale) {
 		notFound();
 	}
 
-	const brands = await prisma.brand.findMany({}).catch(() => []);
+	const formattedSales: Column = {
+		id: sale.id,
+		total: priceFormatter.format(sale.total),
+		createdAt: format(sale.createdAt, "dd MMMM yy HH:mm", {
+			locale: es
+		}),
+		userId: sale.userId,
+		sellerName: `${sale.user.name} ${sale.user.lastName}`,
+		sellerEmail: sale.user.email,
+		products: sale.products.map(product => {
+			return {
+				id: product.id.toString(),
+				quantity: product.quantity,
+				originalPrice: priceFormatter.format(product.originalPrice),
+				appliedDiscount: priceFormatter.format(product.appliedDiscount),
+				productId: product.productId,
+				productName: product.product.name,
+				productSellPrice: priceFormatter.format(product.product.sellPrice)
+			};
+		})
+	};
 
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
-				<ProductForm product={product} brands={brands} types={PRODUCT_TYPES} session={session} />
+				<SaleForm sale={formattedSales} session={session} />
 			</div>
 		</div>
 	);
 }
-
-const PRODUCT_TYPES = [
-	{
-		value: "FOOD",
-		label: "Comida"
-	},
-	{
-		value: "DRINK",
-		label: "Bebida"
-	},
-	{
-		value: "OTHER",
-		label: "Otro"
-	}
-];

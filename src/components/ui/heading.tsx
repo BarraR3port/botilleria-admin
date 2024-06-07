@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { Button } from "./button";
 
 interface HeadingProps {
-	title: string;
+	title: string | React.ReactNode;
 	mainPath?: string;
 }
 
@@ -30,7 +30,7 @@ export default function Heading({ title, mainPath }: HeadingProps) {
 						<span className="sr-only">Back</span>
 					</Button>
 				)}
-				<h2 className="text-3xl font-bold tracking-right">{title}</h2>
+				{typeof title === "string" ? <h2 className="text-3xl font-bold tracking-right">{title}</h2> : title}
 			</div>
 		</div>
 	);
