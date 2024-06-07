@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import BrandForm from "@/forms/product/brand/BrandForm";
 import prisma from "@/lib/prismadb";
-import { notFound, redirect, RedirectType } from "next/navigation";
+import { RedirectType, notFound, redirect } from "next/navigation";
 
 export default async function Page({
 	params

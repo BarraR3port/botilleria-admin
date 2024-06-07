@@ -1,13 +1,13 @@
 import { auth } from "@/auth";
+import type { Column, ColumnRef } from "@/components/panel/sales/list/Column";
 import ProductForm from "@/forms/product/ProductForm";
 import SaleForm from "@/forms/sale/SaleForm";
 import prisma from "@/lib/prismadb";
-import { notFound, redirect, RedirectType } from "next/navigation";
-import sales from "../sales_data3.json";
-import type { Column, ColumnRef } from "@/components/panel/sales/list/Column";
 import { priceFormatter } from "@/lib/utils";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { RedirectType, notFound, redirect } from "next/navigation";
+import sales from "../sales_data3.json";
 
 export default async function Product({
 	params

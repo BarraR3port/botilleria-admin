@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import ProductForm from "@/forms/product/ProductForm";
 import prisma from "@/lib/prismadb";
-import { notFound, redirect, RedirectType } from "next/navigation";
+import { RedirectType, notFound, redirect } from "next/navigation";
 import React from "react";
 
 export default async function Product({

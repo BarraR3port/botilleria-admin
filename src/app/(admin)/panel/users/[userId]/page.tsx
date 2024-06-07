@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import NewUserForm from "@/forms/user/NewUserForm";
 import UserForm from "@/forms/user/UserForm";
 import prisma from "@/lib/prismadb";
-import { notFound, redirect, RedirectType } from "next/navigation";
+import { RedirectType, notFound, redirect } from "next/navigation";
 
 export default async function Product({
 	params

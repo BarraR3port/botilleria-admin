@@ -3,6 +3,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 import { handleAxiosResponse } from "@/api/utils";
+import { triggerFireworks } from "@/components/magicui/confetti";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "../../components/ui/use-toast";
-import { triggerFireworks } from "@/components/magicui/confetti";
 
 interface ResetFormProps {
 	email: string;

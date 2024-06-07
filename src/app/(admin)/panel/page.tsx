@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
 import PanelIndex from "@/components/panel";
 import type { Column, ColumnRef } from "@/components/panel/sales/list/Column";
+import prisma from "@/lib/prismadb";
 import { priceFormatter } from "@/lib/utils";
 import { RedirectType, redirect } from "next/navigation";
 import sales from "./sales/sales_data3.json";
-import prisma from "@/lib/prismadb";
 
 export default async function Panel() {
 	const session = await auth();

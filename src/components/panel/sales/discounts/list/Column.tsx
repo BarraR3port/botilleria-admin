@@ -1,10 +1,10 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import type { DiscountType } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
-import type { DiscountType } from "@prisma/client";
 
 export type Column = {
 	id: string;

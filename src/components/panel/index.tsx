@@ -1,19 +1,19 @@
 "use client";
+import type { Column as SaleType } from "@/components/panel/sales/list/Column";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
+import { priceFormatter } from "@/lib/utils";
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveScatterPlot } from "@nivo/scatterplot";
+import type { Product } from "@prisma/client";
 import { Box, Crown, DollarSignIcon, PanelTopIcon, ShoppingCartIcon, UserIcon, UsersIcon } from "lucide-react";
 import type { Session } from "next-auth";
-import { useMemo, type ClassAttributes, type HTMLAttributes, type JSX } from "react";
-import type { Column as SaleType } from "@/components/panel/sales/list/Column";
-import { priceFormatter } from "@/lib/utils";
-import BarChart from "./charts/bar-chart";
 import Link from "next/link";
-import type { Product } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { type ClassAttributes, type HTMLAttributes, type JSX, useMemo } from "react";
+import BarChart from "./charts/bar-chart";
 
 interface Props {
 	session: Session;
