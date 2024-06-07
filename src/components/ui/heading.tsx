@@ -14,7 +14,7 @@ export default function Heading({ title, mainPath }: HeadingProps) {
 	const router = useRouter();
 	const pathName = usePathname();
 
-	const showBackButton = useMemo(() => pathName !== mainPath, [pathName]);
+	const showBackButton = useMemo(() => pathName !== mainPath && mainPath !== undefined, [pathName]);
 
 	return (
 		<div className="space-y-1">

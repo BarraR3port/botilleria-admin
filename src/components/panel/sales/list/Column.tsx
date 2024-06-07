@@ -36,7 +36,7 @@ export type ColumnRef = {
 
 export type Column = {
 	id: string;
-	total: string;
+	total: string | number;
 	createdAt: string;
 	userId: string;
 	sellerName: string;

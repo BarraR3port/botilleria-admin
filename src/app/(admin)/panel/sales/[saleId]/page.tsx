@@ -65,7 +65,7 @@ export default async function Product({
 	};
 
 	return (
-		<div className="flex-col overflow-auto">
+		<div className="flex-col overflow-auto ">
 			<div className="flex-1 space-y-4 p-4">
 				<SaleForm sale={formattedSales} session={session} />
 			</div>

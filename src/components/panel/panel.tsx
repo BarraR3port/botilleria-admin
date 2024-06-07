@@ -83,6 +83,12 @@ export default function Panel({
 						isCollapsed={isCollapsed}
 						links={[
 							{
+								title: "Panel",
+								label: "",
+								icon: Beer,
+								href: "/panel"
+							},
+							{
 								title: "Ventas",
 								label: "",
 								icon: DollarSign,

@@ -16,8 +16,6 @@ export default async function Sales() {
  */
 	const newSales: ColumnRef[] = sales as any;
 
-	// order the newSales array by id
-
 	newSales.sort((a, b) => {
 		return Number(a.id) - Number(b.id);
 	});
