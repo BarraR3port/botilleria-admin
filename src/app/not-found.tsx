@@ -6,10 +6,10 @@ export default function Component() {
 			<div className="max-w-md text-center space-y-4">
 				<h1 className="text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-50">404</h1>
 				<p className="text-lg text-gray-500 dark:text-gray-400">
-					Ups, la venta que estás buscando no se pudo encontrar.
+					Ups, la página que estás buscando no se pudo encontrar.
 				</p>
-				<Link href="/panel/sales" className="text-blue-600 hover:underline">
-					Volver
+				<Link href="/panel" className="text-blue-600 hover:underline">
+					Volver al panel
 				</Link>
 			</div>
 		</div>

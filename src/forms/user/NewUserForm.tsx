@@ -1,6 +1,7 @@
 "use client";
 
 import { handleAxiosResponse } from "@/api/utils";
+import { triggerFireworks } from "@/components/magicui/confetti";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
@@ -79,6 +80,8 @@ export default function NewUserForm({ roles, session }: FormProps) {
 					variant: "success",
 					duration: 1500
 				});
+
+				triggerFireworks();
 				router.replace("/panel/users");
 				router.refresh();
 			}

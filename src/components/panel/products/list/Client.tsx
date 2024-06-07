@@ -15,6 +15,7 @@ export function Client({ products }: ClientProps) {
 			icon={<Package className="h-6 w-6" />}
 			title="Productos"
 			mainPath="/panel/products"
+			createButton
 		/>
 	);
 }

@@ -3,18 +3,19 @@ import { Tag } from "lucide-react";
 import { type Column, columns } from "./Column";
 
 interface ClientProps {
-	brands: Column[];
+	discounts: Column[];
 }
 
-export function Client({ brands }: ClientProps) {
+export function Client({ discounts }: ClientProps) {
 	return (
 		<DataTable
 			columns={columns}
-			data={brands}
+			data={discounts}
 			searchKeys={SEARCH_KEYS}
 			icon={<Tag className="h-6 w-6" />}
 			title="Descuentos"
 			mainPath="/panel/sales/discounts"
+			createButton
 		/>
 	);
 }
@@ -22,11 +23,19 @@ export function Client({ brands }: ClientProps) {
 const SEARCH_KEYS = [
 	{
 		value: "name",
-		label: "Marca"
+		label: "Descuento"
 	},
 	{
 		value: "id",
 		label: "Id"
+	},
+	{
+		value: "type",
+		label: "Tipo"
+	},
+	{
+		value: "value",
+		label: "Valor"
 	},
 	{
 		value: "description",

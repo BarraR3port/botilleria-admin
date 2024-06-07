@@ -21,6 +21,9 @@ import { Form, FormControl, FormField, FormItem } from "./form";
 import Heading from "./heading";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 import { Separator } from "./separator";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Button } from "./button";
 
 type SearchKey = {
 	value: string;
@@ -30,6 +33,7 @@ interface DataTableProps<TData, TValue> {
 	title: string;
 	mainPath: string;
 	icon: ReactNode;
+	createButton?: boolean;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	searchKeys: SearchKey[];
@@ -41,9 +45,11 @@ export function DataTable<TData, TValue>({
 	searchKeys,
 	title,
 	mainPath,
-	icon
+	icon,
+	createButton
 }: DataTableProps<TData, TValue>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const router = useRouter();
 	const table = useReactTable({
 		data,
 		columns,
@@ -71,6 +77,17 @@ export function DataTable<TData, TValue>({
 						{icon}
 						<Heading title={title} mainPath={mainPath} />
 					</div>
+					{createButton && (
+						<Button
+							onClick={() => {
+								router.push(`${mainPath}/new`);
+							}}
+							variant="outline"
+						>
+							<Plus className="mr-2 w-4 h-4" />
+							Crear
+						</Button>
+					)}
 				</div>
 				<Separator className="pt-2" />
 				<div className="justify-between grid gap-x-2 lg:grid-flow-col grid-cols-2 ">
@@ -123,7 +140,7 @@ export function DataTable<TData, TValue>({
 					</div>
 					<div className=" text-sm text-muted-foreground items-center flex col-span-1">
 						{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
-						productos seleccionados
+						{title.toLocaleLowerCase()} seleccionados
 					</div>
 					<DataTablePagination table={table} />
 				</div>

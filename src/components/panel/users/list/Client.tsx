@@ -15,6 +15,7 @@ export function Client({ users }: ClientProps) {
 			title="Usuarios"
 			mainPath="/panel/users"
 			icon={<Users className="h-6 w-6" />}
+			createButton
 		/>
 	);
 }

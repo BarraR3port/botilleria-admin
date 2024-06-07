@@ -4,11 +4,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
+import type { DiscountType } from "@prisma/client";
 
 export type Column = {
 	id: string;
 	name: string;
 	description: string | null;
+	type: DiscountType;
+	value: string;
 	createdAt: string;
 };
 
@@ -41,11 +44,19 @@ export const columns: ColumnDef<Column>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Marca"
+		header: "Descuento"
 	},
 	{
 		accessorKey: "description",
 		header: "Descripción"
+	},
+	{
+		accessorKey: "type",
+		header: "Tipo"
+	},
+	{
+		accessorKey: "value",
+		header: "Valor"
 	},
 	{
 		accessorKey: "createdAt",

@@ -142,6 +142,6 @@ export const columns: ColumnDef<Column>[] = [
 	},
 	{
 		id: "actions",
-		cell: ({ row }) => <CellAction product={row.original} />
+		cell: ({ row }) => <CellAction sale={row.original} />
 	}
 ];

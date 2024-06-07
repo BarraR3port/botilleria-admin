@@ -15,6 +15,7 @@ export function Client({ brands }: ClientProps) {
 			icon={<Tag className="h-6 w-6" />}
 			title="Marcas"
 			mainPath="/panel/products/brands"
+			createButton
 		/>
 	);
 }
