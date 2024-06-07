@@ -1,13 +1,14 @@
 import { auth } from "@/auth";
 import ProductForm from "@/forms/product/ProductForm";
 import prisma from "@/lib/prismadb";
+import { notFound } from "next/navigation";
 import React from "react";
 
 export default async function Product({
 	params
 }: {
 	params: {
-		productId: number;
+		productId: number | "new";
 	};
 }) {
 	const session = await auth();
@@ -29,6 +30,10 @@ export default async function Product({
 			}
 		})
 		.catch(() => null);
+
+	if (!product && params.productId !== "new") {
+		notFound();
+	}
 
 	const brands = await prisma.brand.findMany({}).catch(() => []);
 

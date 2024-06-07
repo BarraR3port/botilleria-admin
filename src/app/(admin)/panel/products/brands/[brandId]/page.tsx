@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import BrandForm from "@/forms/product/brand/BrandForm";
 import prisma from "@/lib/prismadb";
+import { notFound } from "next/navigation";
 
 export default async function Page({
 	params
@@ -18,6 +19,10 @@ export default async function Page({
 			}
 		})
 		.catch(() => null);
+
+	if (!brand && params.brandId !== "new") {
+		notFound();
+	}
 
 	return (
 		<div className="flex-col overflow-auto">

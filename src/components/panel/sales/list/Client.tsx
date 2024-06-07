@@ -21,6 +21,10 @@ export function Client({ sales }: ClientProps) {
 
 const SEARCH_KEYS = [
 	{
+		value: "sellerName",
+		label: "Vendedor"
+	},
+	{
 		value: "total",
 		label: "Total"
 	},
@@ -29,20 +33,8 @@ const SEARCH_KEYS = [
 		label: "Id"
 	},
 	{
-		value: "user.name",
-		label: "Usuario"
-	},
-	{
 		value: "price",
 		label: "Precio"
-	},
-	{
-		value: "weightOrVolume",
-		label: "Peso o Volumen"
-	},
-	{
-		value: "available",
-		label: "Disponible"
 	},
 	{
 		value: "createdAt",

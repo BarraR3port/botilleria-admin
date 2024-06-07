@@ -7,6 +7,7 @@ import CellIdAction from "./CellIdAction";
 import MultipleSelector from "@/components/extensions/multiple-selector";
 import { useBreakpoint } from "@/lib/breakpoint";
 import { useCallback, useMemo } from "react";
+import Link from "next/link";
 
 export type ColumnRef = {
 	id: string;
@@ -57,7 +58,7 @@ export const columns: ColumnDef<Column>[] = [
 		header: ({ table }) => (
 			<Checkbox
 				checked={table.getIsAllPageRowsSelected()}
-				onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+				onCheckedChange={value => table.toggleAllRowsSelected(!!value)}
 				aria-label="Seleccionar todos"
 				className="translate-y-[2px]"
 			/>
@@ -84,7 +85,12 @@ export const columns: ColumnDef<Column>[] = [
 	},
 	{
 		accessorKey: "sellerName",
-		header: "Venta por"
+		header: "Venta por",
+		cell: ({ row }) => (
+			<Link href={`/panel/users/${row.original.userId}`} className="hover:text-blue-500">
+				{row.original.sellerName}
+			</Link>
+		)
 	},
 	{
 		accessorKey: "products",
@@ -120,6 +126,7 @@ export const columns: ColumnDef<Column>[] = [
 					disabled
 					hidePlaceholderWhenSelected
 					placeholder="Select frameworks you like..."
+					redirectTo="/panel/products/"
 					emptyIndicator={
 						<p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
 							no results found.

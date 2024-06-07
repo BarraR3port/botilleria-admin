@@ -24,7 +24,7 @@ export const columns: ColumnDef<Column>[] = [
 		header: ({ table }) => (
 			<Checkbox
 				checked={table.getIsAllPageRowsSelected()}
-				onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+				onCheckedChange={value => table.toggleAllRowsSelected(!!value)}
 				aria-label="Seleccionar todos"
 				className="translate-y-[2px]"
 			/>

@@ -8,6 +8,7 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { useRouter } from "next/navigation";
 
 export interface Option {
 	value: string;
@@ -70,6 +71,7 @@ interface MultipleSelectorProps {
 		"value" | "placeholder" | "disabled"
 	>;
 	maxShownItems?: number;
+	redirectTo?: string;
 }
 
 export interface MultipleSelectorRef {
@@ -180,13 +182,15 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 			triggerSearchOnFocus = false,
 			commandProps,
 			inputProps,
-			maxShownItems = 5 // default value for maxShownItems
+			maxShownItems = 5, // default value for maxShownItems
+			redirectTo
 		}: MultipleSelectorProps,
 		ref: React.Ref<MultipleSelectorRef>
 	) => {
 		const inputRef = React.useRef<HTMLInputElement>(null);
 		const [open, setOpen] = React.useState(false);
 		const [isLoading, setIsLoading] = React.useState(false);
+		const router = useRouter();
 
 		const [selected, setSelected] = React.useState<Option[]>(value || []);
 		const [options, setOptions] = React.useState<GroupOption>(transToGroupOption(arrayDefaultOptions, groupBy));
@@ -388,10 +392,17 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 									className={cn(
 										/* "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground", */
 										"data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
-										badgeClassName
+										badgeClassName,
+										redirectTo ? "cursor-pointer hover:text-blue-500" : "cursor-default"
 									)}
 									data-fixed={option.fixed}
 									data-disabled={disabled || undefined}
+									onClick={() => {
+										if (redirectTo) {
+											console.log("redirectTo: ", redirectTo + option.value);
+											router.push(redirectTo + option.value);
+										}
+									}}
 								>
 									{option.label}
 									{/* biome-ignore lint/a11y/useButtonType: <explanation> */}

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import NewUserForm from "@/forms/user/NewUserForm";
 import UserForm from "@/forms/user/UserForm";
 import prisma from "@/lib/prismadb";
+import { notFound } from "next/navigation";
 
 export default async function Product({
 	params
@@ -31,11 +32,15 @@ export default async function Product({
 		})
 		.catch(() => null);
 
+	if (!user && params.userId !== "new") {
+		notFound();
+	}
+
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
 				{user && <UserForm user={user} roles={ROLES} session={session} />}
-				{!user && <NewUserForm roles={ROLES} session={session} />}
+				{!user && params.userId === "new" && <NewUserForm roles={ROLES} session={session} />}
 			</div>
 		</div>
 	);
