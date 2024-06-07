@@ -88,7 +88,39 @@ export default function Panel({
 								title: "Ventas",
 								label: "",
 								icon: DollarSign,
-								href: "/panel/sales"
+								href: "/panel/sales",
+								subLinks: [
+									{
+										title: "Ventas",
+										label: "",
+										icon: List,
+										href: "/panel/sales",
+										hasPrevious: true
+									},
+									{
+										title: "Descuentos",
+										label: "",
+										icon: Tag,
+										href: "/panel/sales/discounts",
+										hasPrevious: true,
+										subLinks: [
+											{
+												title: "Descuentos",
+												label: "",
+												icon: List,
+												href: "/panel/sales/discounts",
+												hasPrevious: true
+											},
+											{
+												title: "Crear Descuento",
+												label: "",
+												icon: Plus,
+												href: "/panel/sales/discounts/new",
+												hasPrevious: true
+											}
+										]
+									}
+								]
 							},
 							{
 								title: "Productos",
@@ -172,7 +204,9 @@ export default function Panel({
 				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel defaultSize={dashboardLayout[1]}>{children}</ResizablePanel>
+			<ResizablePanel defaultSize={dashboardLayout[1]}>
+				<div className="flex flex-col flex-1 gap-4 p-4 md:gap-8 max-h-full">{children}</div>
+			</ResizablePanel>
 		</ResizablePanelGroup>
 	);
 }
