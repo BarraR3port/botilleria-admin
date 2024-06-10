@@ -146,12 +146,12 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 								name="name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Nombre</FormLabel>
+										<FormLabel>Código</FormLabel>
 										<FormControl>
 											<Input
 												autoComplete="off"
 												disabled={loading}
-												placeholder="Nombre de la marca"
+												placeholder="Código del descuento"
 												{...field}
 											/>
 										</FormControl>
@@ -176,7 +176,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 													<SelectTrigger>
 														<SelectValue
 															defaultValue={field.value}
-															placeholder="Selecciona un tipo de producto"
+															placeholder="Selecciona un tipo de descuento"
 														/>
 														<SelectContent>
 															{types.map(type => {
@@ -243,7 +243,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 								<FormItem>
 									<FormLabel>Descripción (opcional)</FormLabel>
 									<FormControl>
-										<Textarea placeholder="Descripción de la marca" {...field} />
+										<Textarea placeholder="Descripción del descuento" {...field} />
 									</FormControl>
 
 									<FormDescription>

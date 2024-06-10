@@ -21,7 +21,7 @@ export default async function Product({
 				id: Number(params.productId) || undefined
 			},
 			include: {
-				discounts: true,
+				discount: true,
 				brand: {
 					select: {
 						name: true

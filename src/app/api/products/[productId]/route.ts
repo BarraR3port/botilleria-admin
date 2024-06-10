@@ -27,7 +27,7 @@ export async function GET(
 				id: params.productId
 			},
 			include: {
-				discounts: true,
+				discount: true,
 				brand: {
 					select: {
 						name: true

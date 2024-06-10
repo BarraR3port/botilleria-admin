@@ -8,7 +8,7 @@ import { es } from "date-fns/locale";
 export default async function Ventas() {
 	const products = await prisma.product.findMany({
 		include: {
-			discounts: true,
+			discount: true,
 			brand: {
 				select: {
 					name: true

@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 	try {
 		const body = await req.json();
 
-		const { email, password, firstName, lastName } = body;
+		const { email, password, firstName, lastName, rut } = body;
 
 		if (!email) {
 			return NextResponse.json({ errors: [{ type: "email", message: "Email requerido" }] }, { status: 400 });
@@ -54,6 +54,10 @@ export async function POST(req: Request) {
 				{ errors: [{ type: "lastName", message: "Apellido requerido" }] },
 				{ status: 400 }
 			);
+		}
+
+		if (!rut) {
+			return NextResponse.json({ errors: [{ type: "rut", message: "Rut requerido" }] }, { status: 400 });
 		}
 
 		const tempUser = await prisma.user.findFirst({
@@ -92,7 +96,8 @@ export async function POST(req: Request) {
 				name: firstName ?? "",
 				email,
 				password: safePassword,
-				lastName: lastName ?? ""
+				lastName: lastName ?? "",
+				rut
 			},
 			select: {
 				id: true,

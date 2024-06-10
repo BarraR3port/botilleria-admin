@@ -80,10 +80,30 @@ export async function GET(req: Request) {
 	try {
 		const { searchParams } = new URL(req.url);
 		const brandId = searchParams.get("brandId") || undefined;
+		const searchAnyKind = searchParams.get("searchAnyKind") || undefined;
 
 		const products = await prisma.product.findMany({
 			where: {
-				brandId: brandId,
+				OR: [
+					{
+						name: {
+							contains: searchAnyKind,
+							mode: "insensitive"
+						}
+					},
+					{
+						barcode: {
+							contains: searchAnyKind,
+							mode: "insensitive"
+						}
+					},
+					{
+						brandId: {
+							contains: searchAnyKind || brandId,
+							mode: "insensitive"
+						}
+					}
+				],
 				available: true
 			},
 			include: {

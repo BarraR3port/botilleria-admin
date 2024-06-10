@@ -130,28 +130,18 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-	const body = await req.json();
+	const { searchParams } = new URL(req.url);
 
-	const { recoveryId, token } = body;
+	const token = searchParams.get("token");
 
-	if (!recoveryId || !token) {
-		return NextResponse.json(
-			{
-				errors: [
-					{
-						type: "token",
-						message: "Token inválido"
-					}
-				]
-			},
-			{ status: 400 }
-		);
+	if (!token) {
+		return NextResponse.json({ errors: [{ type: "token", message: "Token requerido" }] }, { status: 400 });
 	}
 
 	const recovery = await prisma.recovery.findUnique({
 		where: {
-			id: recoveryId,
-			token
+			token: token,
+			status: "WAITING"
 		}
 	});
 
@@ -169,7 +159,11 @@ export async function GET(req: Request) {
 		);
 	}
 
-	if (recovery.status !== "WAITING") {
+	try {
+		const decoded = await jwtVerify(recovery.token, jwtConfig.reset);
+		const _email = decoded.payload?.email as string;
+	} catch (error) {
+		console.warn("Error decoding token", error);
 		return NextResponse.json(
 			{
 				errors: [
@@ -183,5 +177,5 @@ export async function GET(req: Request) {
 		);
 	}
 
-	return new NextResponse(null, { status: 200 });
+	return NextResponse.json(recovery, { status: 200 });
 }

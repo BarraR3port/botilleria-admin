@@ -3,7 +3,7 @@ import million from "million/compiler";
 const getCorsHeaders = () => {
 	const headers = {};
 
-	headers["Access-Control-Allow-Origin"] = "http://localhost:1420";
+	headers["Access-Control-Allow-Origin"] = "*";
 	headers["Access-Control-Allow-Credentials"] = "true";
 	headers["Access-Control-Allow-Methods"] = "GET,OPTIONS,PATCH,DELETE,POST,PUT";
 	headers["Access-Control-Allow-Headers"] =
