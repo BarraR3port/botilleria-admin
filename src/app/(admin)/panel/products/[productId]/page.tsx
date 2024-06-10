@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import ProductForm from "@/forms/product/ProductForm";
 import prisma from "@/lib/prismadb";
+import type { Discount } from "@prisma/client";
 import { RedirectType, notFound, redirect } from "next/navigation";
 import React from "react";
 
@@ -37,10 +38,32 @@ export default async function Product({
 
 	const brands = await prisma.brand.findMany({}).catch(() => []);
 
+	const discounts = await prisma.discount
+		.findMany({
+			where: {
+				active: true
+			}
+		})
+		.catch(() => []);
+
+	const discountsWithEmpty: Discount[] = [
+		{
+			id: -1,
+			name: "Sin descuento"
+		} as any,
+		...discounts
+	];
+
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
-				<ProductForm product={product} brands={brands} types={PRODUCT_TYPES} session={session} />
+				<ProductForm
+					product={product}
+					brands={brands}
+					discounts={discountsWithEmpty}
+					types={PRODUCT_TYPES}
+					session={session}
+				/>
 			</div>
 		</div>
 	);

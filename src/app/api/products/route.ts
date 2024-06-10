@@ -10,8 +10,19 @@ export async function POST(req: Request) {
 
 		const body = await req.json();
 
-		const { name, description, barcode, stock, sellPrice, costPrice, weightOrVolume, brandId, type, available } =
-			body;
+		const {
+			name,
+			description,
+			barcode,
+			stock,
+			sellPrice,
+			costPrice,
+			weightOrVolume,
+			brandId,
+			type,
+			available,
+			discountId
+		} = body;
 
 		if (!name)
 			return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }] }, { status: 400 });
@@ -62,7 +73,8 @@ export async function POST(req: Request) {
 					connect: {
 						id: userId
 					}
-				}
+				},
+				discount: discountId ? { connect: { id: discountId } } : undefined
 			}
 		});
 
@@ -102,12 +114,24 @@ export async function GET(req: Request) {
 							contains: searchAnyKind || brandId,
 							mode: "insensitive"
 						}
+					},
+					{
+						brand: {
+							name: {
+								contains: searchAnyKind,
+								mode: "insensitive"
+							}
+						}
+					},
+					{
+						id: Number.isSafeInteger(searchAnyKind) ? Number(searchAnyKind) : undefined
 					}
 				],
 				available: true
 			},
 			include: {
-				brand: true
+				brand: true,
+				discount: true
 			},
 			orderBy: {
 				createdAt: "desc"

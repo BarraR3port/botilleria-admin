@@ -1,5 +1,5 @@
 import { DataTable } from "@ui/data-table";
-import { Tag } from "lucide-react";
+import { BadgePercent } from "lucide-react";
 import { type Column, columns } from "./Column";
 
 interface ClientProps {
@@ -12,9 +12,9 @@ export function Client({ discounts }: ClientProps) {
 			columns={columns}
 			data={discounts}
 			searchKeys={SEARCH_KEYS}
-			icon={<Tag className="h-6 w-6" />}
+			icon={<BadgePercent className="h-6 w-6" />}
 			title="Descuentos"
-			mainPath="/panel/sales/discounts"
+			mainPath="/panel/products/discounts"
 			createButton
 		/>
 	);

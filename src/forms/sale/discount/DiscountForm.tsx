@@ -65,7 +65,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 		try {
 			const response = discount
 				? await axios
-						.patch(`/api/sales/discounts/${params.discountId}`, data, {
+						.patch(`/api/products/discounts/${params.discountId}`, data, {
 							headers: {
 								Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
 							}
@@ -73,7 +73,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 						.catch(res => catchAxiosResponse(res, form))
 						.then(res => handleAxiosResponse(res, form))
 				: await axios
-						.post("/api/sales/discounts", data, {
+						.post("/api/products/discounts", data, {
 							headers: {
 								Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
 							}
@@ -87,7 +87,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 					variant: "success",
 					duration: 1500
 				});
-				router.replace("/panel/sales/discounts");
+				router.replace("/panel/products/discounts");
 				router.refresh();
 			}
 		} catch (error) {
@@ -105,7 +105,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 	async function onDelete() {
 		setLoading(true);
 		try {
-			const response = await axios.delete(`/api/sales/discounts/${params.discountId}`, {
+			const response = await axios.delete(`/api/products/discounts/${params.discountId}`, {
 				headers: {
 					Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
 				}
@@ -116,7 +116,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 					variant: "success",
 					duration: 1500
 				});
-				router.replace("/panel/sales/discounts");
+				router.replace("/panel/products/discounts");
 			}
 		} catch (error) {
 			console.error(error);
@@ -241,7 +241,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 							name="description"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Descripción (opcional)</FormLabel>
+									<FormLabel optional>Descripción</FormLabel>
 									<FormControl>
 										<Textarea placeholder="Descripción del descuento" {...field} />
 									</FormControl>

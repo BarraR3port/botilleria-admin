@@ -72,8 +72,19 @@ export async function PATCH(
 
 		const body = await req.json();
 
-		const { name, description, barcode, stock, sellPrice, costPrice, weightOrVolume, brandId, type, available } =
-			body;
+		const {
+			name,
+			description,
+			barcode,
+			stock,
+			sellPrice,
+			costPrice,
+			weightOrVolume,
+			brandId,
+			type,
+			available,
+			discountId
+		} = body;
 
 		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
 		if (!barcode)
@@ -137,6 +148,21 @@ export async function PATCH(
 				{ status: 400 }
 			);
 
+		if (discountId) {
+			const discount = await prisma.discount.findFirst({
+				where: {
+					id: discountId
+				}
+			});
+
+			if (!discount) {
+				return NextResponse.json({
+					errors: [{ type: "discountId", message: "Descuento no encontrado" }],
+					status: 404
+				});
+			}
+		}
+
 		const brand = await prisma.brand.findFirst({
 			where: {
 				id: brandId
@@ -157,10 +183,23 @@ export async function PATCH(
 				sellPrice,
 				costPrice,
 				weightOrVolume,
-				brandId,
 				type,
 				available,
-				barcode
+				barcode,
+				discount: discountId
+					? {
+							connect: {
+								id: discountId
+							}
+						}
+					: {
+							disconnect: true
+						},
+				brand: {
+					connect: {
+						id: brandId
+					}
+				}
 			}
 		});
 

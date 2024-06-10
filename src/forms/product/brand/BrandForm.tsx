@@ -152,7 +152,7 @@ export default function ProductForm({ brand, session }: BrandProps) {
 								name="description"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Descripción (opcional)</FormLabel>
+										<FormLabel optional>Descripción</FormLabel>
 										<FormControl>
 											<Textarea placeholder="Descripción de la marca" {...field} />
 										</FormControl>

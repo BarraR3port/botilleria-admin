@@ -2,7 +2,7 @@
 
 import { useBreakpoint } from "@/lib/breakpoint";
 import { cn } from "@/lib/utils";
-import { Beer, Box, DollarSign, List, Plus, Settings, Tag, Users } from "lucide-react";
+import { BadgePercent, Beer, Box, DollarSign, List, Plus, Settings, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import { useCallback } from "react";
 import { UserIcon } from "../layout/Header/UserIcon";
@@ -68,29 +68,6 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										icon: List,
 										href: "/panel/sales",
 										hasPrevious: true
-									},
-									{
-										title: "Descuentos",
-										label: "",
-										icon: Tag,
-										href: "/panel/sales/discounts",
-										hasPrevious: true,
-										subLinks: [
-											{
-												title: "Descuentos",
-												label: "",
-												icon: List,
-												href: "/panel/sales/discounts",
-												hasPrevious: true
-											},
-											{
-												title: "Crear Descuento",
-												label: "",
-												icon: Plus,
-												href: "/panel/sales/discounts/new",
-												hasPrevious: true
-											}
-										]
 									}
 								]
 							},
@@ -105,6 +82,13 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										label: "",
 										icon: List,
 										href: "/panel/products",
+										hasPrevious: true
+									},
+									{
+										title: "Crear Producto",
+										label: "",
+										icon: Plus,
+										href: "/panel/products/new",
 										hasPrevious: true
 									},
 									{
@@ -131,11 +115,27 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										]
 									},
 									{
-										title: "Crear Producto",
+										title: "Descuentos",
 										label: "",
-										icon: Plus,
-										href: "/panel/products/new",
-										hasPrevious: true
+										icon: BadgePercent,
+										href: "/panel/products/discounts",
+										hasPrevious: true,
+										subLinks: [
+											{
+												title: "Descuentos",
+												label: "",
+												icon: List,
+												href: "/panel/products/discounts",
+												hasPrevious: true
+											},
+											{
+												title: "Crear Descuento",
+												label: "",
+												icon: Plus,
+												href: "/panel/products/discounts/new",
+												hasPrevious: true
+											}
+										]
 									}
 								]
 							},

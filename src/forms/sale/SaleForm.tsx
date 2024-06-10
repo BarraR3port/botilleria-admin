@@ -43,7 +43,7 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 					variant: "success",
 					duration: 1500
 				});
-				router.replace("/panel/sales/discounts");
+				router.replace("/panel/products/discounts");
 			}
 		} catch (error) {
 			console.error(error);

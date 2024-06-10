@@ -8,7 +8,7 @@ export default function Component() {
 				<p className="text-lg text-gray-500 dark:text-gray-400">
 					Ups, el descuento que estás buscando no se pudo encontrar.
 				</p>
-				<Link href="/panel/sales/discounts" className="text-blue-600 hover:underline">
+				<Link href="/panel/products/discounts" className="text-blue-600 hover:underline">
 					Volver
 				</Link>
 			</div>

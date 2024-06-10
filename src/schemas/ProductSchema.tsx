@@ -16,6 +16,7 @@ export const ProductFormSchema = object({
 	costPrice: number().required("El precio de coste es requerido").min(0, "El precio de coste no puede ser menor a 0"),
 	weightOrVolume: number().required("Este valor es requerido").min(0, "Este valor no puede ser menor a 0"),
 	brandId: string().required("La Marca es requerida").trim(),
+	discountId: number().optional(),
 	type: string().required("El tipo es requerida").trim(),
 	available: boolean().required("La disponibilidad es requerida")
 });

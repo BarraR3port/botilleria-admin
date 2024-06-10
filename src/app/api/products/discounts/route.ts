@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
 		return NextResponse.json(discount);
 	} catch (error) {
-		console.log("[SALES][DISCOUNT][POST]", error);
+		console.log("[PRODUCTS][DISCOUNT][POST]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500
@@ -60,7 +60,7 @@ export async function GET(req: Request) {
 
 		return NextResponse.json(sales);
 	} catch (error) {
-		console.log("[SALES][DISCOUNT][GET]", error);
+		console.log("[PRODUCTS][DISCOUNT][GET]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500

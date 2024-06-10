@@ -23,13 +23,13 @@ export default function CellAction({ brand }: CellActionProps) {
 	const { toast } = useToast();
 
 	function edit() {
-		router.push(`/panel/sales/discounts/${brand.id}`);
+		router.push(`/panel/products/discounts/${brand.id}`);
 	}
 
 	async function onDelete() {
 		setLoading(true);
 		try {
-			const response = await axios.delete(`/api/sales/discounts/${brand.id}`, {
+			const response = await axios.delete(`/api/products/discounts/${brand.id}`, {
 				headers: {
 					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 				}

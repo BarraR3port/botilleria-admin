@@ -30,7 +30,7 @@ export async function GET(
 
 		return NextResponse.json(discount);
 	} catch (error) {
-		console.log("[SALES][DISCOUNT][ID][GET]", error);
+		console.log("[PRODUCTS][DISCOUNT][ID][GET]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500
@@ -103,7 +103,7 @@ export async function PATCH(
 
 		return NextResponse.json(newDiscount);
 	} catch (error) {
-		console.log("[SALES][DISCOUNT][ID][PATCH]", error);
+		console.log("[PRODUCTS][DISCOUNT][ID][PATCH]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500
@@ -172,7 +172,7 @@ export async function DELETE(
 
 		return NextResponse.json(discount);
 	} catch (error) {
-		console.log("[SALES][DISCOUNT][ID][DELETE]", error);
+		console.log("[PRODUCTS][DISCOUNT][ID][DELETE]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500

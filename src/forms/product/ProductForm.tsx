@@ -14,7 +14,7 @@ import AlertModal from "@/modals/alert-modal";
 import type { AuthResponse } from "@/objects";
 import { ProductFormSchema, type ProductFormType } from "@/schemas/ProductSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import type { Brand, Product, ProductType } from "@prisma/client";
+import type { Brand, Discount, Product, ProductType } from "@prisma/client";
 import axios from "axios";
 import { Plus, Save, Trash } from "lucide-react";
 import type { Session } from "next-auth";
@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 interface FormProps {
 	product: Product | null;
 	brands: Brand[];
+	discounts: Discount[];
 	types: {
 		value: string;
 		label: string;
@@ -33,7 +34,7 @@ interface FormProps {
 	session: Session;
 }
 
-export default function ProductForm({ product, brands, types, session }: FormProps) {
+export default function ProductForm({ product, brands, discounts, types, session }: FormProps) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { toast } = useToast();
@@ -50,7 +51,8 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 					...product,
 					sellPrice: Number.parseFloat(String(product?.sellPrice)),
 					costPrice: Number.parseFloat(String(product?.costPrice)),
-					description: product?.description || ""
+					description: product?.description || "",
+					discountId: product?.discountId || undefined
 				}
 			: {
 					name: "",
@@ -60,6 +62,7 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 					costPrice: 0,
 					weightOrVolume: 0,
 					brandId: "",
+					discountId: undefined,
 					type: types[0].value as ProductType,
 					available: true,
 					barcode: "100000000000"
@@ -69,21 +72,42 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 	const onSubmit = async (data: ProductFormType) => {
 		setLoading(true);
 		try {
+			console.log(data?.discountId);
 			const response = product
 				? await axios
-						.patch(`/api/products/${params.productId}`, data, {
-							headers: {
-								Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+						.patch(
+							`/api/products/${params.productId}`,
+							{
+								...data,
+								discountId:
+									typeof data?.discountId === "number" && data?.discountId === -1
+										? undefined
+										: data.discountId
+							},
+							{
+								headers: {
+									Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+								}
 							}
-						})
+						)
 						.catch(res => catchAxiosResponse(res, form))
 						.then(res => handleAxiosResponse(res, form))
 				: await axios
-						.post("/api/products", data, {
-							headers: {
-								Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+						.post(
+							"/api/products",
+							{
+								...data,
+								discountId:
+									typeof data?.discountId === "number" && data?.discountId === -1
+										? undefined
+										: data.discountId
+							},
+							{
+								headers: {
+									Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+								}
 							}
-						})
+						)
 						.catch(res => catchAxiosResponse(res, form))
 						.then(res => handleAxiosResponse(res, form));
 
@@ -261,6 +285,45 @@ export default function ProductForm({ product, brands, types, session }: FormPro
 																return (
 																	<SelectItem key={brand.id} value={brand.id}>
 																		{brand.name}
+																	</SelectItem>
+																);
+															})}
+														</SelectContent>
+													</SelectTrigger>
+												</FormControl>
+											</Select>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="discountId"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel optional>Descuento</FormLabel>
+										<FormControl>
+											<Select
+												disabled={loading}
+												onValueChange={field.onChange}
+												value={field.value?.toString()}
+												defaultValue={field.value?.toString()}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue
+															defaultValue={field.value}
+															placeholder="Selecciona un descuento"
+														/>
+														<SelectContent>
+															{discounts.map(discount => {
+																return (
+																	<SelectItem
+																		key={discount.id}
+																		value={discount.id.toString()}
+																	>
+																		{discount.name}
 																	</SelectItem>
 																);
 															})}
