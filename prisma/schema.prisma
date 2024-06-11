@@ -97,6 +97,7 @@ model Sale {
 model ProductSale {
   id              Int     @id @default(autoincrement())
   quantity        Int
+  finalPrice      Float
   originalPrice   Float
   appliedDiscount Float?
   product         Product @relation(fields: [productId], references: [id])
