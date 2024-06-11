@@ -3,10 +3,9 @@ import PanelIndex from "@/components/panel";
 import type { Column, ColumnRef } from "@/components/panel/sales/list/Column";
 import prisma from "@/lib/prismadb";
 import { getType, priceFormatter } from "@/lib/utils";
-import { RedirectType, redirect } from "next/navigation";
-import sales from "./sales/sales_data3.json";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { RedirectType, redirect } from "next/navigation";
 
 export default async function Panel() {
 	const session = await auth();

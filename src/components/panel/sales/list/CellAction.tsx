@@ -1,5 +1,6 @@
 "use client";
 
+import { handleAxiosResponse } from "@/api/utils";
 import AlertModal from "@/modals/alert-modal";
 import { Button } from "@ui/button";
 import { useToast } from "@ui/use-toast";
@@ -9,7 +10,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Column } from "./Column";
-import { handleAxiosResponse } from "@/api/utils";
 
 interface CellActionProps {
 	sale: Column;

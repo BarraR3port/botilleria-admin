@@ -5,11 +5,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useBreakpoint } from "@/lib/breakpoint";
 import type { SaleType } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
+import { CreditCard, DollarSignIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
-import { CreditCard, DollarSignIcon } from "lucide-react";
 
 export type ColumnRef = {
 	id: string;
