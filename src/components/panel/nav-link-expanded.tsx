@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { buttonVariants } from "../ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import type { NavLinkType } from "./nav";
+import { Separator } from "../ui/separator";
 
 interface NavLinkProps {
 	link: NavLinkType;
@@ -30,7 +31,7 @@ export default function NavLinkExpanded({ link }: NavLinkProps) {
 				"group  ",
 				pathName.startsWith(link.href) &&
 					link?.subLinks &&
-					"rounded-lg bg-primary text-primary-foreground shadow "
+					"rounded-lg bg-primary text-primary-foreground shadow-xl "
 			)}
 		>
 			<CollapsibleTrigger
@@ -39,7 +40,7 @@ export default function NavLinkExpanded({ link }: NavLinkProps) {
 						variant: !link?.subLinks ? (isSelected && link.hasPrevious ? "secondary" : variant) : "ghost",
 						size: "sm"
 					}),
-					"justify-between w-full [&[data-state=open]>svg]:rotate-90"
+					"justify-between w-full [&[data-state=open]>svg]:rotate-90 "
 				)}
 				onClick={() => {
 					if (!link?.subLinks) router.push(link.href);
@@ -57,7 +58,9 @@ export default function NavLinkExpanded({ link }: NavLinkProps) {
 				{link.subLinks && <ChevronRightIcon className="h-5 w-5 transition-transform" />}
 			</CollapsibleTrigger>
 			{link.subLinks && (
-				<CollapsibleContent className="px-4 my-2 space-y-1">
+				<CollapsibleContent
+					className={cn("px-4 my-2 space-y-1", pathName !== link.href && " shadow-xl border-b  rounded-md")}
+				>
 					{link.subLinks?.map((subLink, index) => (
 						<NavLinkExpanded key={index} link={subLink} />
 					))}

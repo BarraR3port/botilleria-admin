@@ -20,6 +20,7 @@ export default function BasicModal({ open, onClose, onConfirm, loading, title, d
 	useEffect(() => {
 		setIsMounted(true);
 	}, []);
+
 	if (!isMounted) {
 		return null;
 	}

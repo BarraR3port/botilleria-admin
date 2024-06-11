@@ -85,13 +85,15 @@ enum DiscountType {
 }
 
 model Sale {
-  id        Int           @id @default(autoincrement())
-  total     Float
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  user      User          @relation("SaleToUser", fields: [userId], references: [id])
-  userId    String        @db.VarChar(191)
-  products  ProductSale[]
+  id            Int           @id @default(autoincrement())
+  total         Float
+  totalDiscount Float
+  type          SaleType      @default(CASH)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  user          User          @relation("SaleToUser", fields: [userId], references: [id])
+  userId        String        @db.VarChar(191)
+  products      ProductSale[]
 }
 
 model ProductSale {
@@ -102,8 +104,14 @@ model ProductSale {
   appliedDiscount Float?
   product         Product @relation(fields: [productId], references: [id])
   productId       Int
-  sale            Sale    @relation(fields: [saleId], references: [id])
+  sale            Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
   saleId          Int
+}
+
+enum SaleType {
+  CASH
+  CREDIT
+  DEBIT
 }
 
 model Order {

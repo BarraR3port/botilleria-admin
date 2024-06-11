@@ -153,6 +153,7 @@ export default function ProductForm({ product, brands, discounts, types, session
 			});
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
 	}
 

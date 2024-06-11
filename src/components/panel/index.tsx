@@ -180,7 +180,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 					<div className="flex flex-col gap-6">
 						<Card className="cursor-pointer rounded-lg border  p-4 shadow-sm transition-all hover:scale-105 hover:shadow-md ">
 							<CardHeader>
-								<CardTitle>Actividad de Ventas</CardTitle>
+								<CardTitle>Ventas por mes</CardTitle>
 							</CardHeader>
 							<CardContent>
 								<BarChart sales={sales} />

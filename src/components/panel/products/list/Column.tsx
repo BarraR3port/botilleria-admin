@@ -75,8 +75,7 @@ export const columns: ColumnDef<Column>[] = [
 	},
 	{
 		accessorKey: "barcode",
-		header: "Código de Barra",
-		cell: ({ row }) => <Barcode value={row.original.barcode} format="EAN13" width={2} height={50} fontSize={15} />
+		header: "Código de Barra"
 	},
 	{
 		id: "actions",

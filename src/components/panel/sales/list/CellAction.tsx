@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Column } from "./Column";
+import { handleAxiosResponse } from "@/api/utils";
 
 interface CellActionProps {
 	sale: Column;
@@ -28,14 +29,16 @@ export default function CellAction({ sale }: CellActionProps) {
 	async function onDelete() {
 		setLoading(true);
 		try {
-			const response = await axios.delete(`/api/sales/${sale.id}`, {
-				headers: {
-					Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-				}
-			});
-			if (response?.data) {
+			const response = await axios
+				.delete(`/api/sales/${sale.id}`, {
+					headers: {
+						Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
+					}
+				})
+				.then(res => handleAxiosResponse(res));
+			if (response) {
 				toast({
-					title: "Producto eliminado correctamente",
+					title: "Venta eliminada correctamente",
 					variant: "success",
 					duration: 1500
 				});
@@ -44,12 +47,13 @@ export default function CellAction({ sale }: CellActionProps) {
 		} catch (error) {
 			console.error(error);
 			toast({
-				title: "Ocurrió un error al eliminar el producto de tu tienda",
+				title: "Ocurrió un error al eliminar la venta de tu tienda",
 				variant: "error",
 				duration: 1500
 			});
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
 	}
 

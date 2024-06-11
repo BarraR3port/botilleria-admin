@@ -3,11 +3,13 @@
 import MultipleSelector from "@/components/extensions/multiple-selector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useBreakpoint } from "@/lib/breakpoint";
+import type { SaleType } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
+import { CreditCard, DollarSignIcon } from "lucide-react";
 
 export type ColumnRef = {
 	id: string;
@@ -37,8 +39,12 @@ export type ColumnRef = {
 export type Column = {
 	id: string;
 	total: string | number;
+	type: SaleType;
+	totalDiscount: string;
+	originalTotal?: string;
 	createdAt: string;
 	userId: string;
+	totalUserSales?: number;
 	sellerName: string;
 	sellerEmail: string;
 	products: {
@@ -81,11 +87,25 @@ export const columns: ColumnDef<Column>[] = [
 	},
 	{
 		accessorKey: "total",
-		header: "Total"
+		header: "Total",
+		cell: ({ row }) => (
+			<div className="text-right">
+				<span className="text-green-500">{row.original.total}</span>
+			</div>
+		)
+	},
+	{
+		accessorKey: "totalDiscount",
+		header: "Descuentos",
+		cell: ({ row }) => (
+			<div className="text-right">
+				<span className="text-red-500 ">{row.original.totalDiscount}</span>
+			</div>
+		)
 	},
 	{
 		accessorKey: "sellerName",
-		header: "Venta por",
+		header: "Vendedor",
 		cell: ({ row }) => (
 			<Link href={`/panel/users/${row.original.userId}`} className="hover:text-blue-500">
 				{row.original.sellerName}
@@ -129,12 +149,23 @@ export const columns: ColumnDef<Column>[] = [
 					redirectTo="/panel/products/"
 					emptyIndicator={
 						<p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-							no results found.
+							No hay productos
 						</p>
 					}
 				/>
 			);
 		}
+	},
+	{
+		accessorKey: "type",
+		header: "Tipo",
+		cell: ({ row }) => (
+			<>
+				{row.original.type === "CASH" && <DollarSignIcon className="w-6 h-6 text-green-500" />}
+				{row.original.type === "DEBIT" && <CreditCard className="w-6 h-6" />}
+				{row.original.type === "CREDIT" && <CreditCard className="w-6 h-6 text-warning" />}
+			</>
+		)
 	},
 	{
 		accessorKey: "createdAt",

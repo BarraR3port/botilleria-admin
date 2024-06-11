@@ -16,7 +16,7 @@ export default async function UsersPage() {
 			rol: true
 		},
 		orderBy: {
-			createdAt: "desc"
+			createdAt: "asc"
 		}
 	});
 

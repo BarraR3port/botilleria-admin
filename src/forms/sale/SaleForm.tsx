@@ -8,7 +8,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { toast } from "@/components/ui/use-toast";
 import AlertModal from "@/modals/alert-modal";
 import axios from "axios";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, Eye, TrashIcon } from "lucide-react";
+import {
+	ArrowLeftIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	CreditCard,
+	DollarSignIcon,
+	Eye,
+	TrashIcon
+} from "lucide-react";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -25,7 +33,7 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 	const router = useRouter();
 	const params = useParams();
 
-	function openProduct(productId: string) {
+	function openProduct(productId: number) {
 		router.push(`/panel/products/${productId}`);
 	}
 
@@ -39,21 +47,23 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 			});
 			if (response?.data) {
 				toast({
-					title: "Marca eliminada correctamente",
+					title: "Venta eliminada correctamente",
 					variant: "success",
 					duration: 1500
 				});
-				router.replace("/panel/products/discounts");
+				router.replace("/panel/sales");
+				setOpen(false);
 			}
 		} catch (error) {
 			console.error(error);
 			toast({
-				title: "Ocurrió un error al eliminar la producto de tu tienda",
+				title: "Ocurrió un error al eliminar la venta de tu tienda",
 				variant: "error",
 				duration: 1500
 			});
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
 	}
 
@@ -65,18 +75,19 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 					<Heading
 						title={
 							<h1 className="font-semibold text-lg md:text-xl">
-								Venta #{sale.id} -{" "}
-								<span className="font-normal text-gray-500 dark:text-gray-400">{sale.sellerName}</span>
-								<span className="font-normal text-gray-500 dark:text-gray-400">
-									el {sale.createdAt}
+								Venta #{sale.id}
+								<span className="font-normal text-gray-400">
+									{" "}
+									{sale.sellerName} el <span className=" hover:text-gray-300">{sale.createdAt}</span>
 								</span>
 							</h1>
 						}
+						mainPath="/panel/sales"
 					/>
 				</div>
 				<Separator className="pt-2" />
 			</div>
-			<div className="flex flex-1 flex-col gap-4 md:gap-8 md:p-6">
+			<div className="flex flex-1 flex-col ">
 				<div className="flex flex-col md:grid md:grid-cols-6 gap-6">
 					<div className="md:col-span-4 lg:col-span-3 xl:col-span-4 flex flex-col gap-6">
 						<Card>
@@ -100,15 +111,19 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 											<TableRow key={product.id}>
 												<TableCell className="font-medium">{product.productName}</TableCell>
 												<TableCell>{product.quantity}</TableCell>
-												<TableCell>{product.originalPrice}</TableCell>
-												<TableCell>{product.appliedDiscount}</TableCell>
-												<TableCell>{product.productSellPrice}</TableCell>
+												<TableCell className="text-gray-400">{product.originalPrice}</TableCell>
+												<TableCell className="text-red-400">
+													{product.appliedDiscount}
+												</TableCell>
+												<TableCell className="text-green-400">
+													{product.productSellPrice}
+												</TableCell>
 												<TableCell className="hidden md:table-cell">
 													<Button
 														variant="outline"
 														size="icon"
 														onClick={() => {
-															openProduct(product.id);
+															openProduct(product.productId);
 														}}
 													>
 														<Eye className="h-4 w-4 hover:cursor-pointer group-hover:text-blue-500" />
@@ -128,16 +143,16 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 							<CardContent className="grid gap-4">
 								<div className="flex items-center">
 									<div>Subtotal</div>
-									<div className="ml-auto">$169.00</div>
+									<div className="ml-auto text-gray-400">{sale.originalTotal}</div>
 								</div>
 								<div className="flex items-center">
 									<div>Descuento</div>
-									<div className="ml-auto">-$19.00</div>
+									<div className="ml-auto text-red-400">-{sale.totalDiscount}</div>
 								</div>
 								<Separator />
 								<div className="flex items-center font-medium">
 									<div>Total</div>
-									<div className="ml-auto">$150.00</div>
+									<div className="ml-auto text-green-500">{sale.total}</div>
 								</div>
 							</CardContent>
 							{/* <CardFooter className="flex items-center gap-2">
@@ -162,7 +177,7 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 										<Link href={`/panel/users/${sale.userId}`} className="text-blue-600 underline">
 											{sale.sellerName}
 										</Link>
-										<div>23 total orders</div>
+										<div>{sale.totalUserSales} ventas este mes</div>
 									</div>
 								</CardContent>
 							</div>
@@ -176,7 +191,35 @@ export default function SaleForm({ sale, session }: SaleFormProps) {
 										<Link href={`mailto:${sale.sellerEmail}`} className="text-blue-600">
 											{sale.sellerEmail}
 										</Link>
-										{/* <div className="text-gray-500 dark:text-gray-400">+1 888 8888 8888</div> */}
+										{/* <div className="text-gray-400">+1 888 8888 8888</div> */}
+									</div>
+								</CardContent>
+							</div>
+							<Separator />
+							<div>
+								<CardHeader className="flex flex-row items-center space-y-0">
+									<CardTitle>Tipo de Venta</CardTitle>
+								</CardHeader>
+								<CardContent className="text-lg">
+									<div className="flex items-center space-x-2">
+										{sale.type === "CASH" && (
+											<>
+												<DollarSignIcon className="w-5 h-5 text-green-500" />
+												<span>Efectivo</span>
+											</>
+										)}
+										{sale.type === "DEBIT" && (
+											<>
+												<CreditCard className="w-5 h-5" />
+												<span>Débito</span>
+											</>
+										)}
+										{sale.type === "CREDIT" && (
+											<>
+												<CreditCard className="w-5 h-5 text-warning" />
+												<span>Crédito</span>
+											</>
+										)}
 									</div>
 								</CardContent>
 							</div>

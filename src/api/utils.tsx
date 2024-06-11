@@ -5,7 +5,6 @@ export async function handleAxiosResponse(response: any, form?: any): Promise<Ap
 	if (!response) {
 		return undefined;
 	}
-	console.log(" || NORMAL", response);
 
 	const error: UserErrorResponse = response.data;
 	if (typeof error === "object" && "errors" in error) {

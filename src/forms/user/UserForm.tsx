@@ -154,6 +154,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 		} finally {
 			setLoadingBasic(false);
 			setLoadingCritic(false);
+			setOpen(false);
 		}
 	}
 

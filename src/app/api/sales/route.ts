@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
 		const body = await req.json();
 
-		const { total, products } = body;
+		const { total, products, totalDiscount, type } = body;
 
 		if (!products || !products.length)
 			return NextResponse.json(
@@ -21,9 +21,22 @@ export async function POST(req: Request) {
 		if (!total)
 			return NextResponse.json({ errors: [{ type: "total", message: "Total requerido" }] }, { status: 400 });
 
+		if (!totalDiscount) {
+			return NextResponse.json({
+				errors: [{ type: "totalDiscount", message: "Descuento total requerido" }],
+				status: 400
+			});
+		}
+
+		if (!type) {
+			return NextResponse.json({ errors: [{ type: "type", message: "Tipo requerido" }], status: 400 });
+		}
+
 		const sale = await prisma.sale.create({
 			data: {
 				total,
+				totalDiscount,
+				type,
 				user: {
 					connect: {
 						id: userId
@@ -33,13 +46,14 @@ export async function POST(req: Request) {
 					create: products.map((product: any) => ({
 						product: {
 							connect: {
-								id: product.id
+								id: product.item.id
 							}
 						},
 						quantity: product.quantity,
 						price: product.price,
 						finalPrice: product.finalPrice,
-						appliedDiscount: product.appliedDiscount
+						appliedDiscount: product.appliedDiscount,
+						originalPrice: product.originalPrice
 					}))
 				}
 			}
@@ -47,7 +61,7 @@ export async function POST(req: Request) {
 
 		return NextResponse.json(sale);
 	} catch (error) {
-		console.log("[PRODUCTS][POST]", error);
+		console.log("[SALES][POST]", error);
 		return NextResponse.json({
 			errors: [{ type: "internal", message: "Ocurrió un error interno, por favor contactar soporte" }],
 			status: 500

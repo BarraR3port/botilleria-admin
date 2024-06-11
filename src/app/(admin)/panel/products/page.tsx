@@ -16,7 +16,7 @@ export default async function Ventas() {
 			}
 		},
 		orderBy: {
-			createdAt: "desc"
+			createdAt: "asc"
 		}
 	});
 

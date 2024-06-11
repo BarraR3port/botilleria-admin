@@ -51,6 +51,7 @@ export default function CellAction({ brand }: CellActionProps) {
 			});
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
 	}
 

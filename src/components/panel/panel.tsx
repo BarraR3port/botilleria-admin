@@ -60,16 +60,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 								title: "Ventas",
 								label: "",
 								icon: DollarSign,
-								href: "/panel/sales",
-								subLinks: [
-									{
-										title: "Ventas",
-										label: "",
-										icon: List,
-										href: "/panel/sales",
-										hasPrevious: true
-									}
-								]
+								href: "/panel/sales"
 							},
 							{
 								title: "Productos",

@@ -7,7 +7,7 @@ import { es } from "date-fns/locale";
 export default async function Ventas() {
 	const brands = await prisma.brand.findMany({
 		orderBy: {
-			createdAt: "desc"
+			createdAt: "asc"
 		}
 	});
 

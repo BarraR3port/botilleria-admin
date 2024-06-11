@@ -115,6 +115,7 @@ export default function ProductForm({ brand, session }: BrandProps) {
 			});
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
 	}
 

@@ -202,9 +202,10 @@ export async function DELETE(
 		if (!userId)
 			return NextResponse.json({ errors: [{ type: "auth", message: "Sin autorización" }] }, { status: 401 });
 
-		const isUserAdmin = await prisma.user.findFirst({
+		const isUserAdmin = await prisma.user.findUnique({
 			where: {
-				id: userId
+				id: userId,
+				rol: "ADMIN"
 			}
 		});
 

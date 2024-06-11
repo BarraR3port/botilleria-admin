@@ -127,6 +127,7 @@ export default function DiscountForm({ discount, session, types }: BrandProps) {
 			});
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
 	}
 

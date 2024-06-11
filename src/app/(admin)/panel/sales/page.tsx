@@ -1,29 +1,50 @@
 import { Client } from "@/components/panel/sales/list/Client";
-import type { Column, ColumnRef } from "@/components/panel/sales/list/Column";
+import type { Column } from "@/components/panel/sales/list/Column";
 import prisma from "@/lib/prismadb";
-import { priceFormatter } from "@/lib/utils";
+import { getType, priceFormatter } from "@/lib/utils";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import sales from "./sales_data3.json";
 
 export default async function Sales() {
-	/* const sales = await prisma.sale.findMany({
-		include: {},
+	const sales = await prisma.sale.findMany({
+		include: {
+			user: {
+				select: {
+					name: true,
+					lastName: true,
+					email: true
+				}
+			},
+			products: {
+				include: {
+					product: {
+						select: {
+							id: true,
+							name: true,
+							sellPrice: true,
+							type: true,
+							weightOrVolume: true,
+							brand: {
+								select: {
+									name: true
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		orderBy: {
-			createdAt: "desc"
+			createdAt: "asc"
 		}
 	});
- */
-	const newSales: ColumnRef[] = sales as any;
 
-	newSales.sort((a, b) => {
-		return Number(a.id) - Number(b.id);
-	});
-
-	const formattedSales: Column[] = newSales.map(sale => {
+	const formattedSales: Column[] = sales.map(sale => {
 		return {
 			id: sale.id.toString(),
+			type: sale.type,
 			total: priceFormatter.format(sale.total),
+			totalDiscount: priceFormatter.format(sale.totalDiscount),
 			createdAt: format(sale.createdAt, "dd MMMM yy HH:mm", {
 				locale: es
 			}),
@@ -31,20 +52,19 @@ export default async function Sales() {
 			sellerName: `${sale.user.name} ${sale.user.lastName}`,
 			sellerEmail: sale.user.email,
 			products: sale.products.map(product => {
+				const productTypeFormatted = getType(product.product.type, product.product.weightOrVolume);
 				return {
 					id: product.id.toString(),
 					quantity: product.quantity,
 					originalPrice: priceFormatter.format(product.originalPrice),
-					appliedDiscount: priceFormatter.format(product.appliedDiscount),
-					productId: product.productId,
-					productName: product.product.name,
+					appliedDiscount: priceFormatter.format(product.appliedDiscount ?? 0),
+					productId: product.product.id,
+					productName: `${product.product.name} ${product.product.brand.name} ${productTypeFormatted} x${product.quantity}`,
 					productSellPrice: priceFormatter.format(product.product.sellPrice)
 				};
 			})
 		};
 	});
-
-	//console.log(JSON.stringify(sales[0], null, 4));
 
 	return (
 		<div className="flex-col overflow-auto">

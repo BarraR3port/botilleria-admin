@@ -20,9 +20,12 @@ const getBreakpoint = (width: number) => {
 };
 
 export const useBreakpoint = () => {
-	const [breakpoint, setBreakpoint] = useState<string>(getBreakpoint(window.innerWidth));
+	const [mounted, setMounted] = useState(false);
+	const [breakpoint, setBreakpoint] = useState<string>();
 
 	useEffect(() => {
+		setMounted(true);
+		if (!mounted) return;
 		const handleResize = () => {
 			setBreakpoint(getBreakpoint(window.innerWidth));
 		};
@@ -31,7 +34,7 @@ export const useBreakpoint = () => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, []);
+	}, [mounted, window.innerWidth]);
 
 	return breakpoint;
 };

@@ -7,12 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import BasicModal from "@/modals/basic-modal";
-import type { ApiResponse, UserAuthError } from "@/objects";
 import { RecoverFormSchema, type RecoverFromType } from "@/schemas/authSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useState } from "react";
-import { toast } from "../../components/ui/use-toast";
 
 export function RecoverForm() {
 	const [loading, setLoading] = useState(false);
