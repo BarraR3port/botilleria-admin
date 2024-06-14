@@ -3,7 +3,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 
 const buttonVariants = cva(
 	"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
@@ -46,10 +46,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	({ className, variant, size, asChild = false, prevIcon, loading = false, ...props }, ref) => {
 		const Comp = asChild ? Slot : "button";
 		return (
-			<Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} disabled={loading}>
-				{prevIcon}
+			<Comp
+				className={cn(
+					buttonVariants({ variant, size, className }),
+					loading ? "opacity-50" : "",
+					"relative select-none"
+				)}
+				ref={ref}
+				{...props}
+				disabled={loading || props.disabled}
+			>
+				{prevIcon && <div className="absolute left-2">{prevIcon}</div>}
 				{props.children}
-				{loading && <Loader2 className={cn("ml-2 animate-spin")} size={14} />}
+				{loading && <LoaderCircle className="absolute right-2 animate-spin" size={14} />}
 			</Comp>
 		);
 	}
