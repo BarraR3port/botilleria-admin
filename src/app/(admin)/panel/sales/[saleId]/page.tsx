@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import type { Column } from "@/components/panel/sales/list/Column";
-import SaleForm from "@/forms/sale/SaleForm";
+import SaleInfo from "@/forms/sale/SaleInfo";
 import prisma from "@/lib/prismadb";
 import { getType, priceFormatter } from "@/lib/utils";
 import { format } from "date-fns";
@@ -95,7 +95,7 @@ export default async function Product({
 	return (
 		<div className="flex-col overflow-auto ">
 			<div className="flex-1 space-y-4 p-4">
-				<SaleForm sale={formattedSales} session={session} />
+				<SaleInfo sale={formattedSales} session={session} />
 			</div>
 		</div>
 	);

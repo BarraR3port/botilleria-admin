@@ -5,7 +5,7 @@ import { Button } from "@ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@ui/dropdown-menu";
 import { useToast } from "@ui/use-toast";
 import axios from "axios";
-import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import type { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
@@ -24,6 +24,9 @@ export default function CellAction({ product }: CellActionProps) {
 	const { toast } = useToast();
 
 	function edit() {
+		router.push(`/panel/products/edit/${product.id}`);
+	}
+	function view() {
 		router.push(`/panel/products/${product.id}`);
 	}
 
@@ -60,6 +63,9 @@ export default function CellAction({ product }: CellActionProps) {
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
 			<div className=" ">
+				<Button variant="ghost" onClick={view}>
+					<Eye className="h-4 w-4 hover:cursor-pointer hover:text-blue-400" />
+				</Button>
 				<Button variant="ghost" onClick={edit}>
 					<Edit className="h-4 w-4 hover:cursor-pointer" />
 				</Button>

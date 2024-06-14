@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 const tailwindConfig = {
@@ -30,11 +31,14 @@ export const useBreakpoint = () => {
 			setBreakpoint(getBreakpoint(window.innerWidth));
 		};
 
-		window.addEventListener("resize", handleResize);
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, [mounted, window.innerWidth]);
+		// Verificar si window está definido antes de usarlo
+		if (typeof window !== "undefined") {
+			window.addEventListener("resize", handleResize);
+			return () => {
+				window.removeEventListener("resize", handleResize);
+			};
+		}
+	}, [mounted]); // Remover window.innerWidth de las dependencias
 
 	return breakpoint;
 };

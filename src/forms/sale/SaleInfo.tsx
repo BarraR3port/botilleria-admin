@@ -1,33 +1,25 @@
 "use client";
 import type { Column } from "@/components/panel/sales/list/Column";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
 import AlertModal from "@/modals/alert-modal";
 import axios from "axios";
-import {
-	ArrowLeftIcon,
-	ChevronLeftIcon,
-	ChevronRightIcon,
-	CreditCard,
-	DollarSignIcon,
-	Eye,
-	TrashIcon
-} from "lucide-react";
+import { CreditCard, DollarSignIcon, Eye } from "lucide-react";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface SaleFormProps {
+interface SaleInfoProps {
 	sale: Column;
 	session: Session;
 }
 
-export default function SaleForm({ sale, session }: SaleFormProps) {
+export default function SaleInfo({ sale, session }: SaleInfoProps) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const router = useRouter();

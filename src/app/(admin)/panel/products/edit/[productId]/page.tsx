@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import ProductInfo from "@/components/panel/products/product-info";
+import ProductForm from "@/forms/product/ProductForm";
 import prisma from "@/lib/prismadb";
+import type { Discount } from "@prisma/client";
 import { RedirectType, notFound, redirect } from "next/navigation";
 
 export default async function Product({
@@ -30,18 +31,38 @@ export default async function Product({
 		})
 		.catch(() => null);
 
-	if (!product && params.productId === "new") {
-		redirect("/panel/products/create");
-	}
-
-	if (!product) {
+	if (!product && params.productId !== "new") {
 		notFound();
 	}
+
+	const brands = await prisma.brand.findMany({}).catch(() => []);
+
+	const discounts = await prisma.discount
+		.findMany({
+			where: {
+				active: true
+			}
+		})
+		.catch(() => []);
+
+	const discountsWithEmpty: Discount[] = [
+		{
+			id: -1,
+			name: "Sin descuento"
+		} as any,
+		...discounts
+	];
 
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
-				<ProductInfo product={product as any} types={PRODUCT_TYPES} session={session} />
+				<ProductForm
+					product={product}
+					brands={brands}
+					discounts={discountsWithEmpty}
+					types={PRODUCT_TYPES}
+					session={session}
+				/>
 			</div>
 		</div>
 	);
