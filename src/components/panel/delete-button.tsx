@@ -10,8 +10,8 @@ import { Button } from "../ui/button";
 import { Trash } from "lucide-react";
 
 interface DeleteButtonProps {
-	type: "products" | "sales";
-	session: Session;
+	type: "products" | "sales" | "users" | "products/brands" | "products/discounts";
+	session: Session | null;
 	itemId: number | string;
 }
 

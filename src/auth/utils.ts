@@ -1,3 +1,4 @@
+import "server-only";
 // biome-ignore lint/style/useNodejsImportProtocol: <explanation>
 import { randomFillSync } from "crypto";
 import prisma from "@/lib/prismadb";

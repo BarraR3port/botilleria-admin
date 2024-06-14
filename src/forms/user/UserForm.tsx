@@ -290,7 +290,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						</div>
 					</div>
 					<div className="flex gap-2 justify-end">
-						<Button className="h-8 gap-1" type="submit" variant="success" loading={loadingBasic}>
+						<Button className="h-8 gap-1" type="submit" variant="secondary" loading={loadingBasic}>
 							<Save className="h-4 w-4" />
 							Actualizar usuario
 						</Button>
@@ -375,7 +375,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						</div>
 					</div>
 					<div className="flex gap-2 justify-end">
-						<Button className="h-8 gap-1" type="submit" variant="success" loading={loadingCritic}>
+						<Button className="h-8 gap-1" type="submit" variant="secondary" loading={loadingCritic}>
 							<Save className="h-4 w-4" />
 							Actualizar contraseña
 						</Button>
