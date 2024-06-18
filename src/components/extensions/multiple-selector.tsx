@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { max } from "date-fns";
 
 export interface Option {
 	value: string;
@@ -189,6 +190,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 	) => {
 		const inputRef = React.useRef<HTMLInputElement>(null);
 		const [open, setOpen] = React.useState(false);
+		const [isExpanded, setIsExpanded] = React.useState(false);
 		const [isLoading, setIsLoading] = React.useState(false);
 		const router = useRouter();
 
@@ -243,6 +245,10 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 				setSelected(value);
 			}
 		}, [value]);
+
+		const displayedItems = React.useMemo(() => {
+			return isExpanded ? selected : selected.slice(0, maxShownItems);
+		}, [isExpanded, selected, maxShownItems]);
 
 		useEffect(() => {
 			/** If `onSearch` is provided, do not trigger options updated. */
@@ -386,7 +392,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 				>
 					<div className="flex flex-wrap gap-1">
 						{selected.length > 0 &&
-							selected.slice(0, maxShownItems).map(option => (
+							displayedItems.map(option => (
 								<Badge
 									key={option.value}
 									className={cn(
@@ -425,9 +431,26 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 									</button>
 								</Badge>
 							))}
-						{selected.length > maxShownItems && (
-							<Badge className={cn("cursor-pointer border-slate-200", badgeClassName)}>
+						{selected.length > maxShownItems && !isExpanded && (
+							<Badge
+								className={cn("cursor-pointer border-slate-200", badgeClassName)}
+								onClick={() => {
+									setIsExpanded(!isExpanded);
+								}}
+							>
 								+{selected.length - maxShownItems} más
+							</Badge>
+						)}
+						{isExpanded && (
+							<Badge
+								className={cn("cursor-pointer gap-1", badgeClassName)}
+								onClick={() => {
+									setIsExpanded(!isExpanded);
+								}}
+								variant="destructive"
+							>
+								<X className="h-3 w-3" />
+								Mostrar menos
 							</Badge>
 						)}
 						{/* Avoid having the "Search" Icon */}
