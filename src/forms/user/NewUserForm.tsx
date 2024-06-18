@@ -83,7 +83,7 @@ export default function NewUserForm({ roles, session }: FormProps) {
 	return (
 		<>
 			<div className="sm:flex items-center justify-between space-y-4">
-				<Heading title={"Crear Usuario"} />
+				<Heading title={"Crear Usuario"} mainPath="panel/users" />
 			</div>
 			<Separator />
 			<Form {...form}>

@@ -1,7 +1,7 @@
 import { Client } from "@/components/panel/products/list/Client";
 import type { Column } from "@/components/panel/products/list/Column";
 import prisma from "@/lib/prismadb";
-import { priceFormatter } from "@/lib/utils";
+import { getType, priceFormatter } from "@/lib/utils";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -29,7 +29,7 @@ export default async function Ventas() {
 			brandName: product.brand.name,
 			barcode: product.barcode,
 			stock: product.stock,
-			weightOrVolume: product.weightOrVolume.toString(),
+			weightOrVolume: getType(product.type, product.weightOrVolume) || "",
 			createdAt: format(product.createdAt, "dd MMMM yy HH:mm", {
 				locale: es
 			})

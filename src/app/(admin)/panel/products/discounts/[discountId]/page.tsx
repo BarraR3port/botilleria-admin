@@ -7,7 +7,7 @@ export default async function Page({
 	params
 }: {
 	params: {
-		discountId: number | "new";
+		discountId: number | "create";
 	};
 }) {
 	const session = await auth();
@@ -20,7 +20,7 @@ export default async function Page({
 		})
 		.catch(() => null);
 
-	if (!discount && params.discountId !== "new") {
+	if (!discount && params.discountId !== "create") {
 		notFound();
 	}
 

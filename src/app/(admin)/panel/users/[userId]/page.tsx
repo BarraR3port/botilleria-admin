@@ -32,7 +32,7 @@ export default async function Product({
 		})
 		.catch(() => null);
 
-	if (!user && params.userId !== "new") {
+	if (!user && params.userId !== "create") {
 		notFound();
 	}
 
@@ -40,7 +40,7 @@ export default async function Product({
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
 				{user && <UserForm user={user} roles={ROLES} session={session} />}
-				{!user && params.userId === "new" && <NewUserForm roles={ROLES} session={session} />}
+				{!user && params.userId === "create" && <NewUserForm roles={ROLES} session={session} />}
 			</div>
 		</div>
 	);

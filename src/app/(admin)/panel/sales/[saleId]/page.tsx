@@ -11,7 +11,7 @@ export default async function Product({
 	params
 }: {
 	params: {
-		saleId: number | "new";
+		saleId: number | "create";
 	};
 }) {
 	const session = await auth();

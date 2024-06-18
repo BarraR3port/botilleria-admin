@@ -82,7 +82,9 @@ export function UserIcon({ navBar }: UserIconProps) {
 						<DropdownMenuSeparator />
 					</>
 				)}
-				<DropdownMenuGroup>
+				{/*
+				TODO: ELIMINAR
+				 <DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {
 							router.push("/panel");
@@ -104,7 +106,7 @@ export function UserIcon({ navBar }: UserIconProps) {
 						</DropdownMenuShortcut>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator /> */}
 				<DropdownMenuItem onClick={() => signOutHandler()}>
 					Salir
 					<DropdownMenuShortcut>

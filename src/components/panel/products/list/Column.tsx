@@ -2,7 +2,6 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
-import Barcode from "react-barcode";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
 
@@ -49,10 +48,12 @@ export const columns: ColumnDef<Column>[] = [
 		accessorKey: "name",
 		header: "Nombre"
 	},
+	/* 
+	TODO: ELIMINAR
 	{
 		accessorKey: "brandName",
 		header: "Marca"
-	},
+	}, */
 	{
 		accessorKey: "price",
 		header: "Precio"

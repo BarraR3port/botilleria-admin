@@ -20,7 +20,7 @@ export default async function Page({
 		})
 		.catch(() => null);
 
-	if (!brand && params.brandId !== "new") {
+	if (!brand && params.brandId !== "create") {
 		notFound();
 	}
 

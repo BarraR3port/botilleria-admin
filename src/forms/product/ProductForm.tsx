@@ -11,7 +11,6 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import AlertModal from "@/modals/alert-modal";
-import type { AuthResponse } from "@/objects";
 import { ProductFormSchema, type ProductFormType } from "@/schemas/ProductSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { Brand, Discount, Product, ProductType } from "@prisma/client";
@@ -53,6 +52,9 @@ export default function ProductForm({ product, brands, discounts, types, session
 					costPrice: Number.parseFloat(String(product?.costPrice)),
 					description: product?.description || "",
 					discountId: product?.discountId || undefined
+					/* TODO: ELIMINAR
+					brandId: product?.brandId || brands[0].id
+					*/
 				}
 			: {
 					name: "",
@@ -61,7 +63,10 @@ export default function ProductForm({ product, brands, discounts, types, session
 					sellPrice: 0,
 					costPrice: 0,
 					weightOrVolume: 0,
+					/* TODO: ELIMINAR
 					brandId: "",
+					*/
+					brandId: brands[0].id,
 					discountId: undefined,
 					type: types[0].value as ProductType,
 					available: true,
@@ -161,7 +166,7 @@ export default function ProductForm({ product, brands, discounts, types, session
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
 			<div className="sm:flex items-center justify-between space-y-4">
-				<Heading title={title} />
+				<Heading title={title} mainPath="products/" />
 			</div>
 			<Separator />
 			<Form {...form}>
@@ -262,6 +267,8 @@ export default function ProductForm({ product, brands, discounts, types, session
 									</FormItem>
 								)}
 							/>
+							{/* 
+							TODO: ELIMINAR
 							<FormField
 								control={form.control}
 								name="brandId"
@@ -336,7 +343,7 @@ export default function ProductForm({ product, brands, discounts, types, session
 										<FormMessage />
 									</FormItem>
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name="type"

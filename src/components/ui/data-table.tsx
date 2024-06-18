@@ -15,7 +15,6 @@ import { SelectGroup } from "@radix-ui/react-select";
 import { Input } from "@ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/table";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
@@ -24,6 +23,7 @@ import { Form, FormControl, FormField, FormItem } from "./form";
 import Heading from "./heading";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 import { Separator } from "./separator";
+import Link from "next/link";
 
 type SearchKey = {
 	value: string;
@@ -49,7 +49,6 @@ export function DataTable<TData, TValue>({
 	createButton
 }: DataTableProps<TData, TValue>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-	const router = useRouter();
 	const table = useReactTable({
 		data,
 		columns,
@@ -78,15 +77,12 @@ export function DataTable<TData, TValue>({
 						<Heading title={title} mainPath={mainPath} />
 					</div>
 					{createButton && (
-						<Button
-							onClick={() => {
-								router.push(`${mainPath}/new`);
-							}}
-							variant="outline"
-						>
-							<Plus className="mr-2 w-4 h-4" />
-							Crear
-						</Button>
+						<Link href={`${mainPath}/create`}>
+							<Button variant="outline">
+								<Plus className="mr-2 w-4 h-4" />
+								Crear
+							</Button>
+						</Link>
 					)}
 				</div>
 				<Separator className="pt-2" />

@@ -79,9 +79,11 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										title: "Crear Producto",
 										label: "",
 										icon: Plus,
-										href: "/panel/products/new",
+										href: "/panel/products/create",
 										hasPrevious: true
-									},
+									}
+									/*
+									TODO: ELIMINAR
 									{
 										title: "Marcas",
 										label: "",
@@ -100,7 +102,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 												title: "Crear Marca",
 												label: "",
 												icon: Plus,
-												href: "/panel/products/brands/new",
+												href: "/panel/products/brands/create",
 												hasPrevious: true
 											}
 										]
@@ -123,11 +125,11 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 												title: "Crear Descuento",
 												label: "",
 												icon: Plus,
-												href: "/panel/products/discounts/new",
+												href: "/panel/products/discounts/create",
 												hasPrevious: true
 											}
 										]
-									}
+									} */
 								]
 							},
 							{
@@ -147,17 +149,17 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										title: "Crear Usuario",
 										label: "",
 										icon: Plus,
-										href: "/panel/users/new",
+										href: "/panel/users/create",
 										hasPrevious: true
 									}
 								]
-							},
-							{
+							}
+							/* {
 								title: "Settings",
 								label: "",
 								icon: Settings,
 								href: "/panel/settings"
-							}
+							} */
 						]}
 					/>
 				</div>

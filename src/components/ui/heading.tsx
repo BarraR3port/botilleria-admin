@@ -20,13 +20,15 @@ export default function Heading({ title, mainPath }: HeadingProps) {
 		<div className="space-y-1">
 			<div className="flex gap-2 items-center">
 				{showBackButton && (
-					<Button variant="outline" size="icon" className="h-8 w-8">
-						<ChevronLeft
-							onClick={() => {
-								router.back();
-							}}
-							className="h-4 w-4"
-						/>
+					<Button
+						variant="outline"
+						size="icon"
+						className="h-8 w-8"
+						onClick={() => {
+							router.back();
+						}}
+					>
+						<ChevronLeft className="h-4 w-4" />
 						<span className="sr-only">Back</span>
 					</Button>
 				)}

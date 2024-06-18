@@ -162,7 +162,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loadingBasic} />
 			<div className="sm:flex items-center justify-between space-y-4">
-				<Heading title={"Editar Usuario"} />
+				<Heading title={"Editar Usuario"} mainPath="panel/users" />
 				<Button
 					className="h-8 gap-1 "
 					variant="destructive"

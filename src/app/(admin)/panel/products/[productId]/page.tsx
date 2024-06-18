@@ -7,7 +7,7 @@ export default async function Product({
 	params
 }: {
 	params: {
-		productId: number | "new";
+		productId: number | "create";
 	};
 }) {
 	const session = await auth();
@@ -30,7 +30,7 @@ export default async function Product({
 		})
 		.catch(() => null);
 
-	if (!product && params.productId === "new") {
+	if (!product && params.productId === "create") {
 		redirect("/panel/products/create");
 	}
 

@@ -29,10 +29,12 @@ const SEARCH_KEYS = [
 		value: "id",
 		label: "Id"
 	},
+	/* 
+	TODO: ELIMINAR
 	{
 		value: "brandName",
 		label: "Marca"
-	},
+	}, */
 	{
 		value: "price",
 		label: "Precio"
