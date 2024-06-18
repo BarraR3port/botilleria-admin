@@ -31,7 +31,7 @@ export function Nav({ links, isCollapsed, bottom }: NavProps) {
 				isCollapsed ? "data-collapsed=true:py-2" : ""
 			)}
 		>
-			<nav className="grid gap-1 space-y-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+			<nav className="grid gap-1 space-y-1 px-2 ">
 				{links.map((link, index) => {
 					return isCollapsed ? (
 						<NavLink key={index} link={link} />

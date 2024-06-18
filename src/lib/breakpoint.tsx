@@ -22,7 +22,7 @@ const getBreakpoint = (width: number) => {
 
 export const useBreakpoint = () => {
 	const [mounted, setMounted] = useState(false);
-	const [breakpoint, setBreakpoint] = useState<string>();
+	const [breakpoint, setBreakpoint] = useState<string>("xs");
 
 	useEffect(() => {
 		setMounted(true);
@@ -38,7 +38,7 @@ export const useBreakpoint = () => {
 				window.removeEventListener("resize", handleResize);
 			};
 		}
-	}, [mounted]); // Remover window.innerWidth de las dependencias
+	}, [mounted]);
 
 	return breakpoint;
 };

@@ -4,7 +4,7 @@ import { useBreakpoint } from "@/lib/breakpoint";
 import { cn } from "@/lib/utils";
 import { BadgePercent, Beer, Box, DollarSign, List, Plus, Settings, Tag, Users } from "lucide-react";
 import Link from "next/link";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { UserIcon } from "../layout/Header/UserIcon";
 import { buttonVariants } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -13,7 +13,7 @@ import { Nav } from "./nav";
 export default function Panel({ children }: { children: React.ReactNode }) {
 	const breakpoint = useBreakpoint();
 
-	const isCollapsed = useCallback(() => {
+	const isCollapsed = useMemo(() => {
 		if (breakpoint === "xs") {
 			return true;
 		}
@@ -26,10 +26,10 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 	return (
 		<div className="flex h-full flex-row">
 			<nav className="flex flex-col  bg-primary-900 ">
-				<div className={cn("flex h-14 items-center justify-center", isCollapsed() ? "h-14" : "px-2")}>
+				<div className={cn("flex h-14 items-center justify-center", isCollapsed ? "h-14" : "px-2")}>
 					<Link
 						className={cn(
-							isCollapsed()
+							isCollapsed
 								? buttonVariants({
 										variant: "ghost",
 										size: "icon"
@@ -40,7 +40,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 						href="/panel"
 					>
 						<Beer size={24} />
-						{!isCollapsed() && (
+						{!isCollapsed && (
 							<span className={"font-bold text-lg tracking-wider hover:text-primary"}>Panel</span>
 						)}
 					</Link>
@@ -48,7 +48,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 				<div className="flex-grow overflow-y-auto scroll-auto ">
 					<Separator />
 					<Nav
-						isCollapsed={isCollapsed()}
+						isCollapsed={isCollapsed}
 						links={[
 							{
 								title: "Panel",
@@ -165,7 +165,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 				</div>
 				<Separator />
 				<div className="gap-4 p-2">
-					<UserIcon navBar={!isCollapsed()} />
+					<UserIcon navBar={!isCollapsed} />
 				</div>
 			</nav>
 			<Separator orientation="vertical" />
