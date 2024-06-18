@@ -101,7 +101,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 						<Heading
 							title={
 								<div className="">
-									<h2 className="text-2xl font-bold">¡Bienvenido de vuelta, {session.user.name}!</h2>
+									<h2 className="text-2xl font-bold">¡Bienvenido {session.user.name}!</h2>
 									<p className="text-gray-500 dark:text-gray-400">
 										Aquí tienes un resumen de tu panel de administración
 									</p>

@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
 	return (
 		<div>
 			<div className="sticky top-0 bg-background z-10 space-y-2">
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
 						{icon}
 						<Heading title={title} mainPath={mainPath} />
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
 					{createButton && (
 						<Link href={`${mainPath}/create`}>
 							<Button variant="outline">
-								<Plus className="mr-2 w-4 h-4" />
+								<Plus className="w-4 h-4" />
 								Crear
 							</Button>
 						</Link>
@@ -87,14 +87,13 @@ export function DataTable<TData, TValue>({
 				</div>
 				<Separator className="pt-2" />
 				<div className="justify-between grid gap-x-2 lg:grid-flow-col grid-cols-2 ">
-					<div className="flex py-4 gap-x-2 col-span-1">
+					<div className="flex py-4 gap-x-2 col-span-2 lg:col-span-1">
 						<Input
 							placeholder="Buscar"
 							value={(table.getColumn(form.getValues("searchKey"))?.getFilterValue() as string) ?? ""}
 							onChange={event =>
 								table.getColumn(form.getValues("searchKey"))?.setFilterValue(event.target.value)
 							}
-							className="max-w-sm"
 						/>
 						<Form {...form}>
 							<FormField
@@ -134,7 +133,7 @@ export function DataTable<TData, TValue>({
 							/>
 						</Form>
 					</div>
-					<div className=" text-sm text-muted-foreground items-center flex col-span-1">
+					<div className="text-sm text-muted-foreground items-center col-span-1 hidden md:flex">
 						{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
 						{title.toLocaleLowerCase()} seleccionados
 					</div>

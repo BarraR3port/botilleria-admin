@@ -1,54 +1,26 @@
 "use client";
 
-import { useBreakpoint } from "@/lib/breakpoint";
-import { cn } from "@/lib/utils";
-import { BadgePercent, Beer, Box, DollarSign, List, Plus, Settings, Tag, Users } from "lucide-react";
+import { Beer, Box, DollarSign, List, Plus, Users } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useMemo } from "react";
 import { UserIcon } from "../layout/Header/UserIcon";
-import { buttonVariants } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Nav } from "./nav";
 
 export default function Panel({ children }: { children: React.ReactNode }) {
-	const breakpoint = useBreakpoint();
-
-	const isCollapsed = useMemo(() => {
-		if (breakpoint === "xs") {
-			return true;
-		}
-		if (breakpoint === "sm") {
-			return true;
-		}
-		return false;
-	}, [breakpoint]);
-
 	return (
 		<div className="flex h-full flex-row">
-			<nav className="flex flex-col  bg-primary-900 ">
-				<div className={cn("flex h-14 items-center justify-center", isCollapsed ? "h-14" : "px-2")}>
-					<Link
-						className={cn(
-							isCollapsed
-								? buttonVariants({
-										variant: "ghost",
-										size: "icon"
-									})
-								: undefined,
-							"flex items-center space-x-2"
-						)}
-						href="/panel"
-					>
+			<nav className="flex flex-col bg-primary-900 ">
+				<div className={"flex h-14 items-center justify-center md:px-2"}>
+					<Link className={"flex items-center space-x-2"} href="/panel">
 						<Beer size={24} />
-						{!isCollapsed && (
-							<span className={"font-bold text-lg tracking-wider hover:text-primary"}>Panel</span>
-						)}
+						<span className={"hidden md:flex font-bold text-lg tracking-wider hover:text-primary"}>
+							Panel
+						</span>
 					</Link>
 				</div>
 				<div className="flex-grow overflow-y-auto scroll-auto ">
 					<Separator />
 					<Nav
-						isCollapsed={isCollapsed}
 						links={[
 							{
 								title: "Panel",
@@ -165,11 +137,11 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 				</div>
 				<Separator />
 				<div className="gap-4 p-2">
-					<UserIcon navBar={!isCollapsed} />
+					<UserIcon />
 				</div>
 			</nav>
 			<Separator orientation="vertical" />
-			<div className="flex flex-col flex-1 gap-4 p-4 md:gap-8 max-h-full max-w-full overflow-auto">
+			<div className="flex flex-col flex-1 gap-4 md:p-4 md:gap-8 max-h-full max-w-full overflow-auto">
 				{children}
 			</div>
 		</div>

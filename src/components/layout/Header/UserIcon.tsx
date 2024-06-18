@@ -18,11 +18,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-type UserIconProps = {
-	navBar?: boolean;
-};
-
-export function UserIcon({ navBar }: UserIconProps) {
+export function UserIcon() {
 	const { data } = useSession();
 	const router = useRouter();
 	const pathName = usePathname();
@@ -56,32 +52,26 @@ export function UserIcon({ navBar }: UserIconProps) {
 							</AvatarFallback>
 						</Avatar>
 					</Button>
-					{navBar && (
+					<div className="hidden md:flex flex-col space-y-1">
+						<p className="flex text-sm font-medium leading-none">
+							{data?.user?.name} {data?.user?.lastName}
+						</p>
+						<p className="text-xs leading-none text-muted-foreground md:flex">{data?.user?.email}</p>
+					</div>
+				</div>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent className="w-50" align="end" forceMount>
+				<div className="hidden md:flex">
+					<DropdownMenuLabel className="font-normal ">
 						<div className="flex flex-col space-y-1">
-							<p className="flex text-sm font-medium leading-none">
+							<p className="text-sm font-medium leading-none xs:flex">
 								{data?.user?.name} {data?.user?.lastName}
 							</p>
 							<p className="text-xs leading-none text-muted-foreground md:flex">{data?.user?.email}</p>
 						</div>
-					)}
+					</DropdownMenuLabel>
+					<DropdownMenuSeparator />
 				</div>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-50" align="end" forceMount>
-				{!navBar && (
-					<>
-						<DropdownMenuLabel className="font-normal ">
-							<div className="flex flex-col space-y-1">
-								<p className="text-sm font-medium leading-none xs:flex">
-									{data?.user?.name} {data?.user?.lastName}
-								</p>
-								<p className="text-xs leading-none text-muted-foreground md:flex">
-									{data?.user?.email}
-								</p>
-							</div>
-						</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-					</>
-				)}
 				{/*
 				TODO: ELIMINAR
 				 <DropdownMenuGroup>

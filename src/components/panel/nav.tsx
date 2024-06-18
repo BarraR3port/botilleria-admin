@@ -16,27 +16,24 @@ export type NavLinkType = {
 };
 
 interface NavProps {
-	isCollapsed: boolean;
 	links: NavLinkType[];
 	bottom?: boolean;
 }
 
-export function Nav({ links, isCollapsed, bottom }: NavProps) {
+export function Nav({ links, bottom }: NavProps) {
 	return (
-		<div
-			data-collapsed={isCollapsed}
-			className={cn(
-				"group flex flex-col gap-4 py-2",
-				bottom ? "mt-auto flex-grow" : "flex-grow",
-				isCollapsed ? "data-collapsed=true:py-2" : ""
-			)}
-		>
+		<div className={cn("group flex flex-col gap-4 py-2", bottom ? "mt-auto flex-grow" : "flex-grow")}>
 			<nav className="grid gap-1 space-y-1 px-2 ">
 				{links.map((link, index) => {
-					return isCollapsed ? (
-						<NavLink key={index} link={link} />
-					) : (
-						<NavLinkExpanded key={index} link={link} />
+					return (
+						<div key={index}>
+							<div className="block md:hidden">
+								<NavLink link={link} />
+							</div>
+							<div className="hidden md:block">
+								<NavLinkExpanded link={link} />
+							</div>
+						</div>
 					);
 				})}
 			</nav>

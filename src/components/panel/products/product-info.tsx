@@ -58,14 +58,14 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 				</div>
 			</div>
 			<Separator />
-			<div className="grid gap-4 grid-cols-2 grid-flow-col">
+			<div className="grid gap-2 md:gap-4 grid-cols-2 grid-flow-col">
 				<div className="grid gap-4">
 					<Card>
 						<CardHeader>
 							<CardTitle>Precio de Venta</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl">{sellPriceFormatted}</div>
+							<div className="text-1xl">{sellPriceFormatted}</div>
 						</CardContent>
 					</Card>
 					<Card>
@@ -73,7 +73,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 							<CardTitle>Precio de Coste</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl ">{costPriceFormatted}</div>
+							<div className="text-1xl ">{costPriceFormatted}</div>
 						</CardContent>
 					</Card>
 				</div>
@@ -83,7 +83,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 							<CardTitle>Tipo de producto</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className="flex items-center text-2xl ">
+							<div className="flex items-center text-1xl ">
 								{product.type === "DRINK" ? (
 									<Beer className="w-6 h-6 mr-2" />
 								) : (
@@ -98,7 +98,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 							<CardTitle>{weightOrVolume}</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl ">{getType(product.type, 1500)}</div>
+							<div className="text-1xl ">{getType(product.type, 1500)}</div>
 						</CardContent>
 					</Card>
 				</div>
@@ -109,7 +109,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 						<CardTitle>Stock</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl ">{product.stock}</div>
+						<div className="text-1xl ">{product.stock}</div>
 					</CardContent>
 				</Card>
 
@@ -118,7 +118,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 						<CardTitle>Disponibilidad</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<div className={cn("text-2xl ", product.available ? "text-green-500" : "text-red-500")}>
+						<div className={cn("text-1xl ", product.available ? "text-green-500" : "text-red-500")}>
 							{product.available ? "Disponible" : "No disponible"}
 						</div>
 					</CardContent>
@@ -128,7 +128,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 						<CardTitle>Fecha de Creación</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl ">{createdAt}</div>
+						<div className="text-1xl ">{createdAt}</div>
 					</CardContent>
 				</Card>
 				<Card>
@@ -136,7 +136,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 						<CardTitle>Fecha de Actualización</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl ">{updatedAt}</div>
+						<div className="text-1xl ">{updatedAt}</div>
 					</CardContent>
 				</Card>
 			</div>

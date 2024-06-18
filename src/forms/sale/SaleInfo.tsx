@@ -62,8 +62,8 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 	return (
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
-			<div className="sticky top-0 bg-background z-10 space-y-2">
-				<div className="flex items-center justify-between">
+			<div className="sticky top-0 bg-background z-10">
+				<div className="flex items-center justify-between ">
 					<Heading
 						title={
 							<h1 className="font-semibold text-lg md:text-xl">
