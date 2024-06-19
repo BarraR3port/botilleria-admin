@@ -40,7 +40,7 @@ export function RecoverForm() {
 		<div>
 			<BasicModal
 				title="Correo de recuperación enviado"
-				description="Se ha enviado un correo de recuperación, revisa tu bandeja de entrada y spam para recuperar tu cuenta."
+				description="Se ha enviado un correo de recuperación, revisa tu bandeja de entrada y spam para recuperar contraseña."
 				open={open}
 				onConfirm={() => {
 					setOpen(false);

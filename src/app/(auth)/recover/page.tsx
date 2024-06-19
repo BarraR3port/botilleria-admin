@@ -8,7 +8,7 @@ export default function Recover() {
 					{/* <Image src="/pary-white-512.webp" alt="Pary Studio" width={128} height={128} /> */}
 				</div>
 				<div className="space-y-2 text-center">
-					<h1 className="text-3xl font-bold">Recuperar Tu cuenta</h1>
+					<h1 className="text-3xl font-bold">Recuperar contraseña</h1>
 				</div>
 				<RecoverForm />
 			</div>

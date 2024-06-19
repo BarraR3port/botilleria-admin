@@ -93,7 +93,9 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 											<TableHead className="max-w-[150px]">Nombre</TableHead>
 											<TableHead>Cantidad</TableHead>
 											<TableHead>Precio Original</TableHead>
-											<TableHead>Descuento</TableHead>
+											{/* 
+											TODO: Eliminar
+											<TableHead>Descuento</TableHead> */}
 											<TableHead>Precio final</TableHead>
 											<TableHead />
 										</TableRow>
@@ -104,9 +106,11 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 												<TableCell className="font-medium">{product.productName}</TableCell>
 												<TableCell>{product.quantity}</TableCell>
 												<TableCell className="text-gray-400">{product.originalPrice}</TableCell>
+												{/* 
+												TODO: Eliminar
 												<TableCell className="text-red-400">
 													{product.appliedDiscount}
-												</TableCell>
+												</TableCell> */}
 												<TableCell className="text-green-400">
 													{product.productSellPrice}
 												</TableCell>
@@ -137,10 +141,12 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 									<div>Subtotal</div>
 									<div className="ml-auto text-gray-400">{sale.originalTotal}</div>
 								</div>
+								{/* 
+								TODO: Eliminar
 								<div className="flex items-center">
 									<div>Descuento</div>
 									<div className="ml-auto text-red-400">-{sale.totalDiscount}</div>
-								</div>
+								</div> */}
 								<Separator />
 								<div className="flex items-center font-medium">
 									<div>Total</div>

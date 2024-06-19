@@ -35,13 +35,13 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 								href: "/panel/sales"
 							},
 							{
-								title: "Productos",
+								title: "Inventario",
 								label: "",
 								icon: Box,
 								href: "/panel/products",
 								subLinks: [
 									{
-										title: "Productos",
+										title: "Inventario",
 										label: "",
 										icon: List,
 										href: "/panel/products",

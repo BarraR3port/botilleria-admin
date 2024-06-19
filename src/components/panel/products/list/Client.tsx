@@ -13,7 +13,7 @@ export function Client({ products }: ClientProps) {
 			data={products}
 			searchKeys={SEARCH_KEYS}
 			icon={<Package className="h-6 w-6" />}
-			title="Productos"
+			title="Inventario"
 			mainPath="/panel/products"
 			createButton
 		/>

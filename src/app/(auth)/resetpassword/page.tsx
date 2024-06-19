@@ -39,7 +39,7 @@ export default async function ResetPassword({
 					{/* <Image src="/pary-white-512.webp" alt="Pary Studio" width={128} height={128} /> */}
 				</div>
 				<div className="space-y-2 text-center">
-					<h1 className="text-3xl font-bold">Actualizar tu contraseña</h1>
+					<h1 className="text-3xl font-bold">Restablecer tu contraseña</h1>
 				</div>
 				<ResetForm email={email} recovery={recovery} />
 			</div>

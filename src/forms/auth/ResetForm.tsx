@@ -166,7 +166,7 @@ export function ResetForm({ email, recovery }: ResetFormProps) {
 					)}
 				/>
 				<Button className="w-full" type="submit" loading={loading}>
-					Actualizar contraseña
+					Restablecer contraseña
 				</Button>
 			</form>
 		</Form>

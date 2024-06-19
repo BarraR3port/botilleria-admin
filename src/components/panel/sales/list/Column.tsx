@@ -93,7 +93,8 @@ export const columns: ColumnDef<Column>[] = [
 				<span className="text-green-500">{row.original.total}</span>
 			</div>
 		)
-	},
+	} /* 
+	TODO: Eliminar
 	{
 		accessorKey: "totalDiscount",
 		header: "Descuentos",
@@ -102,7 +103,7 @@ export const columns: ColumnDef<Column>[] = [
 				<span className="text-red-500 ">{row.original.totalDiscount}</span>
 			</div>
 		)
-	},
+	}, */,
 	{
 		accessorKey: "sellerName",
 		header: "Vendedor",
