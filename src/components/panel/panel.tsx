@@ -1,6 +1,6 @@
 "use client";
 
-import { Beer, Box, DollarSign, List, Plus, Users } from "lucide-react";
+import { BadgePercent, Beer, Box, DollarSign, List, Plus, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import { UserIcon } from "../layout/Header/UserIcon";
 import { Separator } from "../ui/separator";
@@ -53,9 +53,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										icon: Plus,
 										href: "/panel/products/create",
 										hasPrevious: true
-									}
-									/*
-									TODO: ELIMINAR
+									},
 									{
 										title: "Marcas",
 										label: "",
@@ -101,7 +99,7 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 												hasPrevious: true
 											}
 										]
-									} */
+									}
 								]
 							},
 							{

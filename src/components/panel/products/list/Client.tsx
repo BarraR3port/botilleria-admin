@@ -1,6 +1,6 @@
 import { DataTable } from "@ui/data-table";
 import { Package } from "lucide-react";
-import { type Column, columns } from "./Column";
+import { columns, type Column } from "./Column";
 
 interface ClientProps {
 	products: Column[];
@@ -29,12 +29,10 @@ const SEARCH_KEYS = [
 		value: "id",
 		label: "Id"
 	},
-	/* 
-	TODO: ELIMINAR
 	{
 		value: "brandName",
 		label: "Marca"
-	}, */
+	},
 	{
 		value: "price",
 		label: "Precio"

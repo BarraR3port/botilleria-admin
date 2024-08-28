@@ -51,10 +51,9 @@ export default function ProductForm({ product, brands, discounts, types, session
 					sellPrice: Number.parseFloat(String(product?.sellPrice)),
 					costPrice: Number.parseFloat(String(product?.costPrice)),
 					description: product?.description || "",
-					discountId: product?.discountId || undefined
-					/* TODO: ELIMINAR
+					discountId: product?.discountId || undefined,
+
 					brandId: product?.brandId || brands[0].id
-					*/
 				}
 			: {
 					name: "",
@@ -63,9 +62,6 @@ export default function ProductForm({ product, brands, discounts, types, session
 					sellPrice: 0,
 					costPrice: 0,
 					weightOrVolume: 0,
-					/* TODO: ELIMINAR
-					brandId: "",
-					*/
 					brandId: brands[0].id,
 					discountId: undefined,
 					type: types[0].value as ProductType,
@@ -267,8 +263,6 @@ export default function ProductForm({ product, brands, discounts, types, session
 									</FormItem>
 								)}
 							/>
-							{/* 
-							TODO: ELIMINAR
 							<FormField
 								control={form.control}
 								name="brandId"
@@ -343,7 +337,7 @@ export default function ProductForm({ product, brands, discounts, types, session
 										<FormMessage />
 									</FormItem>
 								)}
-							/> */}
+							/>
 							<FormField
 								control={form.control}
 								name="type"

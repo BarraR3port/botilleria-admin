@@ -3,18 +3,17 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuShortcut,
-	DropdownMenuTrigger
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { History, Home, LogOut, Settings } from "lucide-react";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { Home, LogOut, Settings } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -72,8 +71,7 @@ export function UserIcon() {
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 				</div>
-				{/*
-				TODO: ELIMINAR
+
 				 <DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {
@@ -96,7 +94,7 @@ export function UserIcon() {
 						</DropdownMenuShortcut>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator /> */}
+				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={() => signOutHandler()}>
 					Salir
 					<DropdownMenuShortcut>

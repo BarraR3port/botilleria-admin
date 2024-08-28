@@ -48,12 +48,10 @@ export const columns: ColumnDef<Column>[] = [
 		accessorKey: "name",
 		header: "Nombre"
 	},
-	/* 
-	TODO: ELIMINAR
 	{
 		accessorKey: "brandName",
 		header: "Marca"
-	}, */
+	},
 	{
 		accessorKey: "price",
 		header: "Precio"
