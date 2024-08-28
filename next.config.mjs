@@ -25,6 +25,9 @@ const nextConfig = {
 				headers: getCorsHeaders()
 			}
 		];
+	},
+	experimental: {
+		outputFileTracingIncludes: { "/": ["./node_modules/argon2/prebuilds/linux-x64/*.musl.*"] }
 	}
 };
 
