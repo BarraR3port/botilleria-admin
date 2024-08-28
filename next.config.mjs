@@ -27,7 +27,13 @@ const nextConfig = {
 		];
 	},
 	experimental: {
-		outputFileTracingIncludes: { "/": ["./node_modules/argon2/prebuilds/linux-x64/*.musl.*"] }
+		outputFileTracingIncludes: {
+			"/api/auth/signIn": [`./node_modules/argon2/prebuilds/${process.env.ARGON2_PREBUILDS_GLOB || "**"}`],
+			"/api/auth/signUp": [`./node_modules/argon2/prebuilds/${process.env.ARGON2_PREBUILDS_GLOB || "**"}`],
+			"/api/auth/reset": [`./node_modules/argon2/prebuilds/${process.env.ARGON2_PREBUILDS_GLOB || "**"}`],
+			"/api/users": [`./node_modules/argon2/prebuilds/${process.env.ARGON2_PREBUILDS_GLOB || "**"}`],
+			"/api/users/[userId]": [`./node_modules/argon2/prebuilds/${process.env.ARGON2_PREBUILDS_GLOB || "**"}`]
+		}
 	}
 };
 

@@ -1,7 +1,6 @@
-import { getAuth, jwtConfig } from "@/auth/utils";
+import { getAuth } from "@/auth/utils";
 import prisma from "@/lib/prismadb";
 import { hash } from "argon2";
-import { SignJWT } from "jose";
 import { NextResponse } from "next/server";
 
 export async function GET(
