@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgePercent, Beer, Box, DollarSign, List, Plus, Tag, Users } from "lucide-react";
+import { BadgePercent, Beer, Box, DollarSign, History, List, Paperclip, Plus, Receipt, Tag, Users } from "lucide-react";
 import Link from "next/link";
 import { UserIcon } from "../layout/Header/UserIcon";
 import { Separator } from "../ui/separator";
@@ -41,14 +41,14 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 								href: "/panel/products",
 								subLinks: [
 									{
-										title: "Inventario",
+										title: "Ver inventario",
 										label: "",
 										icon: List,
 										href: "/panel/products",
 										hasPrevious: true
 									},
 									{
-										title: "Crear Producto",
+										title: "Crear producto",
 										label: "",
 										icon: Plus,
 										href: "/panel/products/create",
@@ -62,14 +62,14 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										hasPrevious: true,
 										subLinks: [
 											{
-												title: "Marcas",
+												title: "Ver marcas",
 												label: "",
 												icon: List,
 												href: "/panel/products/brands",
 												hasPrevious: true
 											},
 											{
-												title: "Crear Marca",
+												title: "Crear marca",
 												label: "",
 												icon: Plus,
 												href: "/panel/products/brands/create",
@@ -85,14 +85,14 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 										hasPrevious: true,
 										subLinks: [
 											{
-												title: "Descuentos",
+												title: "Ver descuentos",
 												label: "",
 												icon: List,
 												href: "/panel/products/discounts",
 												hasPrevious: true
 											},
 											{
-												title: "Crear Descuento",
+												title: "Crear descuento",
 												label: "",
 												icon: Plus,
 												href: "/panel/products/discounts/create",
@@ -103,20 +103,42 @@ export default function Panel({ children }: { children: React.ReactNode }) {
 								]
 							},
 							{
+								title: "Pedidos",
+								label: "",
+								icon: Receipt,
+								href: "/panel/orders",
+								subLinks: [
+									{
+										title: "Ver pedidos",
+										label: "",
+										icon: List,
+										href: "/panel/orders",
+										hasPrevious: true
+									},
+									{
+										title: "Crear pedido",
+										label: "",
+										icon: Plus,
+										href: "/panel/orders/create",
+										hasPrevious: true
+									}
+								]
+							},
+							{
 								title: "Usuarios",
 								label: "",
 								icon: Users,
 								href: "/panel/users",
 								subLinks: [
 									{
-										title: "Usuarios",
+										title: "Ver usuarios",
 										label: "",
 										icon: List,
 										href: "/panel/users",
 										hasPrevious: true
 									},
 									{
-										title: "Crear Usuario",
+										title: "Crear usuario",
 										label: "",
 										icon: Plus,
 										href: "/panel/users/create",

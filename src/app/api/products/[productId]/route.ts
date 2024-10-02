@@ -83,7 +83,8 @@ export async function PATCH(
 			brandId,
 			type,
 			available,
-			discountId
+			discountId,
+			providerId
 		} = body;
 
 		if (!name) return NextResponse.json({ errors: [{ type: "name", message: "Nombre requerido" }], status: 400 });
@@ -134,6 +135,12 @@ export async function PATCH(
 				{ status: 400 }
 			);
 
+		if (!providerId)
+			return NextResponse.json(
+				{ errors: [{ type: "providerId", message: "Proveedor requerido" }], status: 400 },
+				{ status: 400 }
+			);
+
 		const oldProduct = await prisma.product.findFirst({
 			where: {
 				id: Number(params.productId)
@@ -171,6 +178,17 @@ export async function PATCH(
 
 		if (!brand)
 			return NextResponse.json({ errors: [{ type: "brandId", message: "Marca no encontrada" }], status: 404 });
+		const provider = await prisma.provider.findFirst({
+			where: {
+				id: providerId
+			}
+		});
+
+		if (!provider)
+			return NextResponse.json({
+				errors: [{ type: "providerId", message: "Proveedor no encontrado" }],
+				status: 404
+			});
 
 		const product = await prisma.product.update({
 			where: {
@@ -198,6 +216,11 @@ export async function PATCH(
 				brand: {
 					connect: {
 						id: brandId
+					}
+				},
+				provider: {
+					connect: {
+						id: providerId
 					}
 				}
 			}

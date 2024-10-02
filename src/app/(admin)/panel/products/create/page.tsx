@@ -27,11 +27,14 @@ export default async function Product() {
 		...discounts
 	];
 
+	const providers = await prisma.provider.findMany({}).catch(() => []);
+
 	return (
 		<div className="flex-col overflow-auto">
 			<div className="flex-1 space-y-4 p-4">
 				<ProductForm
 					product={null}
+					providers={providers}
 					brands={brands}
 					discounts={discountsWithEmpty}
 					types={PRODUCT_TYPES}

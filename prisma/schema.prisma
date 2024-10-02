@@ -1,158 +1,180 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id              String     @id @default(cuid()) @db.VarChar(191)
-  email           String     @unique @db.VarChar(191)
-  name            String     @db.VarChar(191)
-  lastName        String     @db.VarChar(191)
-  password        String     @db.VarChar(191)
-  rol             RolType    @default(USER)
-  rut             String     @unique @default("") @db.VarChar(11)
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  lastLogin       DateTime   @default(now())
-  products        Product[]  @relation("ProductToUser")
-  orders          Order[]
-  emailRecoveries Recovery[]
-  sales           Sale[]     @relation("SaleToUser")
+    id              String     @id @default(cuid()) @db.VarChar(191)
+    email           String     @unique @db.VarChar(191)
+    name            String     @db.VarChar(191)
+    lastName        String     @db.VarChar(191)
+    password        String     @db.VarChar(191)
+    rol             RolType    @default(USER)
+    rut             String     @unique @default("") @db.VarChar(11)
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
+    lastLogin       DateTime   @default(now())
+    products        Product[]  @relation("ProductToUser")
+    orders          Order[]
+    emailRecoveries Recovery[]
+    sales           Sale[]     @relation("SaleToUser")
 }
 
 enum RolType {
-  ADMIN
-  USER
+    ADMIN
+    USER
 }
 
 model Product {
-  id             Int           @id @default(autoincrement())
-  name           String        @db.VarChar(191)
-  description    String?       @db.VarChar(1024)
-  sellPrice      Float
-  costPrice      Float
-  stock          Int
-  weightOrVolume Float
-  barcode        String        @db.VarChar(14)
-  type           ProductType
-  available      Boolean
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  user           User          @relation("ProductToUser", fields: [userId], references: [id])
-  userId         String        @db.VarChar(191)
-  discount       Discount?     @relation(fields: [discountId], references: [id])
-  discountId     Int?
-  brandId        String        @db.VarChar(191)
-  brand          Brand         @relation(fields: [brandId], references: [id])
-  order          Order[]       @relation("ProductToOrder")
-  productSales   ProductSale[]
+    id             Int           @id @default(autoincrement())
+    name           String        @db.VarChar(191)
+    description    String?       @db.VarChar(1024)
+    sellPrice      Float
+    costPrice      Float
+    stock          Int
+    weightOrVolume Float
+    barcode        String        @db.VarChar(14)
+    type           ProductType
+    available      Boolean
+    createdAt      DateTime      @default(now())
+    updatedAt      DateTime      @updatedAt
+    user           User          @relation("ProductToUser", fields: [userId], references: [id])
+    userId         String        @db.VarChar(191)
+    discount       Discount?     @relation(fields: [discountId], references: [id])
+    discountId     Int?
+    brandId        String        @db.VarChar(191)
+    brand          Brand         @relation(fields: [brandId], references: [id])
+    orderItems     OrderItem[]
+    productSales   ProductSale[]
+    providerId     Int
+    provider       Provider      @relation(fields: [providerId], references: [id])
 }
 
 enum ProductType {
-  FOOD
-  DRINK
-  OTHER
+    FOOD
+    DRINK
+    OTHER
 }
 
 model Brand {
-  id          String    @id @default(cuid()) @db.VarChar(191)
-  name        String    @db.VarChar(191)
-  description String?   @db.VarChar(1024)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
+    id          String    @id @default(cuid()) @db.VarChar(191)
+    name        String    @db.VarChar(191)
+    description String?   @db.VarChar(1024)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    products    Product[]
 }
 
 model Discount {
-  id          Int          @id @default(autoincrement())
-  name        String       @db.VarChar(191)
-  description String       @db.VarChar(1024)
-  type        DiscountType
-  value       Float
-  active      Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  products    Product[]
+    id          Int          @id @default(autoincrement())
+    name        String       @db.VarChar(191)
+    description String       @db.VarChar(1024)
+    type        DiscountType
+    value       Float
+    active      Boolean      @default(true)
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+    products    Product[]
 }
 
 enum DiscountType {
-  PERCENTAGE
-  AMOUNT
+    PERCENTAGE
+    AMOUNT
 }
 
 model Sale {
-  id            Int           @id @default(autoincrement())
-  total         Float
-  totalDiscount Float
-  type          SaleType      @default(CASH)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  user          User          @relation("SaleToUser", fields: [userId], references: [id])
-  userId        String        @db.VarChar(191)
-  products      ProductSale[]
+    id            Int           @id @default(autoincrement())
+    total         Float
+    totalDiscount Float
+    type          SaleType      @default(CASH)
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
+    user          User          @relation("SaleToUser", fields: [userId], references: [id])
+    userId        String        @db.VarChar(191)
+    products      ProductSale[]
 }
 
 model ProductSale {
-  id              Int     @id @default(autoincrement())
-  quantity        Int
-  finalPrice      Float
-  originalPrice   Float
-  appliedDiscount Float?
-  product         Product @relation(fields: [productId], references: [id])
-  productId       Int
-  sale            Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  saleId          Int
+    id              Int     @id @default(autoincrement())
+    quantity        Int
+    finalPrice      Float
+    originalPrice   Float
+    appliedDiscount Float?
+    product         Product @relation(fields: [productId], references: [id])
+    productId       Int
+    sale            Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+    saleId          Int
 }
 
 enum SaleType {
-  CASH
-  CREDIT
-  DEBIT
+    CASH
+    CREDIT
+    DEBIT
 }
 
 model Order {
-  id         Int       @id @default(autoincrement())
-  total      Float
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  products   Product[] @relation("ProductToOrder")
-  user       User      @relation(fields: [userId], references: [id])
-  userId     String    @db.VarChar(191)
-  provider   Provider  @relation(fields: [providerId], references: [id])
-  providerId Int
+    id           Int         @id @default(autoincrement())
+    total        Float       @default(0)
+    totalWithVAT Float       @default(0)
+    status       OrderStatus @default(COMPLETED)
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+    user         User        @relation(fields: [userId], references: [id])
+    userId       String      @db.VarChar(191)
+    provider     Provider    @relation(fields: [providerId], references: [id])
+    providerId   Int
+    products     OrderItem[]
+}
+
+enum OrderStatus {
+    PENDING
+    COMPLETED
+    CANCELLED
+}
+
+model OrderItem {
+    id              Int     @id @default(autoincrement())
+    quantity        Int
+    priceWithoutVAT Float
+    priceWithVAT    Float
+    order           Order   @relation(fields: [orderId], references: [id])
+    orderId         Int
+    product         Product @relation(fields: [productId], references: [id])
+    productId       Int
 }
 
 model Provider {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(191)
-  address   String   @db.VarChar(191)
-  phone     String   @db.VarChar(191)
-  email     String   @db.VarChar(191)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  order     Order[]
+    id        Int       @id @default(autoincrement())
+    name      String    @db.VarChar(191)
+    address   String    @db.VarChar(191)
+    phone     String    @db.VarChar(191)
+    email     String    @db.VarChar(191)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    orders    Order[]
+    products  Product[]
 }
 
 model Recovery {
-  id        String         @id @default(cuid()) @db.VarChar(191)
-  token     String         @unique
-  ip        String         @db.VarChar(191)
-  status    RecoveryStatus @default(WAITING)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  user      User           @relation(fields: [userId], references: [id])
-  userId    String         @db.VarChar(191)
+    id        String         @id @default(cuid()) @db.VarChar(191)
+    token     String         @unique
+    ip        String         @db.VarChar(191)
+    status    RecoveryStatus @default(WAITING)
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    user      User           @relation(fields: [userId], references: [id])
+    userId    String         @db.VarChar(191)
 
-  @@index([token])
+    @@index([token])
 }
 
 enum RecoveryStatus {
-  WAITING
-  USED
-  EXPIRED
+    WAITING
+    USED
+    EXPIRED
 }

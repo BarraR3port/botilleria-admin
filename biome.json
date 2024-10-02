@@ -1,7 +1,14 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.6.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
 	"organizeImports": {
 		"enabled": true
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"lineEnding": "lf",
+			"trailingCommas": "none"
+		}
 	},
 	"formatter": {
 		"enabled": true,
@@ -9,14 +16,7 @@
 		"indentWidth": 4,
 		"indentStyle": "tab",
 		"formatWithErrors": false,
-		"lineEnding": "crlf"
-	},
-	"javascript": {
-		"formatter": {
-			"arrowParentheses": "asNeeded",
-			"lineEnding": "crlf",
-			"trailingComma": "none"
-		}
+		"lineEnding": "lf"
 	},
 	"linter": {
 		"enabled": true,

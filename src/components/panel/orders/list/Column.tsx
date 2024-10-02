@@ -3,55 +3,22 @@
 import MultipleSelector from "@/components/extensions/multiple-selector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useBreakpoint } from "@/lib/breakpoint";
-import type { SaleType } from "@prisma/client";
+import type { OrderStatus } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CreditCard, DollarSignIcon } from "lucide-react";
-import Link from "next/link";
 import { useMemo } from "react";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
 
-export type ColumnRef = {
-	id: string;
-	total: number;
-	createdAt: string;
-	userId: string;
-	user: {
-		id: string;
-		name: string;
-		lastName: string;
-		email: string;
-	};
-	products: {
-		id: string;
-		quantity: number;
-		originalPrice: number;
-		appliedDiscount: number;
-		productId: number;
-		product: {
-			id: number;
-			name: string;
-			sellPrice: number;
-		};
-	}[];
-};
-
 export type Column = {
 	id: string;
-	total: string | number;
-	type: SaleType;
-	totalDiscount: string;
-	originalTotal?: string;
+	total: string;
+	status: OrderStatus;
 	createdAt: string;
-	userId: string;
-	totalUserSales?: number;
-	sellerName: string;
-	sellerEmail: string;
+	user: string;
+	provider: string;
 	products: {
 		id: string;
 		quantity: number;
-		originalPrice: string;
-		appliedDiscount: string;
 		productId: number;
 		productName: string;
 		productSellPrice: string;
@@ -86,31 +53,16 @@ export const columns: ColumnDef<Column>[] = [
 		cell: ({ row }) => <CellIdAction value={row.original.id} />
 	},
 	{
-		accessorKey: "total",
-		header: "Total",
-		cell: ({ row }) => (
-			<div className="text-right">
-				<span className="text-green-500">{row.original.total}</span>
-			</div>
-		)
+		accessorKey: "user",
+		header: "Usuario"
 	},
 	{
-		accessorKey: "totalDiscount",
-		header: "Descuentos",
-		cell: ({ row }) => (
-			<div className="text-right">
-				<span className="text-red-500 ">{row.original.totalDiscount}</span>
-			</div>
-		)
+		accessorKey: "provider",
+		header: "Proveedor"
 	},
 	{
-		accessorKey: "sellerName",
-		header: "Vendedor",
-		cell: ({ row }) => (
-			<Link href={`/panel/users/${row.original.userId}`} className="hover:text-blue-500">
-				{row.original.sellerName}
-			</Link>
-		)
+		accessorKey: "status",
+		header: "Estado"
 	},
 	{
 		accessorKey: "products",
@@ -146,7 +98,7 @@ export const columns: ColumnDef<Column>[] = [
 					disabled
 					hidePlaceholderWhenSelected
 					placeholder="Selecciona el producto..."
-					redirectTo="/panel/products/"
+					redirectTo="/panel/orders/"
 					emptyIndicator={
 						<p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
 							No hay productos
@@ -157,22 +109,11 @@ export const columns: ColumnDef<Column>[] = [
 		}
 	},
 	{
-		accessorKey: "type",
-		header: "Tipo",
-		cell: ({ row }) => (
-			<>
-				{row.original.type === "CASH" && <DollarSignIcon className="w-6 h-6 text-green-500" />}
-				{row.original.type === "DEBIT" && <CreditCard className="w-6 h-6" />}
-				{row.original.type === "CREDIT" && <CreditCard className="w-6 h-6 text-warning" />}
-			</>
-		)
-	},
-	{
 		accessorKey: "createdAt",
 		header: "Creado"
 	},
 	{
 		id: "actions",
-		cell: ({ row }) => <CellAction sale={row.original} />
+		cell: ({ row }) => <CellAction product={row.original} />
 	}
 ];

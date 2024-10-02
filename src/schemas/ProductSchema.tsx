@@ -18,7 +18,8 @@ export const ProductFormSchema = object({
 	brandId: string().required("La Marca es requerida").trim(),
 	discountId: number().optional(),
 	type: string().required("El tipo es requerida").trim(),
-	available: boolean().required("La disponibilidad es requerida")
+	available: boolean().required("La disponibilidad es requerida"),
+	providerId: number().required("El proveedor es requerido")
 });
 
 export type ProductFormType = InferType<typeof ProductFormSchema>;

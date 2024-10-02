@@ -1,16 +1,16 @@
 "use client";
 
-import axios from "axios";
-import type { Session } from "next-auth";
-import { useState } from "react";
-import { toast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
 import AlertModal from "@/modals/alert-modal";
-import { Button } from "../ui/button";
+import axios from "axios";
 import { Trash } from "lucide-react";
+import type { Session } from "next-auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { toast } from "../ui/use-toast";
 
 interface DeleteButtonProps {
-	type: "products" | "sales" | "users" | "products/brands" | "products/discounts";
+	type: "products" | "sales" | "users" | "products/brands" | "products/discounts" | "orders";
 	session: Session | null;
 	itemId: number | string;
 }

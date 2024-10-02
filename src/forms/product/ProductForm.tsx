@@ -13,7 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import AlertModal from "@/modals/alert-modal";
 import { ProductFormSchema, type ProductFormType } from "@/schemas/ProductSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import type { Brand, Discount, Product, ProductType } from "@prisma/client";
+import type { Brand, Discount, Product, ProductType, Provider } from "@prisma/client";
 import axios from "axios";
 import { Plus, Save, Trash } from "lucide-react";
 import type { Session } from "next-auth";
@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 interface FormProps {
 	product: Product | null;
 	brands: Brand[];
+	providers: Provider[];
 	discounts: Discount[];
 	types: {
 		value: string;
@@ -33,7 +34,7 @@ interface FormProps {
 	session: Session;
 }
 
-export default function ProductForm({ product, brands, discounts, types, session }: FormProps) {
+export default function ProductForm({ product, providers, brands, discounts, types, session }: FormProps) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { toast } = useToast();
@@ -52,8 +53,8 @@ export default function ProductForm({ product, brands, discounts, types, session
 					costPrice: Number.parseFloat(String(product?.costPrice)),
 					description: product?.description || "",
 					discountId: product?.discountId || undefined,
-
-					brandId: product?.brandId || brands[0].id
+					brandId: product?.brandId || brands[0].id,
+					providerId: product?.providerId || providers[0]?.id
 				}
 			: {
 					name: "",
@@ -62,18 +63,18 @@ export default function ProductForm({ product, brands, discounts, types, session
 					sellPrice: 0,
 					costPrice: 0,
 					weightOrVolume: 0,
-					brandId: brands[0].id,
+					brandId: brands[0]?.id,
 					discountId: undefined,
 					type: types[0].value as ProductType,
 					available: true,
-					barcode: "100000000000"
+					barcode: "100000000000",
+					providerId: providers[0]?.id
 				}
 	});
 
 	const onSubmit = async (data: ProductFormType) => {
 		setLoading(true);
 		try {
-			console.log(data?.discountId);
 			const response = product
 				? await axios
 						.patch(
@@ -83,7 +84,8 @@ export default function ProductForm({ product, brands, discounts, types, session
 								discountId:
 									typeof data?.discountId === "number" && data?.discountId === -1
 										? undefined
-										: data.discountId
+										: data.discountId,
+								providerId: data?.providerId || providers[0]?.id
 							},
 							{
 								headers: {
@@ -101,7 +103,8 @@ export default function ProductForm({ product, brands, discounts, types, session
 								discountId:
 									typeof data?.discountId === "number" && data?.discountId === -1
 										? undefined
-										: data.discountId
+										: data.discountId,
+								providerId: data?.providerId || providers[0]?.id
 							},
 							{
 								headers: {
@@ -287,6 +290,45 @@ export default function ProductForm({ product, brands, discounts, types, session
 																return (
 																	<SelectItem key={brand.id} value={brand.id}>
 																		{brand.name}
+																	</SelectItem>
+																);
+															})}
+														</SelectContent>
+													</SelectTrigger>
+												</FormControl>
+											</Select>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="providerId"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Proveedor</FormLabel>
+										<FormControl>
+											<Select
+												disabled={loading}
+												onValueChange={field.onChange}
+												value={`${field.value}`}
+												defaultValue={`${field.value}`}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue
+															defaultValue={field.value}
+															placeholder="Selecciona una marca"
+														/>
+														<SelectContent>
+															{providers.map(provider => {
+																return (
+																	<SelectItem
+																		key={provider.id}
+																		value={`${provider.id}`}
+																	>
+																		{provider.name}
 																	</SelectItem>
 																);
 															})}

@@ -21,7 +21,8 @@ export async function POST(req: Request) {
 			brandId,
 			type,
 			available,
-			discountId
+			discountId,
+			providerId
 		} = body;
 
 		if (!name)
@@ -56,6 +57,12 @@ export async function POST(req: Request) {
 				{ errors: [{ type: "available", message: "Disponibilidad requerida" }] },
 				{ status: 400 }
 			);
+		if (!providerId)
+			return NextResponse.json(
+				{ errors: [{ type: "providerId", message: "Proveedor requerido" }] },
+				{ status: 400 }
+			);
+		console.log("ProviderId", providerId);
 
 		const store = await prisma.product.create({
 			data: {
@@ -74,7 +81,12 @@ export async function POST(req: Request) {
 						id: userId
 					}
 				},
-				discount: discountId ? { connect: { id: discountId } } : undefined
+				discount: discountId ? { connect: { id: discountId } } : undefined,
+				provider: {
+					connect: {
+						id: providerId
+					}
+				}
 			}
 		});
 
