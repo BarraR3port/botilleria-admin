@@ -1,25 +1,27 @@
 "use client";
-import type { Column } from "@/components/panel/sales/list/Column";
+import type { Column } from "@/components/panel/orders/list/Column";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import AlertModal from "@/modals/alert-modal";
 import axios from "axios";
-import { CreditCard, DollarSignIcon, Eye } from "lucide-react";
+import { Check, CheckCircle, CircleAlert, CircleX, CreditCard, DollarSignIcon, Eye } from "lucide-react";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface SaleInfoProps {
-	sale: Column;
+interface OrderInfoProps {
+	order: Column;
 	session: Session;
 }
 
-export default function SaleInfo({ sale, session }: SaleInfoProps) {
+export default function OrderInfo({ order, session }: OrderInfoProps) {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const router = useRouter();
@@ -66,11 +68,11 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 				<div className="flex items-center justify-between ">
 					<Heading
 						title={
-							<h1 className="font-semibold text-lg md:text-xl">
-								Venta #{sale.id}
-								<span className="font-normal text-gray-400">
+							<h1 className="font-semibold text-lg md:text-xl text-primary">
+								Pedido #{order.id}
+								<span className="font-normal text-muted">
 									{" "}
-									{sale.sellerName} el <span className=" hover:text-gray-300">{sale.createdAt}</span>
+									{order.user} el <span className="text-secondary">{order.createdAt}</span>
 								</span>
 							</h1>
 						}
@@ -92,22 +94,15 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 										<TableRow>
 											<TableHead className="max-w-[150px]">Nombre</TableHead>
 											<TableHead>Cantidad</TableHead>
-											<TableHead>Precio Original</TableHead>
-
-											<TableHead>Descuento</TableHead>
-											<TableHead>Precio final</TableHead>
+											<TableHead>Precio de coste</TableHead>
 											<TableHead />
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{sale.products.map(product => (
+										{order.products.map(product => (
 											<TableRow key={product.id}>
 												<TableCell className="font-medium">{product.productName}</TableCell>
 												<TableCell>{product.quantity}</TableCell>
-												<TableCell className="text-gray-400">{product.originalPrice}</TableCell>
-												<TableCell className="text-red-400">
-													{product.appliedDiscount}
-												</TableCell>
 												<TableCell className="text-green-400">
 													{product.productSellPrice}
 												</TableCell>
@@ -127,50 +122,29 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 										))}
 									</TableBody>
 								</Table>
-							</CardContent>
-						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle>Pago</CardTitle>
-							</CardHeader>
-							<CardContent className="grid gap-4">
-								<div className="flex items-center">
-									<div>Subtotal</div>
-									<div className="ml-auto text-gray-400">{sale.originalTotal}</div>
-								</div>
-								<div className="flex items-center">
-									<div>Descuento</div>
-									<div className="ml-auto text-red-400">-{sale.totalDiscount}</div>
-								</div>
 								<Separator />
-								<div className="flex items-center font-medium">
+								<div className="flex items-center font-medium pt-4">
 									<div>Total</div>
-									<div className="ml-auto text-green-500">{sale.total}</div>
+									<div className="ml-auto text-green-500">{order.total}</div>
 								</div>
 							</CardContent>
-							{/* <CardFooter className="flex items-center gap-2">
-								<Button size="sm">Collect payment</Button>
-								<Button variant="outline" size="sm">
-									Send invoice
-								</Button>
-							</CardFooter> */}
 						</Card>
 					</div>
 					<div className="md:col-span-2 lg:col-span-3 xl:col-span-2 flex flex-col gap-6">
 						<Card>
 							<div>
 								<CardHeader className="flex flex-row items-center space-y-0">
-									<CardTitle>Vendedor</CardTitle>
+									<CardTitle>Usuario</CardTitle>
 									{/* <Button variant="secondary" className="ml-auto">
 										Editar
 									</Button> */}
 								</CardHeader>
 								<CardContent className="text-sm">
 									<div className="grid gap-1">
-										<Link href={`/panel/users/${sale.userId}`} className="text-blue-600 underline">
-											{sale.sellerName}
+										<Link href={`/panel/users/${order.userId}`} className="text-blue-600 underline">
+											{order.user}
 										</Link>
-										<div>{sale.totalUserSales} ventas este mes</div>
+										<div>{order.totalUserSales} pedidos este mes</div>
 									</div>
 								</CardContent>
 							</div>
@@ -181,8 +155,8 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 								</CardHeader>
 								<CardContent className="text-sm">
 									<div className="grid gap-1">
-										<Link href={`mailto:${sale.sellerEmail}`} className="text-blue-600">
-											{sale.sellerEmail}
+										<Link href={`mailto:${order.sellerEmail}`} className="text-blue-600">
+											{order.sellerEmail}
 										</Link>
 										{/* <div className="text-gray-400">+1 888 8888 8888</div> */}
 									</div>
@@ -191,29 +165,36 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 							<Separator />
 							<div>
 								<CardHeader className="flex flex-row items-center space-y-0">
-									<CardTitle>Tipo de Venta</CardTitle>
+									<CardTitle>Estado del pedido</CardTitle>
 								</CardHeader>
-								<CardContent className="text-lg">
-									<div className="flex items-center space-x-2">
-										{sale.type === "CASH" && (
+								<CardContent >
+									<Badge className="flex items-center space-x-2"
+										variant={
+											order.status === "PENDING" ? "muted" :
+												order.status === "COMPLETED" ? "success" :
+													order.status === "CANCELLED" ? "destructive" :
+														"default"
+										}
+									>
+										{order.status === "PENDING" && (
 											<>
-												<DollarSignIcon className="w-5 h-5 text-green-500" />
-												<span>Efectivo</span>
+												<CircleAlert className="w-6 h-6" />
+												<span className="text-xl">Pendiente</span>
 											</>
 										)}
-										{sale.type === "DEBIT" && (
+										{order.status === "COMPLETED" && (
 											<>
-												<CreditCard className="w-5 h-5" />
-												<span>Débito</span>
+												<CheckCircle className="w-6 h-6" />
+												<span className="text-xl">Completado</span>
 											</>
 										)}
-										{sale.type === "CREDIT" && (
+										{order.status === "CANCELLED" && (
 											<>
-												<CreditCard className="w-5 h-5 text-warning" />
-												<span>Crédito</span>
+												<CircleX className="w-6 h-6" />
+												<span className="text-xl">Cancelado</span>
 											</>
 										)}
-									</div>
+									</Badge>
 								</CardContent>
 							</div>
 						</Card>

@@ -26,15 +26,7 @@ const SEARCH_KEYS = [
 		label: "Marca"
 	},
 	{
-		value: "id",
-		label: "Id"
-	},
-	{
 		value: "description",
 		label: "Descripción"
-	},
-	{
-		value: "createdAt",
-		label: "Creado"
 	}
 ];

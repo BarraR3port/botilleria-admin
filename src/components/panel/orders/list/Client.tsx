@@ -36,9 +36,5 @@ const SEARCH_KEYS = [
 	{
 		value: "status",
 		label: "Estado"
-	},
-	{
-		value: "createdAt",
-		label: "Creado"
 	}
 ];

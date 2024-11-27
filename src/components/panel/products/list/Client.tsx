@@ -44,9 +44,5 @@ const SEARCH_KEYS = [
 	{
 		value: "available",
 		label: "Disponible"
-	},
-	{
-		value: "createdAt",
-		label: "Creado"
 	}
 ];

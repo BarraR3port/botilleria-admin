@@ -69,14 +69,6 @@ export const columns: ColumnDef<Column>[] = [
 		header: "Stock"
 	},
 	{
-		accessorKey: "createdAt",
-		header: "Creado"
-	},
-	{
-		accessorKey: "barcode",
-		header: "Código de Barra"
-	},
-	{
 		id: "actions",
 		cell: ({ row }) => <CellAction product={row.original} />
 	}

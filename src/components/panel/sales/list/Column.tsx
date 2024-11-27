@@ -95,15 +95,6 @@ export const columns: ColumnDef<Column>[] = [
 		)
 	},
 	{
-		accessorKey: "totalDiscount",
-		header: "Descuentos",
-		cell: ({ row }) => (
-			<div className="text-right">
-				<span className="text-red-500 ">{row.original.totalDiscount}</span>
-			</div>
-		)
-	},
-	{
 		accessorKey: "sellerName",
 		header: "Vendedor",
 		cell: ({ row }) => (
@@ -139,7 +130,7 @@ export const columns: ColumnDef<Column>[] = [
 
 			return (
 				<MultipleSelector
-					className="max-w-[400px] md:max-w-full  overflow-hidden"
+					className="max-w-[400px] md:max-w-full overflow-hidden"
 					value={OPTIONS}
 					defaultOptions={OPTIONS}
 					maxShownItems={maxShownItems}
@@ -148,7 +139,7 @@ export const columns: ColumnDef<Column>[] = [
 					placeholder="Selecciona el producto..."
 					redirectTo="/panel/products/"
 					emptyIndicator={
-						<p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+						<p className="text-center text-lg leading-10 text-black ">
 							No hay productos
 						</p>
 					}
@@ -166,10 +157,6 @@ export const columns: ColumnDef<Column>[] = [
 				{row.original.type === "CREDIT" && <CreditCard className="w-6 h-6 text-warning" />}
 			</>
 		)
-	},
-	{
-		accessorKey: "createdAt",
-		header: "Creado"
 	},
 	{
 		id: "actions",

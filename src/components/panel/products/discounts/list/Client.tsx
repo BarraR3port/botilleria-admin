@@ -26,10 +26,6 @@ const SEARCH_KEYS = [
 		label: "Descuento"
 	},
 	{
-		value: "id",
-		label: "Id"
-	},
-	{
 		value: "type",
 		label: "Tipo"
 	},
@@ -40,9 +36,5 @@ const SEARCH_KEYS = [
 	{
 		value: "description",
 		label: "Descripción"
-	},
-	{
-		value: "createdAt",
-		label: "Creado"
 	}
 ];

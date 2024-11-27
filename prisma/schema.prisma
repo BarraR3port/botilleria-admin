@@ -141,7 +141,7 @@ model OrderItem {
     id              Int     @id @default(autoincrement())
     quantity        Int
     priceWithoutVAT Float
-    priceWithVAT    Float
+    priceWithVAT    Float // Este es el precio final
     order           Order   @relation(fields: [orderId], references: [id])
     orderId         Int
     product         Product @relation(fields: [productId], references: [id])

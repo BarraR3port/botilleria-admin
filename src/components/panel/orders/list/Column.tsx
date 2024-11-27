@@ -3,11 +3,13 @@
 import MultipleSelector from "@/components/extensions/multiple-selector";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useBreakpoint } from "@/lib/breakpoint";
-import type { OrderStatus } from "@prisma/client";
+import type { OrderStatus, Provider } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import CellAction from "./CellAction";
 import CellIdAction from "./CellIdAction";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export type Column = {
 	id: string;
@@ -15,10 +17,14 @@ export type Column = {
 	status: OrderStatus;
 	createdAt: string;
 	user: string;
-	provider: string;
+	userId: string;
+	provider: string | Provider;
+	totalUserSales?: number;
+	sellerEmail?: string;
 	products: {
 		id: string;
 		quantity: number;
+		originalPrice: string;
 		productId: number;
 		productName: string;
 		productSellPrice: string;
@@ -55,14 +61,6 @@ export const columns: ColumnDef<Column>[] = [
 	{
 		accessorKey: "user",
 		header: "Usuario"
-	},
-	{
-		accessorKey: "provider",
-		header: "Proveedor"
-	},
-	{
-		accessorKey: "status",
-		header: "Estado"
 	},
 	{
 		accessorKey: "products",
@@ -109,8 +107,42 @@ export const columns: ColumnDef<Column>[] = [
 		}
 	},
 	{
-		accessorKey: "createdAt",
-		header: "Creado"
+		accessorKey: "provider",
+		header: "Proveedor"
+	},
+	{
+		accessorKey: "status",
+		header: "Estado",
+		cell: ({ row }) => {
+			const getStatusName = (status: OrderStatus) => {
+				switch (status) {
+					case "PENDING":
+						return "Pendiente";
+					case "COMPLETED":
+						return "Completado";
+					case "CANCELLED":
+						return "Cancelado";
+				}
+			};
+			const getStatusVariant = (status: OrderStatus) => {
+				switch (status) {
+					case "PENDING":
+						return "muted";
+					case "COMPLETED":
+						return "success";
+					case "CANCELLED":
+						return "destructive";
+				}
+			};
+
+			return (
+				<div className="text-left">
+					<Badge variant={getStatusVariant(row.original.status)}>
+						{getStatusName(row.original.status)}
+					</Badge>
+				</div >
+			)
+		}
 	},
 	{
 		id: "actions",

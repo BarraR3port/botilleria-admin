@@ -34,8 +34,10 @@ export type OrderProvider = Provider & {
 	products: OrderProduct[];
 };
 
+type CustomOrderItem = OrderItem & { name: string, costPrice: number };
+
 export type CustomOrder = Order & {
-	products: (OrderItem & { name: string })[];
+	products: CustomOrderItem[];
 };
 
 interface OrderProps {
@@ -59,8 +61,6 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 	const [quantity, setQuantity] = useState<number>(1);
 	const [productSearch, setProductSearch] = useState("");
 
-	const VAT = 0.19; // 19% IVA
-
 	const title = order ? "Editar pedido" : "Crear pedido";
 	const toastDescription = order ? "Pedido editado correctamente" : "Pedido creado correctamente";
 
@@ -69,24 +69,24 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 		// @ts-ignore
 		defaultValues: order
 			? {
-					...order,
-					total: Number.parseFloat(String(order.total)),
-					totalWithVAT: Number.parseFloat(String(order.totalWithVAT)),
-					providerId: order.providerId || providers[0]?.id,
-					createdAt: new Date(order.createdAt),
-					updatedAt: new Date(order.updatedAt),
-					products: order.products || []
-				}
+				...order,
+				total: Number.parseFloat(String(order.total)),
+				totalWithVAT: Number.parseFloat(String(order.totalWithVAT)),
+				providerId: order.providerId || providers[0]?.id,
+				createdAt: new Date(order.createdAt),
+				updatedAt: new Date(order.updatedAt),
+				products: order.products || []
+			}
 			: {
-					total: 0,
-					totalWithVAT: 0,
-					status: "PENDING",
-					createdAt: new Date().toISOString(),
-					updatedAt: new Date().toISOString(),
-					userId: session?.user.id,
-					providerId: providers[0]?.id,
-					products: []
-				}
+				total: 0,
+				totalWithVAT: 0,
+				status: "COMPLETED",
+				createdAt: new Date().toISOString(),
+				updatedAt: new Date().toISOString(),
+				userId: session?.user.id,
+				providerId: providers[0]?.id,
+				products: []
+			}
 	});
 	form.watch();
 
@@ -97,7 +97,7 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 			if (currentProduct && quantity > 0 && providers) {
 				const products = form.getValues("products") || [];
 				const existingItemIndex = products.findIndex(item => item.productId === currentProduct.id);
-				let newProducts: OrderItem[];
+				let newProducts: CustomOrderItem[];
 
 				if (existingItemIndex !== -1) {
 					// Si el producto ya existe, actualiza su cantidad y precios
@@ -105,8 +105,8 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 					const updatedProduct = {
 						...existingProduct,
 						quantity: existingProduct.quantity + quantity,
-						priceWithoutVAT: (existingProduct.quantity + quantity) * currentProduct.sellPrice,
-						priceWithVAT: (existingProduct.quantity + quantity) * currentProduct.sellPrice * (1 + VAT)
+						priceWithoutVAT: (existingProduct.quantity + quantity) * currentProduct.costPrice,
+						priceWithVAT: (existingProduct.quantity + quantity) * currentProduct.costPrice * (1)
 					};
 					newProducts = [
 						...products.slice(0, existingItemIndex),
@@ -121,8 +121,9 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 						orderId: order?.id || Date.now(),
 						productId: currentProduct.id,
 						quantity: quantity,
-						priceWithoutVAT: currentProduct.sellPrice * quantity,
-						priceWithVAT: currentProduct.sellPrice * quantity * (1 + VAT)
+						priceWithoutVAT: currentProduct.costPrice * quantity,
+						priceWithVAT: currentProduct.costPrice * quantity * (1),
+						costPrice: currentProduct.costPrice
 					};
 					newProducts = [...products, newItem] as any;
 				}
@@ -139,7 +140,7 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 				form.setValue("totalWithVAT", totalWithVAT);
 			}
 		},
-		[quantity, providers, displayedProducts, order, VAT, form]
+		[quantity, providers, displayedProducts, order, form]
 	);
 
 	const removeProduct = useCallback(
@@ -193,33 +194,33 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 
 				const response = order
 					? await axios
-							.patch(
-								`/api/orders/${params.orderId}`,
-								{
-									...orderData
-								},
-								{
-									headers: {
-										Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-									}
+						.patch(
+							`/api/orders/${params.orderId}`,
+							{
+								...orderData
+							},
+							{
+								headers: {
+									Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 								}
-							)
-							.catch(res => catchAxiosResponse(res, form))
-							.then(res => handleAxiosResponse(res, form))
+							}
+						)
+						.catch(res => catchAxiosResponse(res, form))
+						.then(res => handleAxiosResponse(res, form))
 					: await axios
-							.post(
-								"/api/orders",
-								{
-									...orderData
-								},
-								{
-									headers: {
-										Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
-									}
+						.post(
+							"/api/orders",
+							{
+								...orderData
+							},
+							{
+								headers: {
+									Authorization: `Bearer ${session?.user.backendTokens.accessToken.token}`
 								}
-							)
-							.catch(res => catchAxiosResponse(res, form))
-							.then(res => handleAxiosResponse(res, form));
+							}
+						)
+						.catch(res => catchAxiosResponse(res, form))
+						.then(res => handleAxiosResponse(res, form));
 				console.log("Order data", JSON.stringify(orderData), response);
 
 				// Aquí iría tu lógica para enviar los datos al backend con axios
@@ -280,12 +281,34 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 			</div>
 			<Separator />
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+				<form onSubmit={form.handleSubmit(onSubmit)} className=" w-full">
 					<Card>
 						<CardHeader>
 							<CardTitle>{title}</CardTitle>
 						</CardHeader>
-						<CardContent className="space-y-6">
+						<CardContent className="space-y-2">
+							<FormField
+								control={form.control}
+								name="status"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Estado</FormLabel>
+										<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Seleccionar estado" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												<SelectItem value="COMPLETED">Completado</SelectItem>
+												<SelectItem value="PENDING">Pendiente</SelectItem>
+												<SelectItem value="CANCELLED">Cancelado</SelectItem>
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 							<FormField
 								control={form.control}
 								name="providerId"
@@ -294,10 +317,10 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 
 									return (
 										<>
-											<FormItem className="space-y-4">
+											<FormItem >
 												<FormLabel>Proveedor</FormLabel>
 												<FormControl>
-													<div className="flex space-x-2">
+													<div className="flex ">
 														<ProviderSelector
 															providers={providers}
 															setValue={form.setValue}
@@ -367,8 +390,8 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 										<TableHead>Id</TableHead>
 										<TableHead>Producto</TableHead>
 										<TableHead>Cantidad</TableHead>
-										<TableHead>Precio sin IVA</TableHead>
-										<TableHead>Precio con IVA</TableHead>
+										<TableHead>Precio Unitario</TableHead>
+										<TableHead>Precio final</TableHead>
 										<TableHead>Acciones</TableHead>
 									</TableRow>
 								</TableHeader>
@@ -378,8 +401,8 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 											<TableCell>{item.productId}</TableCell>
 											<TableCell>{item.name}</TableCell>
 											<TableCell>{item.quantity}</TableCell>
+											<TableCell>{priceFormatter.format(item.costPrice)}</TableCell>
 											<TableCell>{priceFormatter.format(item.priceWithoutVAT)}</TableCell>
-											<TableCell>{priceFormatter.format(item.priceWithVAT)}</TableCell>
 											<TableCell className="space-x-2">
 												<Button
 													variant="outline"
@@ -405,33 +428,10 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 								</TableBody>
 							</Table>
 
-							<div className="flex justify-between">
-								<div>Total sin IVA: {priceFormatter.format(form.getValues("total") ?? 0)}</div>
-								<div>Total con IVA: {priceFormatter.format(form.getValues("totalWithVAT") ?? 0)}</div>
+							<div className="flex justify-end">
+								<div>Total: {priceFormatter.format(form.getValues("total") ?? 0)}</div>
 							</div>
 
-							<FormField
-								control={form.control}
-								name="status"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Estado</FormLabel>
-										<Select onValueChange={field.onChange} defaultValue={field.value}>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Seleccionar estado" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem value="PENDING">Pendiente</SelectItem>
-												<SelectItem value="COMPLETED">Completado</SelectItem>
-												<SelectItem value="CANCELLED">Cancelado</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
 						</CardContent>
 						<CardFooter className="flex justify-between">
 							<Button variant="outline" type="button" onClick={() => router.push("/panel/orders")}>

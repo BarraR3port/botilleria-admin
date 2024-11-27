@@ -397,9 +397,9 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 									key={option.value}
 									className={cn(
 										/* "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground", */
-										"data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
+										"data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground border-white",
 										badgeClassName,
-										redirectTo ? "cursor-pointer hover:text-blue-500" : "cursor-default"
+										redirectTo ? "cursor-pointer hover:text-white" : "cursor-default"
 									)}
 									data-fixed={option.fixed}
 									data-disabled={disabled || undefined}
@@ -443,7 +443,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 						)}
 						{isExpanded && (
 							<Badge
-								className={cn("cursor-pointer gap-1", badgeClassName)}
+								className={cn("cursor-pointer gap-1 border-white", badgeClassName)}
 								onClick={() => {
 									setIsExpanded(!isExpanded);
 								}}

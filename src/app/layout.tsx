@@ -23,7 +23,7 @@ export default function RootLayout({
 		<html lang="es">
 			<head />
 			<body className={inter.className}>
-				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+				<ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
 					<TooltipProvider>
 						<Toaster />
 						<div className="flex flex-col h-[100dvh]">

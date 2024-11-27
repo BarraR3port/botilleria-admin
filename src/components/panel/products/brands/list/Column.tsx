@@ -35,21 +35,12 @@ export const columns: ColumnDef<Column>[] = [
 		enableHiding: false
 	},
 	{
-		accessorKey: "id",
-		header: "Id",
-		cell: ({ row }) => <CellIdAction value={row.original.id} />
-	},
-	{
 		accessorKey: "name",
 		header: "Marca"
 	},
 	{
 		accessorKey: "description",
 		header: "Descripción"
-	},
-	{
-		accessorKey: "createdAt",
-		header: "Creado"
 	},
 	{
 		id: "actions",

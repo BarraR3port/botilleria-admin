@@ -35,9 +35,5 @@ const SEARCH_KEYS = [
 	{
 		value: "price",
 		label: "Precio"
-	},
-	{
-		value: "createdAt",
-		label: "Creado"
 	}
 ];

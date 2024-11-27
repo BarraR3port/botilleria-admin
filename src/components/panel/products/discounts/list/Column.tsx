@@ -52,15 +52,21 @@ export const columns: ColumnDef<Column>[] = [
 	},
 	{
 		accessorKey: "type",
-		header: "Tipo"
+		header: "Tipo",
+		cell: ({ row }) => (
+			<div className="text-left">
+				<span className="text-secondary">{row.original.type === "PERCENTAGE" ? "Porcentaje" : "Monto"}</span>
+			</div>
+		)
 	},
 	{
 		accessorKey: "value",
-		header: "Valor"
-	},
-	{
-		accessorKey: "createdAt",
-		header: "Creado"
+		header: "Valor",
+		cell: ({ row }) => (
+			<div className="text-right">
+				<span className="text-primary">{row.original.value}</span>
+			</div>
+		)
 	},
 	{
 		id: "actions",
