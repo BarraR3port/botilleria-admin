@@ -15,6 +15,7 @@ export default async function Ventas() {
 							id: true,
 							name: true,
 							sellPrice: true,
+							costPrice: true,
 							type: true,
 							weightOrVolume: true,
 							brand: {
@@ -48,6 +49,7 @@ export default async function Ventas() {
 			id: order.id.toString(),
 			total: priceFormatter.format(order.total),
 			status: order.status,
+			userId: order.userId,
 			user: `${order.user?.name} ${order.user?.lastName}`,
 			provider: order.provider?.name,
 			createdAt: format(order.createdAt, "dd MMMM yy HH:mm", {
@@ -60,7 +62,8 @@ export default async function Ventas() {
 					quantity: product.quantity,
 					productId: product.product.id,
 					productName: `${product.product.name} ${product.product.brand.name} ${productTypeFormatted} x${product.quantity}`,
-					productSellPrice: priceFormatter.format(product.product.sellPrice)
+					productSellPrice: priceFormatter.format(product.product.sellPrice),
+					originalPrice: priceFormatter.format(product.product.costPrice)
 				};
 			})
 		};

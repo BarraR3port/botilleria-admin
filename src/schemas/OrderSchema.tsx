@@ -18,6 +18,7 @@ export const OrderFormSchema = object({
 			quantity: number().required("La cantidad es requerida"),
 			priceWithoutVAT: number().required("El precio sin IVA es requerido"),
 			priceWithVAT: number().required("El precio con IVA es requerido"),
+			costPrice: number().optional(),
 			productId: number().required("El id del producto es requerido"),
 			name: string().optional()
 		})

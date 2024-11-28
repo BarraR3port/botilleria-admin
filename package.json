@@ -37,6 +37,7 @@
 		"@tanstack/react-table": "^8.17.3",
 		"argon2": "^0.41.0",
 		"axios": "^1.7.2",
+		"caniuse-lite": "^1.0.30001684",
 		"canvas-confetti": "^1.9.3",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",

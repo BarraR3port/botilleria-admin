@@ -28,6 +28,7 @@ export type OrderProduct = Product & {
 		id: string;
 		name: string;
 	};
+	costPrice: number;
 };
 
 export type OrderProvider = Provider & {
@@ -401,7 +402,7 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 											<TableCell>{item.productId}</TableCell>
 											<TableCell>{item.name}</TableCell>
 											<TableCell>{item.quantity}</TableCell>
-											<TableCell>{priceFormatter.format(item.costPrice)}</TableCell>
+											<TableCell>{priceFormatter.format(item?.costPrice ?? 0)}</TableCell>
 											<TableCell>{priceFormatter.format(item.priceWithoutVAT)}</TableCell>
 											<TableCell className="space-x-2">
 												<Button
