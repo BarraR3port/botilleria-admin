@@ -65,7 +65,7 @@ export default function DeleteButton({ type, session, itemId }: DeleteButtonProp
 					setOpen(true);
 				}}
 			>
-				<Trash className="h-4 w-4 hover:cursor-pointer text-red-500" />
+				<Trash className="h-6 w-6 hover:cursor-pointer text-red-500" />
 				<span className="sr sr-only">Eliminar</span>
 			</Button>
 		</>

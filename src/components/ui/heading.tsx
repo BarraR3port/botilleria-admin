@@ -28,7 +28,7 @@ export default function Heading({ title, mainPath }: HeadingProps) {
 							router.back();
 						}}
 					>
-						<ChevronLeft className="h-4 w-4" />
+						<ChevronLeft className="h-6 w-6" />
 						<span className="sr-only">Back</span>
 					</Button>
 				)}

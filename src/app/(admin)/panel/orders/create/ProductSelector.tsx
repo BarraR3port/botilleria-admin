@@ -33,7 +33,7 @@ export function ProductSelector({ providers, products, selectedProduct, setValue
 					className="flex-1 justify-between "
 				>
 					{selectedProduct ? selectedProduct.name : "Seleccionar un producto..."}
-					<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+					<CaretSortIcon className="ml-2 h-6 w-6 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="p-0">
@@ -52,7 +52,7 @@ export function ProductSelector({ providers, products, selectedProduct, setValue
 									{preset.name}
 									<CheckIcon
 										className={cn(
-											"ml-auto h-4 w-4",
+											"ml-auto h-6 w-6",
 											selectedProduct?.id === preset.id ? "opacity-100" : "opacity-0"
 										)}
 									/>

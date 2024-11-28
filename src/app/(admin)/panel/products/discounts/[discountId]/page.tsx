@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import DiscountForm from "@/forms/sale/discount/DiscountForm";
+import DiscountForm from "@/forms/product/discount/DiscountForm";
 import prisma from "@/lib/prismadb";
 import { RedirectType, notFound, redirect } from "next/navigation";
 

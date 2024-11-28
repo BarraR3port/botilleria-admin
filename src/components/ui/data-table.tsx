@@ -69,8 +69,8 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div>
-			<div className="sticky top-0  z-10 space-y-2">
+		<div className="">
+			<div className="sticky top-0 z-10 space-y-2 ">
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
 						{icon}
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
 					{createButton && (
 						<Link href={`${mainPath}/create`}>
 							<Button variant="outline">
-								<Plus className="w-4 h-4" />
+								<Plus className="w-6 h-6" />
 								Crear
 							</Button>
 						</Link>
@@ -133,7 +133,7 @@ export function DataTable<TData, TValue>({
 							/>
 						</Form>
 					</div>
-					<div className="text-sm text-muted-foreground items-center col-span-1 hidden md:flex">
+					<div className="text-sm text-muted-foreground items-center col-span-1 hidden md:flex lg:hidden xl:flex">
 						{table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length}{" "}
 						{title.toLocaleLowerCase()} seleccionados
 					</div>
@@ -142,42 +142,45 @@ export function DataTable<TData, TValue>({
 			</div>
 
 			<div className="rounded-md border ">
-				<Table>
-					<TableHeader>
-						{table.getHeaderGroups().map(headerGroup => (
-							<TableRow key={headerGroup.id}>
-								{headerGroup.headers.map(header => {
-									return (
-										<TableHead key={header.id}>
-											{header.isPlaceholder
-												? null
-												: flexRender(header.column.columnDef.header, header.getContext())}
-										</TableHead>
-									);
-								})}
-							</TableRow>
-						))}
-					</TableHeader>
-					<TableBody>
-						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map(row => (
-								<TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-									{row.getVisibleCells().map(cell => (
-										<TableCell key={cell.id}>
-											{flexRender(cell.column.columnDef.cell, cell.getContext())}
-										</TableCell>
-									))}
+				<div className="relative overflow-auto max-h-[calc(100vh-200px)]"> {/* Ajusta la altura si es necesario */}
+					<Table>
+						<TableHeader className="sticky top-0 bg-white z-10"> {/* Asegura que el fondo no sea transparente */}
+
+							{table.getHeaderGroups().map(headerGroup => (
+								<TableRow key={headerGroup.id}>
+									{headerGroup.headers.map(header => {
+										return (
+											<TableHead key={header.id}>
+												{header.isPlaceholder
+													? null
+													: flexRender(header.column.columnDef.header, header.getContext())}
+											</TableHead>
+										);
+									})}
 								</TableRow>
-							))
-						) : (
-							<TableRow>
-								<TableCell colSpan={columns.length} className="h-24 text-center">
-									Sin resultados
-								</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
+							))}
+						</TableHeader>
+						<TableBody>
+							{table.getRowModel().rows?.length ? (
+								table.getRowModel().rows.map(row => (
+									<TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+										{row.getVisibleCells().map(cell => (
+											<TableCell key={cell.id}>
+												{flexRender(cell.column.columnDef.cell, cell.getContext())}
+											</TableCell>
+										))}
+									</TableRow>
+								))
+							) : (
+								<TableRow>
+									<TableCell colSpan={columns.length} className="h-24 text-center">
+										Sin resultados
+									</TableCell>
+								</TableRow>
+							)}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
 		</div>
 	);

@@ -37,7 +37,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 		const total = sales.reduce((acc, sale) => acc + Number(sale.total), 0);
 		return priceFormatter.format(total);
 	}, [sales]);
-	/* 
+	/*
 	const percentageMoreRevenueFromLastMonth = useMemo(() => {
 		const orderedSales = sales.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 		const lastMonthSales = orderedSales.slice(-30);
@@ -96,7 +96,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 	return (
 		<div className="flex-col overflow-auto ">
 			<div className="flex-1 space-y-4 p-4">
-				<div className="sticky top-0 bg-background z-10 space-y-2">
+				<div className="sticky top-0 z-10 space-y-2">
 					<div className="flex items-center justify-between">
 						<Heading
 							title={
@@ -121,7 +121,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 					>
 						<CardHeader className="flex flex-row items-center justify-between pb-2">
 							<CardTitle className="text-sm font-medium">Ventas totales</CardTitle>
-							<ShoppingCartIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+							<ShoppingCartIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{sales.length}</div>
@@ -138,7 +138,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 					>
 						<CardHeader className="flex flex-row items-center justify-between pb-2">
 							<CardTitle className="text-sm font-medium">Ganancias Totales</CardTitle>
-							<DollarSignIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+							<DollarSignIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{totalRevenue}</div>
@@ -155,7 +155,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 					>
 						<CardHeader className="flex flex-row items-center justify-between pb-2">
 							<CardTitle className="text-sm font-medium">Productos</CardTitle>
-							<Box className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+							<Box className="w-6 h-6 text-gray-500 dark:text-gray-400" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{totalProducts}</div>
@@ -169,7 +169,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 					>
 						<CardHeader className="flex flex-row items-center justify-between pb-2">
 							<CardTitle className="text-sm font-medium">Vendedores</CardTitle>
-							<UsersIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+							<UsersIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{customers.length}</div>
@@ -191,7 +191,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 						<Card className="cursor-pointer rounded-lg border  p-4 shadow-sm transition-all hover:scale-105 hover:shadow-md ">
 							<CardHeader className="flex flex-row items-center justify-between pb-2">
 								<CardTitle className="text-sm font-medium">Top Vendedores</CardTitle>
-								<Crown className="w-4 h-4 text-warning " />
+								<Crown className="w-6 h-6 text-warning " />
 							</CardHeader>
 							<CardContent>
 								<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -202,7 +202,7 @@ export default function PanelIndex({ session, sales, products }: Props) {
 													href={`/panel/users/${customer.id}`}
 													className="hover:text-blue-500 flex items-center"
 												>
-													<UserIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+													<UserIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
 													<h4 className="font-medium">{customer.name}</h4>
 												</Link>
 												<p className="text-sm text-gray-500 dark:text-gray-400">

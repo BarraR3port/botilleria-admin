@@ -93,7 +93,7 @@ export function AccountForm() {
 											)}
 										>
 											{field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-											<CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+											<CalendarIcon className="w-6 h-6 ml-auto opacity-50" />
 										</Button>
 									</FormControl>
 								</PopoverTrigger>

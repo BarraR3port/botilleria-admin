@@ -170,7 +170,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 						setOpen(true);
 					}}
 				>
-					<Trash className="h-4 w-4" />
+					<Trash className="h-6 w-6" />
 					<span>Eliminar</span>
 				</Button>
 			</div>
@@ -291,7 +291,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 					</div>
 					<div className="flex gap-2 justify-end">
 						<Button className="h-8 gap-1" type="submit" variant="secondary" loading={loadingBasic}>
-							<Save className="h-4 w-4" />
+							<Save className="h-6 w-6" />
 							Restablecer usuario
 						</Button>
 					</div>
@@ -376,7 +376,7 @@ export default function UserForm({ user, roles, session }: FormProps) {
 					</div>
 					<div className="flex gap-2 justify-end">
 						<Button className="h-8 gap-1" type="submit" variant="secondary" loading={loadingCritic}>
-							<Save className="h-4 w-4" />
+							<Save className="h-6 w-6" />
 							Restablecer contraseña
 						</Button>
 					</div>

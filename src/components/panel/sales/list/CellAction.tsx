@@ -17,7 +17,7 @@ export default function CellAction({ sale }: CellActionProps) {
 		<div>
 			<Link href={`/panel/sales/${sale.id}`}>
 				<Button variant="ghost">
-					<Eye className="h-4 w-4 hover:cursor-pointer hover:text-blue-400" />
+					<Eye className="h-6 w-6 hover:cursor-pointer hover:text-blue-400" />
 				</Button>
 			</Link>
 			<DeleteButton type="sales" session={session} itemId={sale.id} />

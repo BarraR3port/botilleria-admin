@@ -3,6 +3,7 @@
 import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { triggerFireworks } from "@/components/magicui/confetti";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
@@ -88,194 +89,205 @@ export default function NewUserForm({ roles, session }: FormProps) {
 			<Separator />
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full flex-col">
-					<div className="space-y-2">
-						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
-							<FormField
-								control={form.control}
-								name="name"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Nombre</FormLabel>
-										<FormControl>
-											<Input
-												autoComplete="off"
-												disabled={loading}
-												placeholder="Nombre del usuario"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="lastName"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Nombre</FormLabel>
-										<FormControl>
-											<Input
-												autoComplete="off"
-												disabled={loading}
-												placeholder="Apellido del usuario"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Email</FormLabel>
-										<FormControl>
-											<Input
-												autoComplete="off"
-												disabled={loading}
-												placeholder="Email del usuario"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="rut"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Rut</FormLabel>
-										<FormControl>
-											<Input
-												autoComplete="off"
-												disabled={loading}
-												placeholder="Rut del usuario"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Contraseña</FormLabel>
-										<FormControl>
-											<div className="relative">
+					<Card>
+						<CardHeader>
+							<CardTitle>Ingresa los datos del usuario</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
+								<FormField
+									control={form.control}
+									name="name"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Nombre</FormLabel>
+											<FormControl>
 												<Input
-													disabled={loading}
-													required
-													type={passwordHidden ? "current-password" : "password"}
 													autoComplete="off"
-													autoSave={"password"}
-													{...field}
-												/>
-												{passwordHidden ? (
-													<EyeOff
-														onClick={() => setPasswordHidden(!passwordHidden)}
-														size={18}
-														className="absolute transform -translate-y-1/2 right-3 top-1/2"
-													/>
-												) : (
-													<Eye
-														onClick={() => setPasswordHidden(!passwordHidden)}
-														size={18}
-														className="absolute transform -translate-y-1/2 right-3 top-1/2"
-													/>
-												)}
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="confirmPassword"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Confirmar contraseña</FormLabel>
-										<FormControl>
-											<div className="relative">
-												<Input
 													disabled={loading}
-													required
-													type={passwordHidden ? "new-password" : "password"}
-													autoComplete="new-password"
-													autoSave={"new-password"}
+													placeholder="Nombre del usuario"
 													{...field}
 												/>
-												{passwordHidden ? (
-													<EyeOff
-														onClick={() => setPasswordHidden(!passwordHidden)}
-														size={18}
-														className="absolute transform -translate-y-1/2 right-3 top-1/2"
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="lastName"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Nombre</FormLabel>
+											<FormControl>
+												<Input
+													autoComplete="off"
+													disabled={loading}
+													placeholder="Apellido del usuario"
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Email</FormLabel>
+											<FormControl>
+												<Input
+													autoComplete="off"
+													disabled={loading}
+													placeholder="Email del usuario"
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="rut"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Rut</FormLabel>
+											<FormControl>
+												<Input
+													autoComplete="off"
+													disabled={loading}
+													placeholder="Rut del usuario"
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Contraseña</FormLabel>
+											<FormControl>
+												<div className="relative">
+													<Input
+														disabled={loading}
+														required
+														type={passwordHidden ? "current-password" : "password"}
+														autoComplete="off"
+														autoSave={"password"}
+														{...field}
 													/>
-												) : (
-													<Eye
-														onClick={() => setPasswordHidden(!passwordHidden)}
-														size={18}
-														className="absolute transform -translate-y-1/2 right-3 top-1/2"
-													/>
-												)}
-											</div>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="rol"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Rol</FormLabel>
-										<FormControl>
-											<Select
-												disabled={loading}
-												onValueChange={field.onChange}
-												value={field.value}
-												defaultValue={field.value}
-											>
-												<FormControl>
-													<SelectTrigger>
-														<SelectValue
-															defaultValue={field.value}
-															placeholder="Selecciona el rol"
+													{passwordHidden ? (
+														<EyeOff
+															onClick={() => setPasswordHidden(!passwordHidden)}
+															size={18}
+															className="absolute transform -translate-y-1/2 right-3 top-1/2"
 														/>
-														<SelectContent>
-															{roles.map(rol => {
-																return (
-																	<SelectItem key={rol.value} value={rol.value}>
-																		{rol.label}
-																	</SelectItem>
-																);
-															})}
-														</SelectContent>
-													</SelectTrigger>
-												</FormControl>
-											</Select>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-					</div>
-					<div className="flex gap-2 justify-end">
-						<Button className="h-8 gap-1" type="submit" variant="success" loading={loading}>
-							<Plus className="h-4 w-4" />
-							Crear
-						</Button>
-					</div>
+													) : (
+														<Eye
+															onClick={() => setPasswordHidden(!passwordHidden)}
+															size={18}
+															className="absolute transform -translate-y-1/2 right-3 top-1/2"
+														/>
+													)}
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="confirmPassword"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Confirmar contraseña</FormLabel>
+											<FormControl>
+												<div className="relative">
+													<Input
+														disabled={loading}
+														required
+														type={passwordHidden ? "new-password" : "password"}
+														autoComplete="new-password"
+														autoSave={"new-password"}
+														{...field}
+													/>
+													{passwordHidden ? (
+														<EyeOff
+															onClick={() => setPasswordHidden(!passwordHidden)}
+															size={18}
+															className="absolute transform -translate-y-1/2 right-3 top-1/2"
+														/>
+													) : (
+														<Eye
+															onClick={() => setPasswordHidden(!passwordHidden)}
+															size={18}
+															className="absolute transform -translate-y-1/2 right-3 top-1/2"
+														/>
+													)}
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="rol"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Rol</FormLabel>
+											<FormControl>
+												<Select
+													disabled={loading}
+													onValueChange={field.onChange}
+													value={field.value}
+													defaultValue={field.value}
+												>
+													<FormControl>
+														<SelectTrigger>
+															<SelectValue
+																defaultValue={field.value}
+																placeholder="Selecciona el rol"
+															/>
+															<SelectContent>
+																{roles.map(rol => {
+																	return (
+																		<SelectItem key={rol.value} value={rol.value}>
+																			{rol.label}
+																		</SelectItem>
+																	);
+																})}
+															</SelectContent>
+														</SelectTrigger>
+													</FormControl>
+												</Select>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						</CardContent>
+						<CardFooter className="flex justify-between">
+							<Button variant="destructive" type="button" onClick={() => {
+
+								router.push("/panel/users")
+							}}>
+								Cancelar
+							</Button>
+							<Button className="h-8 gap-1" type="submit" loading={loading}>
+								<Plus className="h-6 w-6" />
+								Crear
+							</Button>
+						</CardFooter>
+					</Card>
 				</form>
 			</Form>
 		</>

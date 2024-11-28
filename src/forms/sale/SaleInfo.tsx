@@ -66,11 +66,11 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 				<div className="flex items-center justify-between ">
 					<Heading
 						title={
-							<h1 className="font-semibold text-lg md:text-xl">
+							<h1 className="font-semibold text-lg md:text-xl text-primary">
 								Venta #{sale.id}
-								<span className="font-normal text-gray-400">
+								<span className="font-normal text-muted">
 									{" "}
-									{sale.sellerName} el <span className=" hover:text-gray-300">{sale.createdAt}</span>
+									{sale.sellerName} el <span className="text-secondary">{sale.createdAt}</span>
 								</span>
 							</h1>
 						}
@@ -119,7 +119,7 @@ export default function SaleInfo({ sale, session }: SaleInfoProps) {
 															openProduct(product.productId);
 														}}
 													>
-														<Eye className="h-4 w-4 hover:cursor-pointer group-hover:text-blue-500" />
+														<Eye className="h-6 w-6 hover:cursor-pointer group-hover:text-blue-500" />
 														<span className="sr-only">Ver Producto</span>
 													</Button>
 												</TableCell>

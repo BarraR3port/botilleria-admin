@@ -114,7 +114,7 @@ export default function OrderInfo({ order, session }: OrderInfoProps) {
 															openProduct(product.productId);
 														}}
 													>
-														<Eye className="h-4 w-4 hover:cursor-pointer group-hover:text-blue-500" />
+														<Eye className="h-6 w-6 hover:cursor-pointer group-hover:text-blue-500" />
 														<span className="sr-only">Ver Producto</span>
 													</Button>
 												</TableCell>

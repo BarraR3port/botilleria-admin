@@ -26,10 +26,6 @@ const SEARCH_KEYS = [
 		label: "Nombre"
 	},
 	{
-		value: "id",
-		label: "Id"
-	},
-	{
 		value: "rut",
 		label: "Rut"
 	},

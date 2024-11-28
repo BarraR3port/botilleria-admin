@@ -29,8 +29,8 @@ export default function NavLinkExpanded({ link }: NavLinkProps) {
 			className={cn(
 				"group  ",
 				pathName.startsWith(link.href) &&
-					link?.subLinks &&
-					"rounded-lg bg-primary text-primary-foreground shadow-xl "
+				link?.subLinks &&
+				"rounded-lg bg-primary text-primary-foreground shadow-xl "
 			)}
 		>
 			<CollapsibleTrigger
@@ -46,7 +46,7 @@ export default function NavLinkExpanded({ link }: NavLinkProps) {
 				}}
 			>
 				<div className="flex">
-					<link.icon className="w-4 h-4 mr-2" />
+					<link.icon className="w-6 h-6 mr-2" />
 					{link.title}
 					{link.label && (
 						<span className={cn("ml-auto", variant === "default" && "text-background dark:text-white")}>
@@ -54,7 +54,7 @@ export default function NavLinkExpanded({ link }: NavLinkProps) {
 						</span>
 					)}
 				</div>
-				{link.subLinks && <ChevronRightIcon className="h-5 w-5 transition-transform" />}
+				{link.subLinks && <ChevronRightIcon className="h-6 w-6 transition-transform" />}
 			</CollapsibleTrigger>
 			{link.subLinks && (
 				<CollapsibleContent

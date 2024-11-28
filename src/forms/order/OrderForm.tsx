@@ -281,10 +281,10 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 			</div>
 			<Separator />
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className=" w-full">
+				<form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
 					<Card>
 						<CardHeader>
-							<CardTitle>{title}</CardTitle>
+							<CardTitle>Ingresa los datos de tu pedido</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-2">
 							<FormField
@@ -434,7 +434,7 @@ export default function OrderForm({ providers, session, order }: OrderProps) {
 
 						</CardContent>
 						<CardFooter className="flex justify-between">
-							<Button variant="outline" type="button" onClick={() => router.push("/panel/orders")}>
+							<Button variant="destructive" type="button" onClick={() => router.push("/panel/orders")}>
 								Cancelar
 							</Button>
 							<Button type="submit" disabled={loading}>

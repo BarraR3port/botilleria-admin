@@ -14,9 +14,9 @@ import DeleteButton from "../delete-button";
 
 interface ProductInfoProps {
 	product: Product &
-		Partial<{
-			brand: Brand;
-		}>;
+	Partial<{
+		brand: Brand;
+	}>;
 	types: {
 		value: string;
 		label: string;
@@ -49,7 +49,7 @@ export default function ProductInfo({ product, types, session }: ProductInfoProp
 					<div className="grid">
 						<Link href={`/panel/products/edit/${product.id}`}>
 							<Button variant="ghost" className="group">
-								<Edit className="h-4 w-4 hover:cursor-pointer group-hover:text-blue-500" />
+								<Edit className="h-6 w-6 hover:cursor-pointer group-hover:text-blue-500" />
 							</Button>
 						</Link>
 

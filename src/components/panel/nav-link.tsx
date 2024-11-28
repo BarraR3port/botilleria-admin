@@ -30,8 +30,8 @@ export default function NavLink({ link }: NavLinkProps) {
 			className={cn(
 				"group  ",
 				pathName.startsWith(link.href) &&
-					link?.subLinks &&
-					"rounded-lg bg-primary text-primary-foreground shadow "
+				link?.subLinks &&
+				"rounded-lg bg-primary text-primary-foreground shadow "
 			)}
 		>
 			<CollapsibleTrigger
@@ -49,7 +49,7 @@ export default function NavLink({ link }: NavLinkProps) {
 				<Tooltip delayDuration={0}>
 					<TooltipTrigger asChild>
 						<div>
-							<link.icon className="w-4 h-4 " />
+							<link.icon className="w-6 h-6 " />
 							<span className="sr-only">{link.title}</span>
 						</div>
 					</TooltipTrigger>

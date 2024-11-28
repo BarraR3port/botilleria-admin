@@ -2,6 +2,7 @@
 
 import { catchAxiosResponse, handleAxiosResponse } from "@/api/utils";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import Heading from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
@@ -39,13 +40,13 @@ export default function ProductForm({ brand, session }: BrandProps) {
 		resolver: yupResolver(BrandFormSchema),
 		defaultValues: brand
 			? {
-					name: brand.name || "",
-					description: brand.description || ""
-				}
+				name: brand.name || "",
+				description: brand.description || ""
+			}
 			: {
-					name: "",
-					description: ""
-				}
+				name: "",
+				description: ""
+			}
 	});
 
 	const onSubmit = async (data: BrandFormType) => {
@@ -53,21 +54,21 @@ export default function ProductForm({ brand, session }: BrandProps) {
 		try {
 			const response = brand
 				? await axios
-						.patch(`/api/products/brands/${params.brandId}`, data, {
-							headers: {
-								Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
-							}
-						})
-						.catch(res => catchAxiosResponse(res, form))
-						.then(res => handleAxiosResponse(res, form))
+					.patch(`/api/products/brands/${params.brandId}`, data, {
+						headers: {
+							Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
+						}
+					})
+					.catch(res => catchAxiosResponse(res, form))
+					.then(res => handleAxiosResponse(res, form))
 				: await axios
-						.post("/api/products/brands", data, {
-							headers: {
-								Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
-							}
-						})
-						.catch(res => catchAxiosResponse(res, form))
-						.then(res => handleAxiosResponse(res, form));
+					.post("/api/products/brands", data, {
+						headers: {
+							Authorization: `Bearer ${session.user.backendTokens.accessToken.token}`
+						}
+					})
+					.catch(res => catchAxiosResponse(res, form))
+					.then(res => handleAxiosResponse(res, form));
 
 			if (response) {
 				toast({
@@ -123,69 +124,70 @@ export default function ProductForm({ brand, session }: BrandProps) {
 		<>
 			<AlertModal open={open} onClose={() => setOpen(false)} onConfirm={onDelete} loading={loading} />
 			<div className="flex items-center justify-between">
-				<Heading title={title} />
+				<Heading title={title} mainPath="products/brands" />
 			</div>
 			<Separator />
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full flex-col">
-					<div className="space-y-2">
-						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
-							<FormField
-								control={form.control}
-								name="name"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Nombre</FormLabel>
-										<FormControl>
-											<Input
-												autoComplete="off"
-												disabled={loading}
-												placeholder="Nombre de la marca"
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="description"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel optional>Descripción</FormLabel>
-										<FormControl>
-											<Textarea placeholder="Descripción de la marca" {...field} />
-										</FormControl>
+					<Card>
+						<CardHeader>
+							<CardTitle>Ingresa los datos de la marca</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
+								<FormField
+									control={form.control}
+									name="name"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Nombre</FormLabel>
+											<FormControl>
+												<Input
+													autoComplete="off"
+													disabled={loading}
+													placeholder="Nombre de la marca"
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="description"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel optional>Descripción</FormLabel>
+											<FormControl>
+												<Textarea placeholder="Descripción de la marca" {...field} />
+											</FormControl>
 
-										<FormDescription>
-											La descripción debe tener al menos 4 caracteres y no más de 1024 caracteres.
-										</FormDescription>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-					</div>
-					<div className="flex gap-2 justify-end">
-						{brand && (
-							<Button
-								className="h-8 gap-1 "
-								variant="destructive"
-								onClick={() => {
+											<FormDescription>
+												La descripción debe tener al menos 4 caracteres y no más de 1024 caracteres.
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						</CardContent>
+						<CardFooter className="flex justify-between">
+							<Button variant="destructive" type="button" onClick={() => {
+								if (brand) {
 									setOpen(true);
-								}}
-							>
-								<Trash className="h-4 w-4" />
-								<span>Eliminar</span>
+									return;
+								}
+								router.push("/panel/products/brands")
+							}}>
+								{brand ? "Eliminar marca" : "Cancelar"}
 							</Button>
-						)}
+							<Button type="submit" disabled={loading}>
+								{brand ? "Actualizar marca" : "Crear marca"}
+							</Button>
+						</CardFooter>
 
-						<Button className="h-8 gap-1" type="submit" variant="success" loading={loading}>
-							{brand ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-							{brand ? "Guardar" : "Crear"}
-						</Button>
-					</div>
+					</Card>
 				</form>
 			</Form>
 		</>
