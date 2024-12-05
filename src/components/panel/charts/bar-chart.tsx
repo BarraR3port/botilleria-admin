@@ -1,5 +1,5 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { es } from "date-fns/locale";
 import { useEffect, useState } from "react";
 
@@ -17,14 +17,37 @@ const BarChart: React.FC<Props> = ({ sales }) => {
 	useEffect(() => {
 		const monthlySales = sales.slice(0, 2000).reduce(
 			(acc, sale) => {
-				const month = format(sale.createdAt, "MMM", {
-					locale: es
-				});
-				if (!acc[month]) {
-					acc[month] = 0;
+				try {
+					// Intenta parsear la fecha usando el formato específico
+					let date: Date;
+					if (sale.createdAt.includes("GMT")) {
+						// Si es una fecha en formato GMT
+						date = new Date(sale.createdAt);
+					} else {
+						// Si es una fecha en formato "dd MMMM yy HH:mm"
+						date = parse(sale.createdAt, "dd MMMM yy HH:mm", new Date(), {
+							locale: es
+						});
+					}
+
+					if (Number.isNaN(date.getTime())) {
+						console.error("Fecha inválida:", sale.createdAt);
+						return acc;
+					}
+
+					const month = format(date, "MMM", {
+						locale: es
+					});
+
+					if (!acc[month]) {
+						acc[month] = 0;
+					}
+					acc[month]++;
+					return acc;
+				} catch (error) {
+					console.error("Error procesando fecha:", sale.createdAt, error);
+					return acc;
 				}
-				acc[month]++;
-				return acc;
 			},
 			{} as Record<string, number>
 		);
@@ -35,7 +58,6 @@ const BarChart: React.FC<Props> = ({ sales }) => {
 		}));
 
 		setData(formattedData);
-		console.log(formattedData);
 	}, [sales]);
 
 	return (
